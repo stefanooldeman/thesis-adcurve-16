@@ -1,17 +1,24 @@
 \documentclass{report} % maybe use book instead for some reasons
 \usepackage[utf8]{inputenc}
+\usepackage{csquotes}
 \usepackage{helvet}
-
 \usepackage[USenglish,dutch]{babel}
+\usepackage{import}
+\usepackage{verbatim}
 
-\title{OpdrachtLatex}
+% the syle=apa is only in ShareLatex use 'draft' for WIP
+\usepackage[backend=biber,sorting=ynt,style=draft]{biblatex}
+\DeclareLanguageMapping{english}{english-apa}
+\addbibresource{citations.bib}
+
+\title{Afstudeer opdracht HBO-ICT}
 \author{Stefano Oldeman}
 \date{January 2016}
 
 \begin{document}
 
-
-\begin{titlepage} % == COVER PAGE ==
+ % == COVER PAGE ==
+\begin{titlepage}
 
 \begin{center}
     
@@ -20,49 +27,27 @@
 \end{center}
 \end{titlepage}
 
+
 \maketitle
+% een titelblad met de titel van de afstudeeropdracht, naam van de afstudeerder en het studentnummer, de naam en het studentnummer van de medestudent, naam van het bedrijf;
+
 
 \tableofcontents{}
 
+\input{Chapters/1Opdracht}
 
-% een titelblad met de titel van de afstudeeropdracht, naam van de afstudeerder en het studentnummer, de naam en het studentnummer van de medestudent, naam van het bedrijf;
+\input{Chapters/2Onderzoeksplan}
 
-\chapter{Aanleiding} % de aanleiding tot de opdracht
-
-\chapter{Context} % een beknopte context (beschrijving van de organisatie van de opdrachtgever en de plaats van de student daarin)
-
-
-\chapter{De Opdracht} % een kwestie (aanleiding, het op te lossen probleem, de te vervullen behoefte of de te benutten kans);
+\input{Chapters/3Planning}
 
 
-\chapter{Doelstellingen} % de doelstellingen (wat moet na afloop van het afstudeerproject zijn bereikt);
-
-
-% TODO: Het type opdracht kan worden omschreven als een product en ontwerp opdracht. 
-
-\chapter{Het Onderzoek} % de onderzoeksvragen, hoofdvraag met daaruit voortvloeiende deelvragen die moeten worden beantwoord
-
-\section{Literatuur} %  (optioneel) een beschrijving van de belangrijkste literatuur die onderzocht zal worden
-
-\chapter{Deel opleveringen} % de op te leveren producten met kwaliteitscriteria;
-
-\chapter{Onderzoek methode} % de te gebruiken methoden/technieken/middelen (ook van het onderzoek) en, indien van toepassing, de
-
-\chapter{Onderzoek methode} % methode van kwaliteitsbewaking, zoals bv. testen;
-
-\chapter{Deelvragen} % deelvragen voorkomend uit de gekozen ontwerpmethode (optioneel);
-
-
-\chapter{De opdracht} % }de afstudeeropdracht met mogelijke deelopdrachten, met vermelding van de projectgrenzen en randvoorwaarden en, indien het afstudeerproject onderdeel uitmaakt van een groter project, de afbakening t.o.v. het grotere project;
-\chapter{De projectorganisatie} % de projectorganisatie;
-
-\chapter{Planning} % de projectactiviteiten met een beschrijving van de onderlinge samenhang, de mijlpalen en een fasering in de tijd met een schatting van de te besteden uren voor de verschillende uit te voeren activiteiten;
-\section{Risico's} % de eventuele risico’s met maatregelen;
-
-% Inhoud todo: twee data voor het inleveren van concepten van de scriptie (circa 6 resp. 3 weken voor de inleverdatum van de definitieve versie van de scriptie);
-
+\appendix
+ 
 \chapter{Bedrijfsgegevens} % de bedrijfs-/persoonsgegevens (d.w.z. naam, e-mailadres, telefoonnummer van alle betrokkenen);
 
 
+% \chapter{Bibliography}
+
+\printbibliography
 
 \end{document}
