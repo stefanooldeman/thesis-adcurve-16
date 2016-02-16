@@ -2,7 +2,9 @@
 
 \section{Introductie}
 
-Het bedrijf Shop2market is een software development bedrijf in de business-to-business sector. De organisatie helpt webwinkels online adverteren met als doelstelling de winstgevendheid van online advertenties te maximaliseren. Shop2market is ontstaan nadat duidelijk werd dat veel bedrijven niet de technologische middelen of kennis in huis hebben om zelfstandig te kunnen starten met adverteren. Zo blijkt uit interactie met klanten dat velen vrezen voor hoge kosten. Volgens mede opdrichter van Shop2market Matthijs Jorissen, komt dit door het gebrek aan transparantie en het complexe landschap dat is gecreeërd door de grootte hoeveelheid bedrijven.
+Het bedrijf Shop2market is een software development bedrijf in de business-to-business sector. De organisatie helpt webwinkels online adverteren met als doelstelling de winstgevendheid van online advertenties te maximaliseren.
+
+Shop2market is ontstaan nadat duidelijk werd dat veel bedrijven niet de technologische middelen of kennis in huis hebben om zelfstandig te kunnen starten met adverteren. Zo blijkt uit interactie met klanten dat velen vrezen voor hoge kosten.Volgens mede opdrichter van Shop2market Matthijs Jorissen, komt dit door het gebrek aan transparantie en het complexe landschap dat is gecreeërd door de grootte hoeveelheid bedrijven.
 
 Voor alsnog diende shop2market als een IT oplossing ondersteunend aan het adviesbedrijf. Het merendeel van deze klanten zijn webwinkels in het A segment. Maar omdat de integratie met een webwinkel vaak maatwerk opleverde duurde een integratie gemiddeld zes tot acht maanden. Dit heeft een hoop klanten opgeleverd maar bleef erg onderhoudsintensief en hinderde de groei van Shop2market.
 
@@ -16,14 +18,18 @@ Vervolgens biedt Adcurve de mogelijkheid om de winstgevendheid van de advertenti
 
 \section{Aanleiding} % de aanleiding tot de opdracht
 
-Het afgelopen jaar zijn de meeste basis functionaliteiten ontwikkeld zoals registratie, een App Store voor publishers, datavisualisaties en advertentie beheer. Momenteel is het ontwikkelteam gefocused om meer publishers te integereren. Dit is strategisch om meer landen en industriën te kunnen ondersteunen en zo meer klanten te krijgen. Zodra een gebruiker een publisher installeerd vindt er een volledige integratie plaats. Voor de webwinkel word de afkomstigheid van bezoekers en bestellingen gemeten. In combinatie met de advertentiekosten van publishers worden de nodige statistieken berekend.
+Het afgelopen jaar zijn de meeste basis functionaliteiten ontwikkeld zoals registratie, een App Store voor publishers, datavisualisaties en advertentie beheer. Momenteel is het ontwikkelteam gefocused om meer publishers te integereren.
+Dit is strategisch om meer landen en industriën te kunnen ondersteunen en zo meer klanten te krijgen. Zodra een gebruiker een publisher installeerd vindt er een volledige integratie plaats.
+Voor de webwinkel word de afkomstigheid van bezoekers en bestellingen gemeten. In combinatie met de advertentiekosten van publishers worden de nodige statistieken berekend.
 
 % FIXME: Omdat de belangrijkste functionaliteiten zijn gebaseerd op statistieken is het belangrijk dat berekeningen op tijd klaar zijn.
-Sinds het aantal data integraties met publishers is gegroeid, ervaart het team problemen met het databeheer hiervan. Er is hierdoor een een toenemende wens ontstaan om de huidige oplossing te herzien. Dit moet de gewenste groei van Adcurve onderstuenen en ruimte bieden om functionaliteiten betrouwbaarder en te maken.
+
+Sinds het aantal integraties met publishers is gegroeid is het databeheer hiervan lastiger geworden. Er is hierdoor een een toenemende wens ontstaan om de huidige oplossing te herzien. Dit moet de gewenste groei van Adcurve onderstuenen en ruimte bieden om functionaliteiten betrouwbaarder en te maken.
 
 \section{Context van het bedrijf} % beschrijving van de organisatie van de opdrachtgever en de plaats van de student daarin
 
-Shop2market is gevestigd in Hilversum en heeft tussen de 15 en 20 werknemers. De organisatie structuur kan naar de theorie van \autocite{mintzberg} worden omschreven als een Adhocracy: “Door de innovatieve aard van projecten is een organisatie gebaat bij flexibiliteit. Een formele hiërarchische structuur werkt daardoor minder goed.” Dit is herkenbaar en valt terug te leiden naar de professionele houding die van werknemers word verwacht. Er word autonomie gegeven om zelf structuur aan te brengen wanneer dit nodig is.
+Shop2market is gevestigd in Hilversum en heeft tussen de 15 en 20 werknemers. De organisatie structuur kan naar de theorie van
+\autocite{mintzberg} worden omschreven als een Adhocracy: “Door de innovatieve aard van projecten is een organisatie gebaat bij flexibiliteit. Een formele hiërarchische structuur werkt daardoor minder goed.” Dit is herkenbaar en valt terug te leiden naar de professionele houding die van werknemers word verwacht. Er word autonomie gegeven om zelf structuur aan te brengen wanneer dit nodig is.
 
 
 \begin{figure}[h]
@@ -34,10 +40,12 @@ Shop2market is gevestigd in Hilversum en heeft tussen de 15 en 20 werknemers. De
 
 \section{De kwestie} % een kwestie (aanleiding, het op te lossen probleem, de te vervullen behoefte of de te benutten kans);
 
-Statistieken worden op dit moment dagelijks berekend voor de afgelopen dag. Dit wordt gestart wanneer alle databronnen aanwezig zijn, rond 10:00 CET en duurt tot ongeveer 16:00 CET. Met als resultaat dat niet alle functionaliteiten actueeel zijn tijdens kantooruren. Dit proces kan verder vertraagd raken wanneer berekeningen voor een eerdere dag opnieuw gestart zijn om een correctie uit te voeren. Het herberekenen is onderdeel van het eerder genoemde databeheer, waarbij op dit moment ook berekeningen worden gedaan voor veel databronnen die ongewijzigd blijven.
+Statistieken worden op dit moment dagelijks berekend voor de afgelopen dag. Dit wordt gestart rond 10:00 CET en duurt tot ongeveer 16:00 CET. Met als resultaat dat niet alle functionaliteiten actueeel zijn tijdens kantooruren.
+Dit proces kan verder vertraagd raken wanneer berekeningen voor een eerdere dag opnieuw gestart zijn om een correctie uit te voeren. Het herberekenen is onderdeel van het eerder genoemde databeheer, waarbij op dit moment ook berekeningen worden gedaan voor veel databronnen die ongewijzigd blijven.
 
 De grootste uitdaging is om altijd het meest actuele beeld te tonen over de prestaties van advertenties. Dit kan door voor kantoor uren de statistieken te berekenen. Maar niet iedere publishers stelt de kosten beschikbaar voor het importeren op het zelfde tijdstip. Webwinkel ontvangen gedurende de hele dag bestellingen of zelfs retournering van een bestelling. En de snelheid en flexibiliteit waarmee statestieken berekend kunnen worden is vaak beperkt door de gebruikte technieken of de strategische inzet van techniek. Om een actueel beel te tonene moeten berekingen opnieuw worden gestart. Maar momenteel duurt dit process gemiddeld zes uur. Het is een uitdaging om dit op slimme wijze te ontwerpen zodat dit met enige snelheid gebeurt. Dit vereist wellicht een ander algoritme bij het berekenen. Toch is het belangrijk om dezelfde resultaten uit de statistieken te berekenen.
-3.	Daarnaast is het voor de organisatie belangrijk dat een investering in een mogelijk “big data oplossing” weinig risico met zich mee brengt. Het is een uitdaging om componenten in de infrastructuur te installeren die weinig afhankelijkheden ten opzichten van elkaar hebben.
+
+Daarnaast is het voor de organisatie belangrijk dat een investering in een mogelijk “big data oplossing” weinig risico met zich mee brengt. Het is een uitdaging om componenten in de infrastructuur te installeren die weinig afhankelijkheden ten opzichten van elkaar hebben.
 
 
 % De tijd die het duurt om statistieken te berekenen is linear gestegen met de groei in webwinkels en de hoeveelheid geinstalleerde publishers. Het is daarom de wens om de oplossing te herzien.
@@ -69,7 +77,7 @@ De opdracht is om een individueel software component te ontwikkelen. Er is daaro
     \item Een proof of concept
     \item Een statistiek platform waarop data analyses en aggregaties uitgevoerd kunnen worden.
     \item De scriptie
-\ned{enumerate}
+\end{enumerate}
 
 % TODO: Het type opdracht kan worden omschreven als een product en ontwerp opdracht.
 

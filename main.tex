@@ -1,55 +1,79 @@
-\documentclass{report} % maybe use book instead for some reasons
-\usepackage[utf8]{inputenc}
+\documentclass[dutch,english,whitelogo]{tudelft-report}
+\usepackage{changes}
 \usepackage{csquotes}
-\usepackage{helvet}
-\usepackage[USenglish,dutch]{babel}
-\usepackage{import}
-\usepackage{verbatim}
+\usepackage{babel}
 \usepackage{graphicx}
-\graphicspath{ {Images/} }
-
+\graphicspath{ {images/} }
 % the syle=apa is only in ShareLatex use 'draft' for WIP
-\usepackage[backend=biber,sorting=ynt,style=draft]{biblatex}
+\usepackage[backend=biber,sorting=ynt,style=apa]{biblatex}
 \DeclareLanguageMapping{english}{english-apa}
 \addbibresource{citations.bib}
 
-\title{Afstudeer opdracht HBO-ICT}
-\author{Stefano Oldeman}
-\date{January 2016}
-
 \begin{document}
 
- % == COVER PAGE ==
-\begin{titlepage}
+%% Use Roman numerals for the page numbers of the title pages and table of
+%% contents.
+\frontmatter
 
-\begin{center}
+%% Uncomment following 19 lines for a cover with a picture on the lower half only
+% \title[tudelft-white]{Title}
+% \subtitle[tudelft-cyan]{Optional subtitle}
+% \author[tudelft-white]{J.\ Random Author}
+% \affiliation{Technische Universiteit Delft}
+% \coverimage{cover.jpg}
+% \titleoffsetx{10cm}
+% \titleoffsety{10cm}
+% \afiloffsetx{1cm}
+% \afiloffsety{18cm}
+% \covertext[tudelft-white]{
+%    \textbf{Cover Text} \\
+%    possibly \\
+%    spanning 
+%    multiple 
+%    lines
+%    \vfill
+%    ISBN 000-00-0000-000-0
+% }
+% \makecover
+
+%% Uncomment following 16 lines for a cover with a picture on the lower half only
+\title[tudelft-white]{Plan van aanpak}
+\subtitle[tudelft-black]{Ontwikkel een Statistiek platform voor Shop2market}
+\author[tudelft-white]{S.\ Oldeman}
+\affiliation{HBO-ICT aan Hogeschool Utrecht}
+\coverimage{tank.jpg}
+\covertext[tudelft-white]{
+    \textbf{Hoe kunnen statistieken} \\
+     voor Adcurve \\
+     actueel blijven en op tijd berekend zijn \\
     
-    Plan van Aanpak, Jan 2016
-    HBO ICT aan de Hogeschool Utrecht
-    
-\end{center}
-\end{titlepage}
+    % \vfill
+    % ISBN 000-00-0000-000-0
+}
+\setpagecolor{tudelft-cyan}
+% \makecover[split]
 
 
-\maketitle
-% een titelblad met de titel van de afstudeeropdracht, naam van de afstudeerder en het studentnummer, de naam en het studentnummer van de medestudent, naam van het bedrijf;
+%% Include an optional title page.
+\input{title}
 
+\input{preface}
 
-\tableofcontents{}
+\tableofcontents
 
-\input{Chapters/1Opdracht}
+%% Use Arabic numerals for the page numbers of the chapters.
+\mainmatter
 
-\input{Chapters/2Onderzoeksplan}
+\input{chapters/1Opdracht}
 
-\input{Chapters/3Planning}
+\input{chapters/2Onderzoeksplan}
 
+\input{chapters/3Planning}
 
+%% Use letters for the chapter numbers of the appendices.
 \appendix
- 
-\chapter{Bedrijfsgegevens} % de bedrijfs-/persoonsgegevens (d.w.z. naam, e-mailadres, telefoonnummer van alle betrokkenen);
 
-
-% \chapter{Bibliography}
+%\input{appendix-a}
 
 \printbibliography
 

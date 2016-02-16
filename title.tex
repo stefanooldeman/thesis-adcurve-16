@@ -1,0 +1,68 @@
+\begin{titlepage}
+
+
+\begin{center}
+
+
+%% Print the title in cyan.
+{\makeatletter
+\largetitlestyle\fontsize{64}{94}\selectfont\@title
+\makeatother}
+
+%% Print the optional subtitle in black.
+{\makeatletter
+\ifx\@subtitle\undefined\else
+    \bigskip
+   {\tudsffamily\fontsize{22}{32}\selectfont\@subtitle}    
+\fi
+\makeatother}
+
+\bigskip
+\bigskip
+
+door
+
+\bigskip
+\bigskip
+
+%% Print the name of the author.
+{\makeatletter
+%\largetitlefont\Large\bfseries\@author
+\largetitlestyle\fontsize{26}{26}\selectfont\@author
+\makeatother}
+
+\bigskip
+\bigskip
+
+ter verkrijging van de graad van Bachalor HBO-ICT
+
+aan de Hoge school Utrecht,
+
+in het openbaar de verdedigen op (ergens in) Mei, 2016 om 10:00 uur.
+
+\vfill
+
+\begin{tabular}{lll}
+    Student nummer: & 1571564 \\
+    Project duur: & \multicolumn{2}{l}{18 maart 2016 -- 31 mei 2016} \\
+    Afstudeer examinatoren:
+        & Dhr.\ M.\ Dumont, & HU, docentbegeleider \\
+        & Dhr.\ J.\ W.\ Pauw, & HU \\
+        & Dhr.\ M.\ Jorissen, & Shop2market
+\end{tabular}
+%% Only include the following lines if confidentiality is applicable.
+
+
+%\centering{\includegraphics{cover/logo_black}}
+
+
+\end{center}
+
+\begin{tikzpicture}[remember picture, overlay]
+    \node at (current page.south)[anchor=south,inner sep=0pt]{
+        \includegraphics{cover/logo_black}
+    };
+\end{tikzpicture}
+
+\end{titlepage}
+
