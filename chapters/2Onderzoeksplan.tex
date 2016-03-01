@@ -1,56 +1,37 @@
 \chapter{Onderzoeksplan}
 % de onderzoeksvragen, hoofdvraag met daaruit voortvloeiende deelvragen die moeten worden beantwoord
 
-Variant 1:
-Welke aanpak kan er voor zorgen dat statistieken op tijd beschikbaar zijn en veranderingen in databronnen in korte tijd opnieuw geëvalueerd kunnen worden, zodat gegevens in Adcurve overeenkomen met de werkelijkheid.
+In de kwestie zijn de problemen, beter uitdagingen te noemen omschreven. Omdat een oplossing niet voor de hand ligt wordt er een onderzoek opgesteld. De volgende hoofdvraag is leidend in het onderzoeksplan:
 
-Variant 2:
-Welke oplossing moet er worden ontwikkeld zodat statistieken op tijd beschikbaar zijn en veranderingen in databronnen in korte tijd opnieuw geëvalueerd kunnen worden, zodat de stabiliteit en groei van Adcurve kan worden ondersteund?
+\section{Onderzoeksvragen}
+Gedurende de uitvoering van de opdracht wordt de volgende hoofdvraag beantwoord: 
+\textit{"Hoe verzorgt een nieuwe implementatie voor het up-to-date houden van statistieken in Adcurve zodat gegevens altijd te verklaren zijn?"}
 
-Door middel van deelvragen word de garantie gegeven dat de hoofdvraag wordt beantwoord. Dit moet voldoende input geven om de ontwikkelfase van het project uit te voeren.
-
+\noindent Om de hoofdvraag te beantwoorden zijn de volgende deelvragen geformuleerd:
+\begin{enumerate}[topsep=0pt]
+\item Wat zijn de functionele en niet functionele eisen, waaraan de oplossing moet voldoen?
+\item Welke scenario's komen met regelmaat voor waardoor gegevens niet te verklaren zijn?
 \begin{enumerate}
-\item Ter verkenning van de eisen
-    \begin{enumerate}
-    \item Welke databronnen worden er gebruikt in het berekenen statistieken?
-
-    \item Met welke frequentie zijn er veranderingen in de verschillende databronnen beschikbaar en voor welke databronnen moeten statistieken opnieuw worden geëvalueerd?
-
-    \item Met welke groei van datasets moet worden rekening gehouden i.v.m. schaalbaarheid, om geplande groei van Adcurve te kunnen ondersteunen?
-
-    \item Wat zijn de verwachtingen als het gaat om het “op tijd” of “in korte tijd” evalueren van databronnen en beschikbaar maken van statistieken?
-
-    \item Van welke mogelijke risico’s en scenario’s m.b.t. de databronnen en infrastructuur moet er rekening gehouden worden om de stabiliteit van Adcurve te kunnen ondersteunen?
-
-    \item Wat zijn de technische specificaties die worden gesteld aan een nieuwe te ontwikkelen statistieken platform?
-    \end{enumerate}
-
-\item Ter selectie van mogelijke oplossing
-    \begin{enumerate}
-
-    \item Welke externe projecten of technologieën komen in hun eigenschappen overeen met de gemaakte analyses?
-
-    \item Hoe kunnen de beschikbare technologieën het beste worden ingezet om statistieken sneller en regelmatig te kunnen berekenen zodat functionaliteiten actueel blijven?
-
-    \item Welke technologieën kunnen worden toegepast bij het ontwikkelde software ontwerp?
-
-    \item Welke onbekende factoren moeten worden beantwoord met een of meerdere Proof of Concept(s) zodat een oplossing kan worden ontwikkeld?
-    \end{enumerate}
+    \item Wat zijn de mogelijke strategieën en technieken om dit op te lossen?
 \end{enumerate}
 
+\item Wat zijn toonaangevende methodes en technologieën om statistieken te berekenen, en passen bij de wensen en eisen van de opdracht?
+\begin{enumerate}
+    \item Hoe kan de opdracht worden opgelost?
+\end{enumerate}
+
+\item Wat zijn de gepresenteerde oplossingen en waarom zijn deze volledig of niet?
+\end{enumerate}
 
 \section{Literatuur} %  (optioneel) een beschrijving van de belangrijkste literatuur die onderzocht zal worden
 
-Data aggregaties, data transformaties en het selecteren en installeren van big data tools. Dit zijn slechts voorbeelden van concepten, kernbegrippen en mogelijke jargon die zullen voorkomen in het onderzoek of scriptie. Deze begrippen worden onderlegd door o.a. de volgende bronnen:
+Data aggregaties, data transformaties en het selecteren en installeren van big data tools. Dit zijn slechts voorbeelden van concepten, kernbegrippen en mogelijke jargon die zullen voorkomen in het onderzoek of scriptie. Deze concepten worden onderlegd door o.a. de volgende literatuur:
 
 \begin{itemize}
     \item Data Mining, Concepts and Techniques \parencite{data-mining}
-    \item UNIX for the impatient \parencite{unix}
     \item I <3 Logs, Event data, stream processing, and data integration \parencite{logs}
-    \item Learning Storm \parencite{learning-storm}
     \item Fast Data Processing with Spark \parencite{spark}
     \item Real-Time Big Data Analytics \parencite{realtime-architectures}
-    \item Hadoop The definitive guide, 4d edition \parencite{hadoop-definitive}
 \end{itemize}
 
 Tijdens de selectie word gebruik gemaakt van verschillende fases uit “de Berenschot-methode” \parencite{cuppen}.
@@ -58,22 +39,43 @@ Daarnaast zal tijdens het voeren van gesprekken, interviews en presentaties binn
 
 \section{Resultaten} % de op te leveren producten met kwaliteitscriteria;
 
-%\section{Deel producten}
-
+De op te leveren resultaten worden omschreven met de bijbehorende kwaliteitscriteria. 
 \begin{enumerate}
-    \item Onderzoek met daarin
-    \item Requirements analyse
-    \item Long list en short list voor selectie van technologieën
-    \item Een ontwerp voorstel o.b.v. beschikbare technologieën
-    \item Een proof of concept
-    \item Een statistiek platform waarop data analyses en aggregaties uitgevoerd kunnen worden.
-    \item De scriptie
+
+    \item MosCow lijst van requirements
+    \item Proof Of Concept om een oplossing te bewijzen
+    \item De thesis
 \end{enumerate}
 
-% TODO: Het type opdracht kan worden omschreven als een product en ontwerp opdracht.
 
 \section{Onderzoek methode} % de te gebruiken methoden/technieken/middelen (ook van het onderzoek) en, indien van toepassing, de
 
 % \section{Deelvragen} deelvragen voorkomend uit de gekozen ontwerpmethode (optioneel);
 
 
+\begin{center}
+% \begin{table}[]
+% % \centering
+% \caption{My caption}
+% \label{my-label}
+\begin{tabular}{|l|p{4cm}|p{2.5cm} |p{2.5cm}|p{4cm}|}
+\hline
+% \rowcolor{lightgray} 
+\textbf{\#} & \textbf{Deelvraag} & \textbf{Type vraag} & \textbf{Methode en technieken} & \textbf{Ten doel van} \\
+\hline
+1 & Wat zijn de functionele en niet functionele eisen, waaraan de oplossing moet voldoen? & Omschrijvend & Interviews & MosCow lijst samenstellen met requirements \\
+\hline
+2 & Welke scenario's komen met regelmaat voor waardoor gegevens niet te verklaren zijn? & Interviews,\newline Deskresearch
+ &  & \\
+\hline
+2a & Wat zijn de mogelijke strategieën en technieken om dit op te lossen? & Vergelijking,\newline Ontwerpen & & \\
+\hline
+3 & Wat zijn toonaangevende methodes en technologieën om statistieken te berekenen, en passen bij de wensen en eisen van de opdracht? & Deskresearch & & \\
+\hline
+3a & Hoe kan de opdracht worden opgelost? & Deskresearch,\newline Ontwerpen & & \\
+\hline
+4 & Wat zijn de gepresenteerde oplossingen en waarom zijn deze volledig of niet? & Omschrijven & & \\
+\hline
+\end{tabular}
+% \end{table}
+\end{center}

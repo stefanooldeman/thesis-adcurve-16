@@ -9,8 +9,19 @@
 \DeclareLanguageMapping{english}{english-apa}
 \addbibresource{citations.bib}
 
-\begin{document}
+\usepackage{lineno}
 
+\usepackage{enumitem}
+\setlist[enumerate]{itemsep=5pt,parsep=5pt}
+\setlist[enumerate,2]{topsep=1pt,parsep=2.5pt}
+
+% \usepackage[table,xcdraw]{xcolor}
+\usepackage[table]{xcolor}
+
+% \newcolumntype{s}{>{\columncolor[HTML]{AAACED}} p{3cm}}
+
+\begin{document}
+% 
 %% Use Roman numerals for the page numbers of the title pages and table of
 %% contents.
 \frontmatter
@@ -63,6 +74,8 @@
 
 %% Use Arabic numerals for the page numbers of the chapters.
 \mainmatter
+
+% \linenumbers
 
 \input{chapters/1Opdracht}
 
