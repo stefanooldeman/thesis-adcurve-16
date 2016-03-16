@@ -9,16 +9,15 @@
 \DeclareLanguageMapping{english}{english-apa}
 \addbibresource{citations.bib}
 
-\usepackage{lineno}
+% \usepackage{lineno}
 
 \usepackage{enumitem}
-\setlist[enumerate]{itemsep=5pt,parsep=5pt}
+\setlist[enumerate]{itemsep=3pt,parsep=3pt}
 \setlist[enumerate,2]{topsep=1pt,parsep=2.5pt}
 
-% \usepackage[table,xcdraw]{xcolor}
-\usepackage[table]{xcolor}
+\setlist[itemize]{itemsep=2pt, parsep=2pt}
 
-% \newcolumntype{s}{>{\columncolor[HTML]{AAACED}} p{3cm}}
+\setlength\parindent{0pt}
 
 \begin{document}
 % 
@@ -72,10 +71,11 @@
 
 \tableofcontents
 
+
 %% Use Arabic numerals for the page numbers of the chapters.
 \mainmatter
 
-% \linenumbers
+\linenumbers
 
 \input{chapters/1Opdracht}
 

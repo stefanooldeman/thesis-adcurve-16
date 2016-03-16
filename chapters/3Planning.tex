@@ -1,65 +1,152 @@
 \chapter{Planning} % de projectactiviteiten met een beschrijving van de onderlinge samenhang, de mijlpalen en een fasering in de tijd met een schatting van de te besteden uren voor de verschillende uit te voeren activiteiten;
-WORK IN PROGRESS.. NOT USEFULL TO READ AT. THE. MOMENT..
+
+In de planning wordt omschreven hoe de besluitvorming zal verlopen in plaats van een gedetailleerde planning. Dit omdat er met Agile methodieken wordt gewerkt. Daarnaast wordt de opdracht verder afgebakend zodat de student en opdrachtgever alle verwachtingen heldere hebben. 
 
 \section{De opdracht} % de afstudeeropdracht met mogelijke deelopdrachten, met vermelding van de projectgrenzen en randvoorwaarden en, indien het afstudeerproject onderdeel uitmaakt van een groter project, de afbakening t.o.v. het grotere project;
 
-\noindent De volgende eisen zijn bekend en dienen tevens als validatie van het onderzoek. De deelvragen zijn dan ook met deze kennis geschreven.
+Shop2market heeft altijd voor een uitdaging gestaan als het aan komt op het verwerken van data. Er zijn veel technologieën beschikbaar, maar niets is perfect. De grootte variatie aan use-cases maakt het kiezen van een oplossing geen voor de hand liggende keuze.
+Daarom is de opdracht gegeven om een Proof of Concept te ontwikkelen om de risico 's van een investering te minimaliseren.
+
+
+\section{Activiteiten}
+
+De project activiteiten zijn omschreven om de onderlinge samenhang en fasering te visualiseren. Deze fasering is ongeveer gelijk aan de deelvragen uit het onderzoeksplan. Per activiteit is een inschatting gegeven in uren, totaal komt dit uit op 240 werkuren. Deze planning gevisualiseerd in bijlage A.
 
 \begin{enumerate}
-\item De totale tijd die het kost om voor alle webwinkels statistieken te berekenen mag niet langer duren dan de huidige oplossing
-
-\item De flexibiliteit die word gevraagd kan worden bereikt door berekeningen niet voor een grootte batch aan te roepen. In plaats daarvan moet het mogelijk zijn om voor een specifieke shop en publisher de berekening te starten (ofte wijl: parametisering).
+    \item Afleggen interviews rondom Requirements \& Constraints, documenteren use-cases  (\textit{4 uur})
+    \item Onderzoeken van toonaangevende, passende technologieën (\textit{24 uur})
+    \item Impact analyse uitvoeren rondom use-cases (\textit{4 uur})
+    \begin{enumerate}
+        \item Onderzoek technische factoren die voor problemen zorgen (\textit{12 uur})
+        \item Oplossing ontwerpen voor use-cases en Proof of concepts (\textit{16 uur})
+    \end{enumerate}
+    \item Bespreken van ontwerpen en evt. aanpassen van ontwerpen (\textit{2 uur})
+    \begin{enumerate}
+        \item Vastleggen kwaliteitscriteria Proof of concepts (\textit{2 uur})
+    \end{enumerate}
+    \item Uitvoeren van Proof of concepts
+    \begin{enumerate}
+        \item Eerste iteratie (\textit{64 uur})
+        \item Tweede iteratie (\textit{56 uur})
+        \item Derde iteratie (\textit{56 uur})
+    \end{enumerate}
 \end{enumerate}
 
-\section{Risico's}
+De ingeschatte uren zijn uitsluitend de benodigde activiteiten voor het schrijven van de scriptie. Hiervoor wordt een inschatting gedaan van 200 uur. Dit geeft 40 uur voor het bijwerken van de scriptie bij ieder van de vijf fasen. Het totaal aantal ingeschatte uren benodigd voor het project komt hierdoor uit op 440 uur.
 
-% \begin{itemize}
-%     \item De uitkomst van de 
-% \end{itemize}
+\clearpage
+
+\section{Resultaten}
+
+De volgende producten dienen in ieder geval te worden opgeleverd, deze worden omschreven met de kwaliteitscriteria die bekend zijn op dit moment. In de ontwerpfase van het project worden er kwaliteitscriteria gedocumenteerd per Proof of concept.
+
+\begin{enumerate}
+\item Impact Analyses van huidige probleem scenario\'s \\
+      \textit{Criteria: Tabel en/of visualisatie van scenario's, \\de waarschijnlijkheid en de technische en organisitorische impact hiervan }
+\item Lijst van (non-)functional requirements \\
+      \textit{Criteria: Geprioritiseerd volgens MoSCoW methode}
+\item Plan en Ontwerp per Proof of concept waarin met kwaliteitscriteria \\
+      \textit{Criteria: Het ontwerp is besproken en goedgekeurd door de interne stakeholders}
+\item Programmatuur van Proof Of Concept's \\
+        \textit{Criteria: indien geslaagd, voldoet aan criteria van het ontwerp. De programmatuur is altijd vastgelegd in versiebeheer}
+\item Test resultaten en bevindingen uit Proof Of Concept's \\
+        \textit{Criteria: de vragen in het plan per Proof of concept zijn beantwoord}
+\item De thesis met onderzoeksresultaten \\
+    \textit{Criteria: voldoet aan de eisen gesteld in de afstudeerleidraad, \\
+    relavant aan de afstudeerperiode aan de Hogeschool Utrecht: HBO-ICT}
+\end{enumerate}
+
+    \subsection{Oplevering}
+    
+    Voor de organisatie is de uitvoer van Proof of concepts en het resultaat hiervan het eindproduct. Hiervoor zijn meerdere opleveringen gepland gedurende het project. Intern zijn deze ingedeeld in Agile iteraties van twee weken. Deze eindigen op 18 maart 2016 en 01 april 2016. \\
+    
+    Voor de opleiding is het belangrijkste eindproduct de thesis, met de nadruk op het onderzoek. Deze wordt ingeleverd bij de Hogeschool Utrecht voor 31 mei 2016. Daarnaast worden er minimaal twee concept versies gecommuniceerd, gepland op 15 april 2016 en 10 mei 2016.
+    
+    Concreet worden hierbij de volgende beroepsproducten aan het eind van het project opgeleverd:
+    
+    \begin{itemize}
+    \item De thesis met alle onderzoeksresultaten.
+    \item Resultaten van Proof of concepts, aldus de programmatuur.
+    \item De bevindingen, te lezen in "Test resultaten en bevindingen uit Proof Of Concept's", zijn bij de thesis inbegrepen.
+    \end{itemize}
+    
+\newpage
 
 \section{Scope}
 
-Het globale idee is om maximaal drie POC's te ontwikkelen. De best passende oplossing wordt vervolgens vertaalt naar een finale oplossing.
-De finale oplossing kan de berekening (map reduce aggregatie) op het laagste niveau vervangen in productie. 
-Het daadwerkelijke vervangen valt buiten scope van dit project. 
-Doordat het 
-De uiteindelijke oplossing moet een berekeningn herproduceren, namelijk een dagelijkse aggregatie van op advertentie niveau. Er zijn al ideën over mogelijk te gebruiken technologieën zoals
+De statistieken worden momenteel berekend op een aantal dimensies: per jaar, per maand, per week en per dag. De aggregaties worden in een aantal stappen uitgevoerd, in de volgende volgorde:
+\begin{itemize}
+\item per geadverteerd product bij een publisher.
+\item totalen per publisher
+\item totalen voor de gehele webwinkel
+\end{itemize}
+Het berekenen van statistieken op het laagste niveau geeft de grootste uitdaging. Dit omdat de omvang van deze data bron zijn veel groter is dan de invoer voor latere aggregatie.
+
+Ieder Proof of Concept beperkt zich daarom tot het berekenen van een aantal metrieken op het laagste aggregatie niveau voor webwinkels: geadverteerde producten.
 
 
-\section{De projectorganisatie} % de projectorganisatie;
+\section{Randvoorwaarden}
 
-    \subsection{Organisatie structuur}
+Voor dit project zijn er geen afhankelijkheden van derden partijen of andere projecten binnen in de organisatie. Daarom is de student slechts afhankelijk van de samenwerking van de organisatie. Omdat alle betrokkenen al langere tijd samenwerken, kunnen de volgende voorwaarden als vanzelfsprekend gezien worden:
 
-    De software ontwikkeling valt onder leiding van M. Jorissen. In nauwe samenwerking met M. Gill zijn zij verantwoordelijk voor de project analyse en planning. Het development team bestaat uit zes ontwikkelaars waaronder één ontwerper D. Wilpshaar.
-    De architectuur wordt geleid door S. Pogrebnyak. Dit team is verantwoordelijk voor het uitwerken en oplossen van projecten. Hierbij word gebruik gemaakt van een aantal methodieken en gewoontes vanuit Agile-softwareontwikkeling, waaronder: Kanban, Daily standup, Retrospectives, Extreme Programming (XP), Test Driven Development (TDD) en Continuous integration (CI).
+\begin{itemize}
+    \item De organisatie houd rekening met het project en de student in de reguliere planning van sprints. De planning van dit project is hiervoor het uitgangspunt.
+    \item De stakeholders stellen tijd beschikbaar voor het afleggen van interviews en goedkeuring van documentatie.
+    \item De student heeft toegang tot benodigde servers, data en eventuele lab omgeving.
+\end{itemize}
 
-    \subsection{Werkwijze en methodieken}
-
-    Ondanks dat er in de werkwijze vaak een uitgebreide planning of requirements analyse ontbreekt, word de productiviteit en software kwaliteit toch bewaakt door de principes uit XP zoals TDD. Refactoring speelt hier een grootte rol in.\parencite{refactoring-ruby}
-    \footnote{“Code refactoring is het proces waarbij de structuur van bestaande code word gewijzigd zonder de functionaliteit te wijzigen”…“dit komt ten goede aan de onderhoudbaarheid van code, en creëert nieuwe architectuur of object modellen om code makkelijker te kunnen uitbreiden met nieuwe functionaliteiten“}.
-    Hierdoor kan het team zich veroorloven om bij het ontwerpen en ontwikkelen van projecten minder vooruit te plannen. Software word hierdoor gevormd door de requirements voor die in huidige situatie aanwezig zijn. In tegenstelling tot het ontwikkelen met abstracties zodat software flexibel genoeg is voor latere aanpassingen en requirements. Veel planning is hierdoor niet aanwezig en technische implementatie komt vooral tot stand door TDD, brainstorm sessies. Dit is mede mogelijk doordat de omgeving de mogelijkheid bied om fouten te maken.
-
-    \subsection{Project verantwoordlijkheden}
-
-    Het plannen en ontwikkelen van het software project omschreven in dit documet valt onder de volledige verantwoordelijkheid van de student. De doelstellingen en requirements worden in overleg met M. Jorissen vastgelegd. In verband met overdracht en kennis deling zal er afstemming plaats vinden met S. Pogrebnyak technische aspecten. Bijvoorbeeld over de aansluiting op huidige visie en de productie omgeving en mogelijke aanpassingen of toevoegingen aan de infrastructuur.
-    De student ziet het als zijn verantwoordelijkheid is om op innovatieve wijze software te ontwikkelen.
-
-
-\section{Activiteiten} % de projectactiviteiten met een beschrijving van de onderlinge samenhang, de mijlpalen en een fasering in de
-tijd met een schatting van de te besteden uren voor de verschillende uit te voeren activiteiten;
+\newpage
 
 \section{Risico's} % de eventuele risico’s met maatregelen;
 
-\section{Oplevering}
-% twee data voor het inleveren van concepten van de scriptie (circa 6 resp. 3 weken voor de inleverdatum van
+Gedurende het project zijn er een aantal momenten waarop de risico’s worden geavaleerd. De mogelijkheid bestaad om dit dagelijks te doen tijden de standup. Zo kan er bijvoorbeeld tijdens de uitvoer van een Proof of concept worden gezien of de ingeslagen weg vitaal is.
+Hieronder worden een aantal mogelijke scenario's uitgeschreven en de mogelijke besluitvorming.
 
-de definitieve versie van de scriptie);
+\begin{table}[h!]
+\centering
+\caption{Risico scenario's met mogelijke besluitvorming om de impact te minimaliseren}
+\label{my-label}
+\def\arraystretch{1.5}
+\begin{tabular}{|p{5cm}|l|p{8cm}|}
+\hline
+Scenario & Impact & Mogelijke onderneming \\ \hline
+    Tijdens een geplande iteratie van het  Proof Of concept wordt duidelijk dat er een nieuw ontwerp moet worden geprobeerd
+    & Planning 
+    & Het huidige plan wordt verworpen. Er moet een nieuw ontwerp worden gemaakt. In de huidige iteratie worden nieuwe taken omschreven, ingeschat en uitgevoerd in ruil voor het vorige plan. \\
+\hline
+    Een van de belangrijkste use-cases in het Proof of concept zijn naar tevredenheid opgelost, met uitzondering van enkele use-cases. Daarnaast is geconcludeerd dat niet alle use-cases door een techniek kan worden opgelost.
+    & Kwaliteit
+    & Indien er voldoende tijd over is zal er een mogelijk een iteratie worden gewijzigd of gepland. Hierin moet een oplossing worden ontworpen en ontwikkeld om de resterende use cases op te lossen.  Indien hier geen tijd voor is, is dit scenario een waardevolle uitkomst voor de opdrachtgever. \\
+\hline
+    De schaalbaarheid van technologieën moet mogelijk worden bewezen, dit kan veel tijd in beslag nemen door het verplaatsen van data. Het uitvoeren van deze test moet geautomatiseerd kunnen.
+    & Planning
+    & Voor het geautomatiseerd testen is extra tijd nodig in de maand Mei, deze is momenteel niet gepland omdat het niet zeker is of deze activiteit vereist is. Daarnaast is het alleen van toepassing op geslaagde ontwerpen die in het Proof of concept naar voren zijn gekomen. \\
+\hline
+\end{tabular}
+\end{table}
 
-\section{Kwaliteits eisen}
+\clearpage
 
-WIP
-Het is een uitdaging om componenten in de infrastructuur te installeren die weinig afhankelijkheden ten opzichten van elkaar hebben.
+\section{De projectorganisatie} % de projectorganisatie;
 
-Het voor de organisatie belangrijk dat een investering in een mogelijk “big data oplossing” de juiste is. Het is te voorzien dat er meer functionaliteiten worden ontwikkeld op basis van data analyses en dergelijken. Het is daarom wenselijk dat een oplossing voor toepasbaar is voor verschillende data intensieve projecten. Het is daarom belangrijk Het in gebruik nemen hiervan voor het ontwikkelteam toegankelijk is.
+De software ontwikkeling valt onder leiding van M. Jorissen. In nauwe samenwerking met M. Gill zijn zij verantwoordelijk voor de project analyse en planning. Het development team bestaat uit zes ontwikkelaars waaronder één ontwerper D. Wilpshaar.
+De architectuur wordt geleid door S. Pogrebnyak. Dit team is verantwoordelijk voor het uitwerken en oplossen van projecten. Hierbij word gebruik gemaakt van een aantal methodieken en gewoontes vanuit Agile-softwareontwikkeling, waaronder: Kanban, Daily standup, Retrospectives, Extreme Programming (XP), Test Driven Development (TDD) en Continuous integration (CI).
 
-Als laatste is het van uiterste belang dat de datakwaliteit wordt gewaarborgd. Door middel van data validatie zal worden gemeten of de berekeningen in de nieuwe oplossingen in dezelfde uitkomsten resulteren.
+    \subsection{Werkwijze en methodieken}
+
+    Ondanks dat er in de werkwijze vaak een uitgebreide planning of requirements analyse ontbreekt, word de productiviteit en software kwaliteit toch bewaakt door de principes uit XP zoals TDD. Refactoring\footnote{“Code refactoring is het proces waarbij de structuur van bestaande code word gewijzigd zonder de functionaliteit te wijzigen”…“dit komt ten goede aan de onderhoudbaarheid van code, en creëert nieuwe architectuur of object modellen om code makkelijker te kunnen uitbreiden met nieuwe functionaliteiten“ \parencite{refactoring-ruby}} speelt hier een grootte rol in.
+    Hierdoor kan het team zich veroorloven om bij het ontwerpen en ontwikkelen van projecten minder vooruit te plannen. Software word hierdoor gevormd door de requirements voor die in huidige situatie aanwezig zijn. In tegenstelling tot het ontwikkelen met abstracties zodat software flexibel genoeg is voor latere aanpassingen en requirements. Veel planning is hierdoor niet aanwezig en technische implementatie komt vooral tot stand door TDD, brainstorm sessies. Dit is mede mogelijk doordat de omgeving de mogelijkheid bied om fouten te maken.
+
+    \subsection{Betrokkenen}
+    
+    Betreft de stakeholders van het project zijn de volgende personen betrokken: Matthijs Jorissen (Opdrachtgever) en  S. Pogrebnyak (technische eindverantwoordelijk). Daarnaast is Marco Dumont betrokken in zijn rol als docent-begeleider.
+
+    \subsection{Werkwijze en verantwoordelijkheid student}
+
+    Het plannen en ontwikkelen van het software project valt onder de volledige verantwoordelijkheid van de student. De planning, doelstellingen en requirements worden in overleg met M. Jorissen vastgelegd. In verband met overdracht en kennis deling zal er afstemming plaats vinden met S. Pogrebnyak technische aspecten. Dit gaat door middel van code reviews en documenten-deling.
+
+\clearpage
+
+\section{Ethische afweging} % de projectorganisatie;
+
+Er zijn kansen aanwezig om aspecten van het project ethische te evalueren. Dit moet echter nog verder worden onderzocht en is afhankelijk van de Proof of concepts bijv. door het gebruik van statestieken en gegevens. Een andere mogelijkheid dat het project opzichzelf kan worden overwogen vanuit een ethisch perspectief. Bijv. door te kijken of er ethisch is gehandeld tijdens het uitvoeren van het uitvoer van het project. Dit zal worden uitgevoerd als er genoeg vraagstukken zijn, ook wel een een etisch dillema genoemd.
