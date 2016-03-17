@@ -1,24 +1,23 @@
-\documentclass[dutch,english,whitelogo]{tudelft-report}
+\documentclass[whitelogo]{tudelft-report}
 \usepackage{changes}
 \usepackage{csquotes}
-\usepackage{babel}
+\usepackage[dutch]{babel}
 \usepackage{graphicx}
 \graphicspath{ {images/} }
 % the syle=apa is only in ShareLatex use 'draft' for WIP
 \usepackage[backend=biber,sorting=ynt,style=apa]{biblatex}
-\DeclareLanguageMapping{english}{english-apa}
+\DeclareLanguageMapping{dutch}{dutch-apa}
 \addbibresource{citations.bib}
 
-% \usepackage{lineno}
+\usepackage{pdfpages}
 
 \usepackage{enumitem}
 \setlist[enumerate]{itemsep=3pt,parsep=3pt}
 \setlist[enumerate,2]{topsep=1pt,parsep=2.5pt}
-
 \setlist[itemize]{itemsep=2pt, parsep=2pt}
-
 \setlength\parindent{0pt}
 
+\usepackage{lineno}
 \begin{document}
 % 
 %% Use Roman numerals for the page numbers of the title pages and table of
@@ -67,7 +66,7 @@
 %% Include an optional title page.
 \input{title}
 
-\input{preface}
+% \input{preface}
 
 \tableofcontents
 
@@ -75,7 +74,7 @@
 %% Use Arabic numerals for the page numbers of the chapters.
 \mainmatter
 
-\linenumbers
+% \linenumbers
 
 \input{chapters/1Opdracht}
 
@@ -86,7 +85,7 @@
 %% Use letters for the chapter numbers of the appendices.
 \appendix
 
-%\input{appendix-a}
+\input{appendix/planning}
 
 \printbibliography
 
