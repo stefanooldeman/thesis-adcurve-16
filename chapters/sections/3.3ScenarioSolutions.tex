@@ -1,0 +1,88 @@
+\textit{Welke scenario's komen met regelmaat voor waardoor gegevens niet te verklaren zijn?}
+
+% Hiervoor zijn anekdotes verzameld van stakeholders waarbij zei vertelden over scenario 's die voor verwarring zorgen bij gebruikers.
+
+Uit interview met verschillende stakeholders binnen shop2market zijn een aantal problematische scenario's besproken. Deze hebben geleidt tot de functionele en non functionele eisen in tabel \ref{table:requirements}. Veel van de gegeven verklaringen zijn symptomen van het probleem.
+
+
+\begin{enumerate}
+    \item De kosten van publishers worden geïmporteerd, wanneer het voorkomt dat niet alle kosten worden gematcht op bijbehorende producten; worden niet alle kosten verwerkt. Hierdoor komen de totalen niet overeen met externe dashboards, zoals die van de publisher (Adwords, Admarkt etc). \\
+    
+    \item Bij het bekijken van dashboards in Adcurve zijn de gegevens over de vorige dag pas beschikbaar na 12:30 CET. Omdat alle data in een keer wordt geaggregeerd kan het proces worden gestart nadat alle afhankelijke data bronnen beschikbaar zijn. Door een publisher wordt de data beschikbaar gemaakt na 10 uur s\'ochtends. Daarom start het proces pas om 11 uur. \\
+    
+    \item Door middel van \textit{tracking} worden er orders van de webwinkels gesynchroniseerd. Wanneer hier foutieve bedragen tussen zitten beïnvloed de totale winstgevendheid. Hierdoor kan er veel onduidelijkheid ontstaan. \\
+\end{enumerate}
+
+Daarom wordt in de volgende deelvraag \ref{subsec:deelvraag3a} onderzocht wat de achterliggende oorzaak is per scenario.
+
+\clearpage
+
+% ACTIVITY Onderzoek technische factoren die voor problemen zorgen
+\subsection{Wat zijn de technische factoren?}
+\label{subsec:deelvraag3a}
+
+Om er voor te zorgen dat statistieken in Adcurve te verklaren zijn wordt de volgende vraag gesteld:
+\textit{Wat zijn de gerelateerde technische factoren waardoor de scenario's voor verhindering zorgen in de huidige situatie?} \\
+
+Ieder scenario wordt hier besproken met de technische reden verklaard.
+
+\begin{enumerate}
+    \item In de huidige situatie wordt alle data in een proces verwerkt. Voor alle webwinkels en publishers. 
+    
+    \item Daarnaast wordt er iedere dag een deel van de week, maand en jaar aggregatie berekend. Om gegevens uit vorige maand te corrigeren moeten er op verschillende aggregatie niveau 's \textit{MapReduce jobs} worden uitgevoerd.
+    Dit soort problemen kunnen worden voorkomen door alleen berekeningen uit te voeren op het aller laagste niveau, en de aggregaties aan de client side 
+        
+    \item Omdat alle data in een keer wordt geaggregeerd kan het proces pas worden gestart nadat alle afhankelijke data bronnen beschikbaar zijn. Door een publisher wordt de data beschikbaar gemaakt na 10 uur s\'ochtends
+\end{enumerate}
+
+\subsubsection{\textbf{Conclusie}}
+
+Een deel van het probleem is het actief monitoren van de data kwaliteit en processen starten om het te corrigeren. Hier wordt niet verder op in gegaan omdat een dergelijke oplossing hiervoor buiten scope valt.
+
+Deze problemen spelen op doordat er niet de mogelijkheid is om de data aggregatie opnieuw te genereren binnen voorspelbare tijd. De grootste technische beperking is dat een dag aan data, een dag duurt om te aggregeren.
+
+Eerder zijn de functionele eisen al besproken in hoofdstuk \ref{sec:deelvraag1} te lezen in tabel \ref{table:requirements}. Om te voorkomen dat een nieuwe techniek mogelijk dezelfde probleem situaties introduceert, worden de volgende non functionele eisen toegevoegd.
+\begin{itemize}
+    \item voor probleem scenario 2 moet data in groepen van webwinkels worden uitgevoerd om er voor te zorgen dat: webwinkels uit verschillende tijdzones op tijd klaar zijn. Dit zijn non functionele eisen. 
+    
+    \item Data aggregaties moeten plaatsvinden zodra kosten beschikbaar zijn per publisher
+    
+    \item voor probleem scenario 1 en 4, moet mogelijk zijn om voor een individuele webwinkels de data te aggregeren zodat er correcties kunnen worden gemaakt bij data kwaliteit issues. 
+    \item de snelheid waarmee data wordt verwerkt moet snel genoeg zijn om 30 dagen aan data binnen 1 dag te verwerken.
+    
+    \item De tijd die het kost voor data aggregaties moet voorspelbaar zijn, dit kan worden berijkt  wanneer de oplossing lineair schaalbaar is.
+\end{itemize}
+
+Deze criteria moeten worden toegepast bij het verder selecteren van mogelijke oplossingen. 
+
+
+% ACTIVITY Oplossing ontwerpen voor use-cases en Proof of concept
+
+\subsection{Vergelijkingstabel technieken en strategieën}
+\label{subsec:deelvraag3b}
+
+\textit{Wat zijn de mogelijke strategieën en technieken om dit op te lossen?} \\
+
+Het process moet kan worden aangeroepen met drie  parameters: Shop id, publisher id en datum \\
+
+\textbf{Data preperation}
+De eerste fase uit het algoritme is een ETL stap, om csv en bson te converteren naar een uniform schema.
+De geconverteerde data wordt weg geschreven in bestanden per webwinkel als een methode om eenmalig te filteren i.p.v. meerdere malen tijdens het aggregatie proces. \\
+
+
+\textbf{Stategie 1, Hardware application} 
+Het is praktisch mogelijk om data in sub sets te aggregeren omdat er een afzonderlijke data bron is per publisher. 
+Het gebruiken van gesplitste bestanden per webshop zorgt voor kleine  en korte processen. Dit kan met verschillende technologieën worden geimplementeerd, voornamlijk General purpose languages, DSL, Hardware oplossingen. \\
+
+De totale performance hoeft niet te verbeteren, zolang het proces dat alleen data aggregatie uitvoert voor de specifieke webwinkel en publisher kort van duur is kan dit worden uitgevoerd op verschillende machines tegelijk om dit schaalbaar in te zetten. \\
+    
+\textbf{Strategie 2, Networked application}
+Alle data in een groep aggregeren, (op timezone en op publisher niveau). snel genoeg zodat er iedere dag de afgelopen 30 dagen wordt verwerkt.
+Dit kan met verschillende databases, Hadoop en Spark \\
+
+\textbf{Strategie 3, Hybriede oplossing} Calculus..
+door eenmalig de data aggregatie uit te voeren in een suboptimaal systeem kunnen alle huidige problemen alsnog worden opgelost door delta's te berekenen tussen de huidige state en de gecorrigeerde data. Vervolgens worden alle delta's in bestanden weg geschreven. \\
+
+Er is een origineel bestand voor de data aggregaties. Meerdere mogelijke bestanden met delta's en een proces dat de delta's toepast en een uiteindelijk gecorrigeerde versie van aggregaties genereerd en opslaat. 
+Zo zullen er meerdere versies van een aggregatie in s3 beschikbaar zijn. Onze web api moet de logica toepassen om altijd de laatste versie uit te serveren. 
+(om aan de eisen te voldoen en data beschikbaar te maken voor kantoor uren moet de data worden geagregeerd in verschillende delen, per publishser wanneer de data beschikbaar is. Dit kan een aanpassing zijn in de huidige oplossing, of worden gedaan met een ander systeem)

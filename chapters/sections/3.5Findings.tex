@@ -1,0 +1,36 @@
+Wat zijn de gepresenteerde oplossingen en waarom zijn deze volledig of niet?
+
+\textbf{Go Aggregator}
+Split all orders and visits for all shops (264 shops)
+
+\begin{lstlisting}
+2016/05/11 11:38:45 Begin
+2016/05/11 11:40:09 Main Done
+./start.sh  69.83s user 16.12s system 101% cpu 1:24.70 total
+
+total time: 1 minute 9 seconds
+\end{lstlisting}
+
+\textbf{Spark all shop products, file per shop}
+
+(one file contains all products for all channels)
+
+\begin{lstlisting}
+16/05/11 10:09:58 INFO SparkContext: Running Spark version 1.6.0
+[2016-05-11 10:10:03] Start loading data
+[2016-05-11 10:12:24] Finished writing data
+Total time:     0:02:21.378717
+16/05/11 10:12:24 INFO ShutdownHookManager: Deleting directory /private/var/folders/tp/….
+
+time without job submit: 2 minutes 21 seconds
+\end{lstlisting}
+
+
+\textbf{Conclusie}
+
+[todo]
+
+Het gebruik van big data systemen is zeer schaalbaar, maar introduceerd een hoop overhead. (paper). 
+
+Voordelen van een programmeer taal is dat complexe business logic hierin kan worden geschreven zonder rekening te houden met veel abstracties zoals in parallel programming zoals map reduce of sql.. In zo'n paradigm moet een probleem naar code worden vertaalt met extra kennis naast het programmeren, kennis over het map reduce paradigm, sql join. Daarnaast wordt code vertaalt naar een query plan en het gebruik van indexes etc..
+

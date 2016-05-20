@@ -1,0 +1,41 @@
+High performance Domain Specific Languages zijn veelbelovend.
+
+http://reconfigurablecomputing4themasses.net/files/1.2%20Kunle.pdf
+
+Verilog (VHDL)
+CUDA
+OpenCL
+Threads in (Java C++)
+OpenMP
+
+Zijn embedded programmeer talen die wel maximaal gebruik kunnen maken van hardware capiciteit. Echter is het programmer model niet vriendelijk en niet compatible met ieder platform.
+
+
+
+Het programmeren van hardware is mogelijk met talen zoals CUDA, OpenCL en OpenMP. Deze worden in de rest van deze thesis benoemd als hardware frameworks. Echter zijn dit geen geschikte kandidaten omdat geen geschikt programmeer model bieden. Zo wordt wordt herkend door de Machine learning researchers van (Standfort University) \cite{sujeeth2011optiml} dat deze talen niet productief genoeg zijn om effectief problemen op te lossen en maximaal gebruik te maken van de hardware componenten zoals CPU en GPU. Dit komt omdat de programmeur direct te maken krijgt met complexiteit van het paralliseren van functies en moet tevens rekening houden met hardware specifieken uitdagingen. \parencite{chafi2010language} \\
+
+Terwijl \cite{sujeeth2011optiml} OptiML presenteerd als een alternatief is het project\footnote{Zie de website van OptiML: https://stanford-ppl.github.io/Delite/optiml/index.html} nog altijd in Alpha versie. Echter is in 2014 door hetzelfde team Forge gepresenteerd. Een DSL voor hardware frameworks waar de test resultaten erg veelbelovend zijn. "Forge-generated Delite DSLs perform within 2x of hand-optimized C++ and up to 40x better than Spark, an alternative high-level distributed programming environment." \parencite{sujeeth2014forge}
+
+
+Naast de gevonden technologieën wordt binnen shop2market veel gebruik gemaakt van Golang. (verdere uitleg nodig)
+Vanuit de organisatie zijn hier in 2014 Proof Of Concepts mee gedaan waarin het concurrency model en performance is vergelijken met andere Akka (scala), Erlang en Java. Hierin waren Java en Golang even snel, echter is Golang een moderne programmeer taal waarin het concurrency model anders is geimplementeerd. Hierdoor hoeft geen rekening te houden met Threads.
+
+Rust
+
+\subsubsection{Conclusie}
+
+De selectie van technologieën komt uit op
+
+\begin{itemize}
+    \item Forge
+    \item Golang
+\end{itemize}
+
+
+\subsection{Conclusies}
+
+Er zijn een aantal oplossings richtingen gevonden:
+- clustered databases analytics / datawarehouses (RDBMS): google bigquery, vertica, redshift, hadoopDb, Teradata
+- map reduce platform: spark, hadoop, disco etc.
+- Hardware, software solutions: Forge en Golang Python, MATLAB, R, Golang, Rust
+

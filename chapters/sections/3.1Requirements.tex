@@ -1,0 +1,57 @@
+% ACTIVITY Afleggen interviews rondom Requirements \& Constraints, documenteren use-cases
+% RESULT MosCow prioriteiten lijst en checklist
+\section{Functionele en niet functionele eisen}
+\label{sec:deelvraag1}
+
+Wat zijn de functionele en niet functionele eisen, waaraan de oplossing moet voldoen?
+
+In een interview zijn de functionele en niet functionele eisen gegeven door Matthijs Jorissoen. De studen heeft 
+
+[TODO: geef extra uitleg over de gebruikte methode MoSCoW \cite{ma2009effectiveness}]
+
+\begin{comment}
+Een functionele eis kan gezien worden als iets dat de gebruiker nodig heeft om het doel te bereiken of een bepaalde voorwaarde waaraan de oplossing moet voldoen.
+
+Een non functionele eis is een beperking doe wordt opgelegd op een mogelijke oplossing, met het doel om functionele eisen te behalen of het doel van het project.
+\end{comment}
+
+\begin{table}[bh]
+\centering
+\caption{lijst van eisen geprioritiseerd met behulp van de MoSCoW analyse}
+\label{table:requirements}
+\def\arraystretch{1.5}
+\begin{tabular}{|l|p{13cm}|}
+\hline
+\textbf{Prioriteit} & \textbf{Functionaliteit/Requirement}
+\\ \hline
+Must have           & Statistieken voor één webwinkel kunnen opnieuw worden gegenereerd zodat veranderingen in externe data bronnen bijvoorbeeld orders of geïmporteerde kosten opnieuw worden geaggregeerd. Dit moet tot 30 dagen terug.
+\\ \hline
+Must have           & Het creëren van data aggregatie voor alle webwinkels over een dag, mag niet meer tijd in beslag nemen dan de huidige oplossing nodig heeft. Dit is 1 uur en 30 minuten.
+\\ \hline
+Must have           & De kosten voor eventuele licenties en infrastructuur mogen niet hoger zijn dan dat voor de huidige oplossing vereist is
+\\ \hline
+Should have         & Statistieken zijn altijd voor kantoor uren beschikbaar voor het dashboard en latere processen zoals tips generatie
+\\ \hline
+Should have         & De gekozen oplossing heeft een productief programmeermodel en uitvoerbaar op niet afhankelijk van een hardware architectuur
+\\ \hline
+Could have         & De programmatuur is testbaar en hierdoor eenvoudig te onderhouden
+\\ \hline
+Could have          & Data aggregaties voor een groep webwinkels kunnen op een ander tijdstip worden geaggregeerd i.v.m. verschillende tijdszones
+\\ \hline
+Could have         & De nieuwe oplossing moet schaalbaar genoeg zijn om 10.000 klanten te kunnen onderstuenen.
+\\ \hline
+\end{tabular}
+\end{table}
+
+Een aantal gebruikte termen zoals simpel, snel etc. worden verduidelijkt met de bijbehorende definities die in overleg tot stand zijn gekomen: \\
+
+\begin{itemize}
+    \item \textbf{Een productief programmeermodel} in de context van een dit project wordt omschreven in \cite{asanovic2006landscape}: "programming models should be independent of the number of processors, they should allow programmers to use a richer set of data types and sizes, and they should support successful and well-known parallel models of parallelism"
+
+    \item \textbf{Scalability} wordt door \cite{dubey2005recognition} gefefineerd als: Schaalbaarheid is het vermogen om de gewenste snelheid te bieden en te onderhouden al dan niet verbeteren. De industrie hier twee manieren voor. "Scale up" is de methode waarbij hardware wordt vervangen zodat er betere prestatie geleverd kan worden. Bij "scale out" wordt er extra hardware aangesloten zodat een bestaand systeem de toenemende werkdruk kan ondersteunen.
+\end{itemize}
+
+\begin{comment}
+De grootte van alle databronnen voor een webwinkel per dag ligt tussen de 0.5 MB en 130 MB per dag. Om de data grootte in te schatten met 10.000 webwinkels kan huidige datagrootte van een gemiddelde dag worden ge-extrapoleert. Er moet rekeningen worden gehouden met het Paretoprincipe, dat zou verklaren dat 20\% van de webwinkels verantwoordelijk is voor 80\% van de datagrootte. Dit is ook waar te namen in het analyseren van de datasets. % https://en.wikipedia.org/wiki/Pareto_principle
+
+\end{comment}
