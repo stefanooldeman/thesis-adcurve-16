@@ -1,49 +1,41 @@
 
-De volgende lijst van database systemen beschikken over analytical functionaliteiten nodig voor het aggregeren en creeëren van statistieken. Voor het maken van data aggregaties zijn baisis SQL functies nodig: SUM, MIN, MAX, AVERAGE, samen met de SQL clauses: GROUP BY en HAVING. \parencite{data-mining} Omdat bijna alle database systemen deze functies ondersteunen is er gekeken naar databases die een hoog volume aan data kunnen verwerken. 
-Omdat er nu per dag zo'n 1.8Gb aan data voor alleen visits wordt verwerkt en dit extropaleert naar (1.8/480) * 100000 = 375Gb per dag.
+Een mogelijke oplossing zou zijn om een Datawarehouse te implementeren waarin alle benodigde data bronnen worden beheerd en data aggregaties worden uitgevoerd. 
 
-Traditionele databases systemen zijn gemaakt om transactionele queries te beantwoorden. Deze zullen minder schaalbaar zijn doordat er verschillende fases zijn die overhead introduceren. \parencite{harizopoulos2008oltp}
-Daarnaast introduceert het frequent updaten en corrigeren data bronnen mogelijke performance problemen doordat data consistentie wordt gegarandeerd met methodes als "table locks". Verder raken databases overbelast wanneer de opgravraagde database query resulteert in een dataset die nit in het geheugen is te plaatsen.  daarom tot een trager, overbelast systeem. \parencite{kersten2011researcher}
+Voor het maken van data aggregaties zijn basis SQL functies nodig: SUM, MIN, MAX, AVERAGE, samen met de SQL clauses: GROUP BY en HAVING. \parencite{data-mining}
+Omdat bijna alle database systemen deze functies ondersteunen is er gekeken naar databases die een hoog volume aan data kunnen verwerken. 
 
-Database queries kunnen overigens erg traag raken wanneer databases groeien en query resultaten niet meer in RAM passen. Hierbij wordt resulteert een terugval op de hardeschijf (zogeheten "Disk spills") in het vertragen van een datapipeline. Ook zijn er verschillende anakedotes vanuit de organisatie waarbij databases zoals MySQL sporadisch, overbelast raakt.
-
+Veel Database Management Systemen (DBMS), ondersteunen de benodigde functies maar implementeren transactionele mechanismes om data integriteit te garanderen, bijvoorbeeld: "locking-based concurrency control". Dit introduceert significante overhead. \parencite{harizopoulos2008oltp}. Verder raakt een DBMS overbelast wanneer een gevraagde opdracht\footnote{ Ieder SQL statement wordt vertaalt naar een opdracht door middel van een query plan.} niet optimaal kan worden uitgevoerd. Zo moet de opgevraagde dataset in het geheugen (RAM) passen, of er wordt terug gevallen op de harde schijf (zogeheten "Disk spills"). De gegeven use-case vraagt om het frequent uitvoeren van aggregaties en corrigeren van data bronnen. De combinatie hiervan introduceert mogelijke performance problemen. \parencite{kersten2011researcher}
 %"Moreover, database queries often contain blocking operations that lead to a pipeline stall or spilling large intermediates back to the disks." \parencite{kersten2011researcher}
 
+% \footnote{Door frequent te aggregeren en corrigeren van data bronnen door middel van incremental loading of vervangen van datasets door 'UPDATE' of 'DELETE and INSERT' statements}
+% Het plan in onze use-case is om frequent data aggregaties uit te voeren zodat statestieken in adcurve worden gecorrigeerd.
 
-Het plan in onze use-case is om frequent data aggregaties uit te voeren zodat statestieken in adcurve worden gecorrigeerd. Dit kan er uiteindelijk voor zorgen dat locking systemen om data consistentie te garanderen een bottle neck op a 
-Traditionele databases garanderen waarbij een transactionele niet worden beschouwd als een verkiesbare technologie. Daarom is gekeken naar databases met een andere storage engine.
+In vergelijking tot eerder genoemde OLTP (Online Transaction Processing) databases uit \textcite{kersten2011researcher} zijn er genoeg OLAP (Online Analytical Processing) systemen beschikbaar voor Data Warehouse toepassingen \parencite{data-mining}.
 
-Opvallend is dat bijna alle distributed en analytics databases van PostgreSQL afstammen \parencite{postgresforks}
+% In de paper "How To Build a High-Performance Data Warehouse" worden door de auteurs drie verschillende architectuur storage engines omschreven: Shared Memory, Shared Disk en Shared Nothing.
 
-Hieruit valt te concluderen dat de business intelligence industry veel research heeft geinvesteerd in op basis van Postgress technology.
+Michael Stonebraker, database pionier en origineel auteur PostgreSQL
+\footnote{
+ Opvallend is dat Bijna alle High Performance en Analytical databases afstammen van Postgres \parencite{postgresforks}. Dit dient als getuige van de enorme hoeveelheid research die is geïnvesteerd in (opensource) oplossingen op basis van PostgeSQL.
+}
+, omschrijft drie verschillende database storage engines: shared memory, shared disk en shared nothing. "Because shared nothing does not typically have nearly as severe bus or resource contention as shared-memory or shared-disk machines, shared nothing can be made to scale to hundreds or even thousands of machines. Because of this, it is generally regarded as the best-scaling architecture". \parencite{dewitt2006build}
 
-Michael Stonebraker is origineel auteur Postgress en later vele high performance databases. In zijn paper "How To Build a High-Performance Data Warehouse"\  omschrijft hij drie verschillende architectuur typen / storage engines: Shared Memory, Shared Disk en Shared Nothing.
-"Because shared nothing does not typically have nearly as severe bus or resource contention as shared-memory or shared-disk machines, shared nothing can be made to scale to hundreds or even thousands
-of machines. Because of this, it is generally regarded as the best-scaling architecture". \parencite{dewitt2006build}
-
-
-
-In de paper worden de volgende databases genoemd:
-\begin{table}[bh]
-\centering
-\caption{My caption}
-\label{my-label}
-\begin{tabular}{|l|l|l|}
-\hline
-\textbf{Shared memory} & \textbf{Shared Disk} & \textbf{Shared Nothing} \\ \hline
-Microsoft SQL Server   & Oracle RAC           & Teradata \\
-\hline
-PostgresSQL            & Sysbase IQ           & Netezza \\
-\hline
-MySQL                  &                      & IBM DB2 \\
-\hline
-                       &                      & GreenplumDB \\
-\hline
-                       &                      & Vertica \\
-\hline
-\end{tabular}
-\end{table}
 
 \subsubsection{\textbf{Conclusie}}
 
-TODO: Vorm een conclusie over databases die bij de requirements passen.
+Er zijn verschillende beschikbare technologieën gevonden in de vorm een DBMS op basis van onderzoek door \textcite{dewitt2006build}. Daarnaast is Redshift toegevoegd, een datawarehouse in de cloud, overigens ook op basis van PostgreSQL.
+
+% Vervolgens  vergelijkings matrix zijn de requirements vergeleken met de eigenschappen van iedere DBMS.
+
+\begin{itemize}
+    \item Teradata
+    \item GreenplumDB, door Pivotal
+    \item HP Vertica
+    \item Amazon Redshift
+\end{itemize}
+
+
+
+% De volgende lijst van database systemen bieden ook de mogelijkheid tot Analytics met behulp van "windowing" of "time-series" functies.
+% Redshift
+% Vertica

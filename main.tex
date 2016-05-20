@@ -24,6 +24,16 @@
 
 
 \usepackage{lineno}
+
+\DeclareSourcemap{
+    \maps[datatype=bibtex]{
+        \map{
+            \step[fieldsource=url, notmatch=\regexp{wiki},  final=1]
+            \step[fieldset=urldate, null]
+        }
+    }
+}
+
 \begin{document}
 % 
 %% Use Roman numerals for the page numbers of the title pages and table of
