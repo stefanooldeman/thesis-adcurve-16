@@ -7,17 +7,33 @@ Alle mogelijke oplossingen zijn besproken met het team, hierin is besloten dat e
     \item Apache Spark
 \end{itemize}
 
-\textbf{Databases} worden niet overwogen vanwege het programmeermodel, deze is zeer productief maar is niet eenvoudig te testen. Daarnaast heeft de organisatie niet de expertise om een Shared nothing database systeem (een cluster van machines) in een productie omgeving te onderhouden en te schalen. \\
+\textbf{Data preperation}
+De eerste fase uit het algoritme is een ETL stap, om csv en bson te converteren naar een uniform schema.
+De geconverteerde data wordt weg geschreven in bestanden per webwinkel als een methode om eenmalig te filteren i.p.v. meerdere malen tijdens het aggregatie proces.
+
+
+\textbf{Stategie 1, Hardware oplossing met Golang} 
+Het is praktisch mogelijk om data in sub sets te aggregeren omdat er een afzonderlijke data bron is per publisher. 
+Het gebruiken van gesplitste bestanden per webshop zorgt voor kleine  en korte processen. Dit kan met verschillende technologieën worden geimplementeerd, voornamlijk General purpose languages, DSL, Hardware oplossingen.
+
+De totale performance hoeft niet te verbeteren, zolang het proces dat alleen data aggregatie uitvoert voor de specifieke webwinkel en publisher kort van duur is kan dit worden uitgevoerd op verschillende machines tegelijk om dit schaalbaar in te zetten.
+    
+\textbf{Strategie 2, Distributed oplossing met Spark}
+Alle data in een groep aggregeren, (op timezone en op publisher niveau). snel genoeg zodat er iedere dag de afgelopen 30 dagen wordt verwerkt.
+
+
+\textbf{Databases} worden niet overwogen vanwege het programmeermodel, deze is zeer productief maar is niet eenvoudig te testen. Daarnaast heeft de organisatie niet de expertise om een Shared nothing database systeem (een cluster van machines) in een productie omgeving te onderhouden en te schalen.
 
 \textbf{Parallel programming} wordt gebruikt in het POC met Spark. Door gebruik te maken van distributed functionaliteiten van Spark wordt getest of de snelheid waar spark bekend om staat (paper) behaald kan worden in onze use case. Er is de mogelijkheid om unit tests en functional tests te schrijven, dit wordt aangeboden door het framework.
 het wegschrijven van meerdere resultaten in een proces kan door het partitionener van output data op (PublisherID, ShopID). Ook kunnen er meerdere dagen in een proces worden verwerkt en het resultaat wordt weggeschreven per TimeID, PublisherID en ShopID
-\\
 
-Als \textbf{Hardware oplossing} wordt gebruik gemaakt van Golang. Hierbij zal de performance van multicore processors worden getest. Deze taal is vergelijkbaar met C++ in zijn performance. Uit test resultaten door \cite{lee2010debunking} is gevonden dat een MapReduce operaties (Monte Carlo algoritme) sneller is op een CPU in vergelijking met een GPU (Te programmeren via eerder besproken andere DSL) "We typically find that the highest performance is achieved when multiple threads are used per core. For Core i7, the best performance comes from running 8 threads on 4 cores" \parencite{lee2010debunking} \\
+Als \textbf{Hardware oplossing} wordt gebruik gemaakt van Golang. Hierbij zal de performance van multicore processors worden getest. Deze taal is vergelijkbaar met C++ in zijn performance. Uit test resultaten door \cite{lee2010debunking} is gevonden dat een MapReduce operaties (Monte Carlo algoritme) sneller is op een CPU in vergelijking met een GPU (Te programmeren via eerder besproken andere DSL) "We typically find that the highest performance is achieved when multiple threads are used per core. For Core i7, the best performance comes from running 8 threads on 4 cores" \parencite{lee2010debunking}
 
-\textbf{De volgende kwaliteits eisen zijn vastgelegd aan ieder POC} \\
+\subsection{De volgende kwaliteits eisen zijn vastgelegd aan ieder POC}
 
 TODO
 
 % De aanroep van het process moet data uit de volgende datasets uit s3 lezen:
 % de visits (csv) dump uit Cassandra, orders (bson) dump uit MongoDb, Geïmporteerde advertentiekosten van diverse publishers (csv)
+
+

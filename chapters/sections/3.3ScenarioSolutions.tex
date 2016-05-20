@@ -1,88 +1,93 @@
-\textit{Welke scenario's komen met regelmaat voor waardoor gegevens niet te verklaren zijn?}
+\textit{Wat zijn de probleem scenario's waardoor gegevens niet te verklaren zijn, en wat zijn de mogelijke oplossingen?}
 
 % Hiervoor zijn anekdotes verzameld van stakeholders waarbij zei vertelden over scenario 's die voor verwarring zorgen bij gebruikers.
+Uit interview met verschillende stakeholders binnen shop2market zijn een aantal problematische scenario's besproken. Deze hebben geleidt tot de functionele en non functionele eisen in tabel \ref{table:requirements}. Tijdens de interviews zijn veel symptomen besproken en de impact op de organisatie en de klanten van Shop2market. Hier worden deze scenario's en hun impact inzichtelijk gemaakt.
 
-Uit interview met verschillende stakeholders binnen shop2market zijn een aantal problematische scenario's besproken. Deze hebben geleidt tot de functionele en non functionele eisen in tabel \ref{table:requirements}. Veel van de gegeven verklaringen zijn symptomen van het probleem.
+% "the right tool for the job"
+In het de vorige deelvraag in \ref{sec:deelvraag2} is een shortlist gepresenteerd van geschikte technologieën voor een POC's.
+Niet alleen moet een oplossing overeenkomen met de requirements, maar een verkeerde inzet van een technologie moet door deze analyse te voorkomen zijn.
+
+De vraag wordt in delen beantwoord: Wat zijn de probleem scenario's, wat is hiervan de achterliggende oorzaak, en hoe kan dit worden opgelost?
 
 
-\begin{enumerate}
-    \item De kosten van publishers worden geïmporteerd, wanneer het voorkomt dat niet alle kosten worden gematcht op bijbehorende producten; worden niet alle kosten verwerkt. Hierdoor komen de totalen niet overeen met externe dashboards, zoals die van de publisher (Adwords, Admarkt etc). \\
-    
-    \item Bij het bekijken van dashboards in Adcurve zijn de gegevens over de vorige dag pas beschikbaar na 12:30 CET. Omdat alle data in een keer wordt geaggregeerd kan het proces worden gestart nadat alle afhankelijke data bronnen beschikbaar zijn. Door een publisher wordt de data beschikbaar gemaakt na 10 uur s\'ochtends. Daarom start het proces pas om 11 uur. \\
-    
-    \item Door middel van \textit{tracking} worden er orders van de webwinkels gesynchroniseerd. Wanneer hier foutieve bedragen tussen zitten beïnvloed de totale winstgevendheid. Hierdoor kan er veel onduidelijkheid ontstaan. \\
-\end{enumerate}
+% Wat zijn de probleem scenario's
+\subsection{Impact analyse}
 
-Daarom wordt in de volgende deelvraag \ref{subsec:deelvraag3a} onderzocht wat de achterliggende oorzaak is per scenario.
+In tabel / bijlage (impact analyse) zijn de volgende scenario's geclassificeerd in verschillende categorieën. Hieruit valt af te lezen wat de werkelijke impact is, en welke prioriteit (severity) het probleem daarom krijgt.
 
-\clearpage
 
-% ACTIVITY Onderzoek technische factoren die voor problemen zorgen
-\subsection{Wat zijn de technische factoren?}
-\label{subsec:deelvraag3a}
+Scenario 1 en 2 [Costs Missing] zijn niet te voorkomen, (advies: implementeer detectie). Scenario 3 en 4 [Costs Incorrect] zijn lastig te detecteren, komt niet vaak voor
 
-Om er voor te zorgen dat statistieken in Adcurve te verklaren zijn wordt de volgende vraag gesteld:
-\textit{Wat zijn de gerelateerde technische factoren waardoor de scenario's voor verhindering zorgen in de huidige situatie?} \\
+Voor de hierboven besproken scenario's geldt: zodra er een oplossing is moeten de datakwaliteit worden herstelt door het proces te starten dat de correcties uitvoert ["effected datasources" opnieuw evalueren]
+Deze scenario's zijn ook tegelijkertijd lastig te voorkomen, alleen te herstellen. Het advies is daarom om hier "monitoring en alerting" voor te implementeren. Zie ook andere maatregelen zoals bijv. het aanwijzen van Data stewards (TODO: reference term, paper)
 
-Ieder scenario wordt hier besproken met de technische reden verklaard.
+Scenario 5 komt soms voor en heeft een grootte impact doordat het herstel momenteel erg veel tijd kost.
 
-\begin{enumerate}
-    \item In de huidige situatie wordt alle data in een proces verwerkt. Voor alle webwinkels en publishers. 
-    
-    \item Daarnaast wordt er iedere dag een deel van de week, maand en jaar aggregatie berekend. Om gegevens uit vorige maand te corrigeren moeten er op verschillende aggregatie niveau 's \textit{MapReduce jobs} worden uitgevoerd.
-    Dit soort problemen kunnen worden voorkomen door alleen berekeningen uit te voeren op het aller laagste niveau, en de aggregaties aan de client side 
-        
-    \item Omdat alle data in een keer wordt geaggregeerd kan het proces pas worden gestart nadat alle afhankelijke data bronnen beschikbaar zijn. Door een publisher wordt de data beschikbaar gemaakt na 10 uur s\'ochtends
-\end{enumerate}
 
-\subsubsection{\textbf{Conclusie}}
+Scenario 6 is specifiek probleem met de huidige implementatie en komt soms voor. 
+TODO: vraag Stanislav voor technische redenen, kennis etc.
+  
 
-Een deel van het probleem is het actief monitoren van de data kwaliteit en processen starten om het te corrigeren. Hier wordt niet verder op in gegaan omdat een dergelijke oplossing hiervoor buiten scope valt.
+% \item Bij het bekijken van dashboards in Adcurve zijn de gegevens over de vorige dag pas beschikbaar na 12:30 CET. Omdat alle data in een keer wordt geaggregeerd kan het proces worden gestart nadat alle afhankelijke data bronnen beschikbaar zijn. Door een publisher wordt de data beschikbaar gemaakt na 10 uur s\'ochtends. Daarom start het proces pas om 11 uur. \\ H6
+% Api not available,for admarkt, kieskeurig etc & L6
+% Apis' for google,change and the import stops working, or fail silent (values are not matched,,resulting in empty fields) & M5
+% Configuration or bugs & Wrong costs by configuration, issues: mistakes in tracking Order amount, tracked wrong, multiplied by 100 bug & H6
+% Costs incorrect & Metrics calculated incorrectly & L7
+% Stats not available & Calculations fail,because technology or infrastructure & L7
+% Aggregations \newline don't match & Aggregations from different dimensions on the same data don't match & L4
 
-Deze problemen spelen op doordat er niet de mogelijkheid is om de data aggregatie opnieuw te genereren binnen voorspelbare tijd. De grootste technische beperking is dat een dag aan data, een dag duurt om te aggregeren.
 
-Eerder zijn de functionele eisen al besproken in hoofdstuk \ref{sec:deelvraag1} te lezen in tabel \ref{table:requirements}. Om te voorkomen dat een nieuwe techniek mogelijk dezelfde probleem situaties introduceert, worden de volgende non functionele eisen toegevoegd.
+\subsection{Technische te verklaren oorzaken}
+
+Zoals besproken zijn scenario 5 en 6 mogelijk te voorkomen. Dit in conjunction met de non functional requirements besproken in \ref{sec:deelvraag1} zijn de voornaamste redenen om naar een andere oplossing te zoeken.
+
+De volgende technische redenen huidige implementatie zijn bekend binnen de organisatie
+
+% MongoDB version 2.4
+% https://docs.mongodb.com/v2.4/core/map-reduce/
+
 \begin{itemize}
-    \item voor probleem scenario 2 moet data in groepen van webwinkels worden uitgevoerd om er voor te zorgen dat: webwinkels uit verschillende tijdzones op tijd klaar zijn. Dit zijn non functionele eisen. 
+    \item inladen en wegschrijven van resultaten duurt lang => versnel IO operaties. "After every insert, update, or delete operation, MongoDB must update every index associated with the collection in addition to the data itself. Therefore, every index on a collection adds some amount of overhead for the performance of write operations."
+    % https://docs.mongodb.com/v2.4/core/write-performance/
     
-    \item Data aggregaties moeten plaatsvinden zodra kosten beschikbaar zijn per publisher
+    \item "Your working set should stay in memory to achieve good performance. Otherwise many random disk IO’s will occur, and unless you are using SSD, this can be quite slow." 
+    % https://docs.mongodb.com/v2.4/faq/diagnostics/
     
-    \item voor probleem scenario 1 en 4, moet mogelijk zijn om voor een individuele webwinkels de data te aggregeren zodat er correcties kunnen worden gemaakt bij data kwaliteit issues. 
-    \item de snelheid waarmee data wordt verwerkt moet snel genoeg zijn om 30 dagen aan data binnen 1 dag te verwerken.
+    \item Niet voldoende hardeschijfruimte
+    "MongoDB supports multiple record allocation strategies that determine how mongod adds padding to a document when creating a record. Because documents in MongoDB may grow after insertion and all records are contiguous on disk, the padding can reduce the need to relocate documents on disk following updates. Relocations are less efficient than in-place updates and can lead to storage fragmentation. As a result, all padding strategies trade additional space for increased efficiency and decreased fragmentation." % https://docs.mongodb.com/manual/core/mmapv1/#record-allocation-strategies
     
-    \item De tijd die het kost voor data aggregaties moet voorspelbaar zijn, dit kan worden berijkt  wanneer de oplossing lineair schaalbaar is.
+    "The usePowerOf2Sizes flag changes the method that MongoDB uses to allocate space on disk for documents in this collection. By setting usePowerOf2Sizes, you ensure that MongoDB will allocate space for documents in sizes that are powers of 2 (e.g. 4, 8, 16, 32, 64, 128, 256, 512...8388608). With usePowerOf2Sizes, MongoDB will be able to more effectively reuse space."
+    % https://docs.mongodb.com/v2.4/reference/command/collMod/#usePowerOf2Sizes
+    
+    \item map reduce algoritme in een notedop:
+    "mongos retrieves the results from each shard, performs a merge sort to order the results, and proceeds to the reduce/finalize phase as needed. mongos then writes the result to the output collection in sharded mode."
+    % https://docs.mongodb.com/v2.4/core/map-reduce-sharded-collections/
+    
+    \item 1 systeem voor analytics workload (mapreduce) en de reporting interface => mapreduce in 1 systeem en resultaten op 2e systeeem bijv. S3
+    
+    \item random mapreduce failures => geen onderhoud van cluster
+    \item - opruimen resterende data bij failures => geen entropy
+    \item productie load (transacties) heeft invloed op performance => onafhankelijk systeem van productie
 \end{itemize}
 
-Deze criteria moeten worden toegepast bij het verder selecteren van mogelijke oplossingen. 
 
 
-% ACTIVITY Oplossing ontwerpen voor use-cases en Proof of concept
-
-\subsection{Vergelijkingstabel technieken en strategieën}
-\label{subsec:deelvraag3b}
-
-\textit{Wat zijn de mogelijke strategieën en technieken om dit op te lossen?} \\
-
-Het process moet kan worden aangeroepen met drie  parameters: Shop id, publisher id en datum \\
-
-\textbf{Data preperation}
-De eerste fase uit het algoritme is een ETL stap, om csv en bson te converteren naar een uniform schema.
-De geconverteerde data wordt weg geschreven in bestanden per webwinkel als een methode om eenmalig te filteren i.p.v. meerdere malen tijdens het aggregatie proces. \\
+\subsection{Hoe wordt dit voorkomen met de gevonden tools / POC?}
+hoe wordt dit voorkomen met de gevonden tools / POC?
 
 
-\textbf{Stategie 1, Hardware application} 
-Het is praktisch mogelijk om data in sub sets te aggregeren omdat er een afzonderlijke data bron is per publisher. 
-Het gebruiken van gesplitste bestanden per webshop zorgt voor kleine  en korte processen. Dit kan met verschillende technologieën worden geimplementeerd, voornamlijk General purpose languages, DSL, Hardware oplossingen. \\
+- conclusie
+    - data pipeline design
+        - oplossing om  high query speed en good analytics performance te behalen met  twee losse systemen
+        - S3 als datawarehouse storage ipv een database (geen limitations)
+    - query speed wordt opgelost door extern systeem (Saki)
+    - nieuwe systeeem voor mapreduce hebben de bestaande problemen niet omdat:
+        - netwerken voorkomen wordt, workers zijn bewezen duizenden jobs aan te kunnen (kleine processen)
+        - spark in memory oplossing is bewezen snel te zijn en EMR is managed service
+        - (database column store heeft geen indexes maar partities, bewezen erg snel te zijn… maar geen voordelen worden behaald omdat  ons proces altijd N-max aantal columns wordt gebruikt opgevraagd)
 
-De totale performance hoeft niet te verbeteren, zolang het proces dat alleen data aggregatie uitvoert voor de specifieke webwinkel en publisher kort van duur is kan dit worden uitgevoerd op verschillende machines tegelijk om dit schaalbaar in te zetten. \\
-    
-\textbf{Strategie 2, Networked application}
-Alle data in een groep aggregeren, (op timezone en op publisher niveau). snel genoeg zodat er iedere dag de afgelopen 30 dagen wordt verwerkt.
-Dit kan met verschillende databases, Hadoop en Spark \\
 
-\textbf{Strategie 3, Hybriede oplossing} Calculus..
-door eenmalig de data aggregatie uit te voeren in een suboptimaal systeem kunnen alle huidige problemen alsnog worden opgelost door delta's te berekenen tussen de huidige state en de gecorrigeerde data. Vervolgens worden alle delta's in bestanden weg geschreven. \\
 
-Er is een origineel bestand voor de data aggregaties. Meerdere mogelijke bestanden met delta's en een proces dat de delta's toepast en een uiteindelijk gecorrigeerde versie van aggregaties genereerd en opslaat. 
-Zo zullen er meerdere versies van een aggregatie in s3 beschikbaar zijn. Onze web api moet de logica toepassen om altijd de laatste versie uit te serveren. 
-(om aan de eisen te voldoen en data beschikbaar te maken voor kantoor uren moet de data worden geagregeerd in verschillende delen, per publishser wanneer de data beschikbaar is. Dit kan een aanpassing zijn in de huidige oplossing, of worden gedaan met een ander systeem)
+\subsection{Conclusie}
+
+% Een deel van het probleem is het actief monitoren van de data kwaliteit en processen starten om het te corrigeren. Hier wordt niet verder op in gegaan omdat een dergelijke oplossing hiervoor buiten scope valt.

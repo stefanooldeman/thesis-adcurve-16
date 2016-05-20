@@ -5,7 +5,7 @@
 
 Wat zijn de functionele en niet functionele eisen, waaraan de oplossing moet voldoen?
 
-In een interview zijn de functionele en niet functionele eisen gegeven door Matthijs Jorissoen. De studen heeft 
+In een interview met Matthijs Jorissen zijn de functionele en niet functionele eisen besproken. Vervolgens is hierin een prioriteit aangebracht met behulp van de MoSCoW methode. 
 
 [TODO: geef extra uitleg over de gebruikte methode MoSCoW \cite{ma2009effectiveness}]
 
@@ -20,7 +20,8 @@ Een non functionele eis is een beperking doe wordt opgelegd op een mogelijke opl
 \caption{lijst van eisen geprioritiseerd met behulp van de MoSCoW analyse}
 \label{table:requirements}
 \def\arraystretch{1.5}
-\begin{tabular}{|l|p{13cm}|}
+
+\begin{tabular}{|l|p{12.5cm}|}
 \hline
 \textbf{Prioriteit} & \textbf{Functionaliteit/Requirement}
 \\ \hline
@@ -43,7 +44,7 @@ Could have         & De nieuwe oplossing moet schaalbaar genoeg zijn om 10.000 k
 \end{tabular}
 \end{table}
 
-Een aantal gebruikte termen zoals simpel, snel etc. worden verduidelijkt met de bijbehorende definities die in overleg tot stand zijn gekomen: \\
+Een aantal gebruikte termen zoals simpel, snel etc. worden verduidelijkt met de bijbehorende definities die in overleg tot stand zijn gekomen:
 
 \begin{itemize}
     \item \textbf{Een productief programmeermodel} in de context van een dit project wordt omschreven in \cite{asanovic2006landscape}: "programming models should be independent of the number of processors, they should allow programmers to use a richer set of data types and sizes, and they should support successful and well-known parallel models of parallelism"
@@ -51,7 +52,14 @@ Een aantal gebruikte termen zoals simpel, snel etc. worden verduidelijkt met de 
     \item \textbf{Scalability} wordt door \cite{dubey2005recognition} gefefineerd als: Schaalbaarheid is het vermogen om de gewenste snelheid te bieden en te onderhouden al dan niet verbeteren. De industrie hier twee manieren voor. "Scale up" is de methode waarbij hardware wordt vervangen zodat er betere prestatie geleverd kan worden. Bij "scale out" wordt er extra hardware aangesloten zodat een bestaand systeem de toenemende werkdruk kan ondersteunen.
 \end{itemize}
 
-\begin{comment}
-De grootte van alle databronnen voor een webwinkel per dag ligt tussen de 0.5 MB en 130 MB per dag. Om de data grootte in te schatten met 10.000 webwinkels kan huidige datagrootte van een gemiddelde dag worden ge-extrapoleert. Er moet rekeningen worden gehouden met het Paretoprincipe, dat zou verklaren dat 20\% van de webwinkels verantwoordelijk is voor 80\% van de datagrootte. Dit is ook waar te namen in het analyseren van de datasets. % https://en.wikipedia.org/wiki/Pareto_principle
+TODO
+\begin{itemize}
+    \item Data aggregaties moeten plaatsvinden zodra kosten beschikbaar zijn per publisher
+    
+    \item voor probleem scenario 1 en 4, moet mogelijk zijn om voor een individuele webwinkels de data te aggregeren zodat er correcties kunnen worden gemaakt bij data kwaliteit issues. 
+    \item de snelheid waarmee data wordt verwerkt moet snel genoeg zijn om 30 dagen aan data binnen 1 dag te verwerken.
+    
+    \item De tijd die het kost voor data aggregaties moet voorspelbaar zijn, dit kan worden berijkt  wanneer de oplossing lineair schaalbaar is.
+\end{itemize}
 
-\end{comment}
+% De grootte van alle databronnen voor een webwinkel per dag ligt tussen de 0.5 MB en 130 MB per dag. Om de data grootte in te schatten met 10.000 webwinkels kan huidige datagrootte van een gemiddelde dag worden ge-extrapoleert. Er moet rekeningen worden gehouden met het Paretoprincipe, dat zou verklaren dat 20\% van de webwinkels verantwoordelijk is voor 80\% van de datagrootte. Dit is ook waar te namen in het analyseren van de datasets. % https://en.wikipedia.org/wiki/Pareto_principle
