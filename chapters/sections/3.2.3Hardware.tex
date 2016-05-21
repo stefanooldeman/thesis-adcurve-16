@@ -4,32 +4,13 @@ Op de universiteit van Standford is hier veel onderzoek gedaan. Veel hardware sp
 
 Terwijl \textcite{sujeeth2011optiml} een veelbelovende oplossing lijkt aan te bieden is het project\footnote{Zie de website van OptiML: \url{https://stanford-ppl.github.io/Delite/optiml/index.html}} nog altijd in Alpha versie. Het zelfde team presenteerde in 2014 Forge gepresenteerd. Een DSL voor expert talen waar de test resultaten erg veelbelovend zijn. "Forge-generated Delite DSLs perform within 2x of hand-optimized C++ and up to 40x better than Spark, an alternative high-level distributed programming environment." \parencite{sujeeth2014forge}. Helaas lijkt hierbij hetzelfde probleem te spelen en is er niet genoeg documentatie gevonden om hier een POC mee te starten.
 
-Binnen Shop2market zijn veel performance gerelateerde projecten opgelost met Golang. Een In de organisatie wordt met veel success gebruik gemaakt van Golang een moderne programmeer taal met een alternatief concurrency model ten opzichte van C++.
-
-Echter zijn dit geen geschikte kandidaten omdat geen geschikt programmeer model bieden. Zo wordt wordt herkend door de Machine learning researchers van (Standfort University) \cite{sujeeth2011optiml} dat deze talen niet productief genoeg zijn om effectief problemen op te lossen en maximaal gebruik te maken van de hardware componenten zoals CPU en GPU. Dit komt omdat de programmeur direct te maken krijgt met complexiteit van het paralliseren van functies en moet tevens rekening houden met hardware specifieken uitdagingen. \parencite{chafi2010language}
-
-
-
-
-Naast de gevonden technologieën wordt binnen shop2market veel gebruik gemaakt van Golang. (verdere uitleg nodig)
-Vanuit de organisatie zijn hier in 2014 Proof Of Concepts mee gedaan waarin het concurrency model en performance is vergelijken met andere Akka (scala), Erlang en Java. Hierin waren Java en Golang even snel, echter is Golang een moderne programmeer taal waarin het concurrency model anders is geimplementeerd. Hierdoor hoeft geen rekening te houden met Threads.
-
-Rust
+Binnen Shop2market zijn veel performance gerelateerde projecten opgelost met Golang. De taal is modern heeft een alternatief concurrency model. "Concurrency is important to the modern computing environment with its multicore machines running web servers with multiple clients, what might be called the typical Google program. This kind of software is not especially well served by C++ or Java, which lack sufficient concurrency support at the language level." \parencite{pike2012go}
 
 \subsubsection{\textbf{Conclusie}}
 
-De selectie van technologieën komt uit op
+De besproken technologieën zijn de DSL talen: OptiML, OptiSQL en Forge. Bij gebrek aan praktische voorbeelden en algemeene documentatie is er voor gekozen om hier niet verder in te investeren. Er zou niet voldoende kennis zijn om een mogelijke POC naar productie te brengen. Dit is teleurstellend aangezien de veelbelovende benchmarks.
 
-\begin{itemize}
-    \item Forge
-    \item Golang
-\end{itemize}
+Echter wordt niet aangegeven welke algoritmes er zijn gebruikt tijdens deze benchmarks. In het geval van data aggregatie\footnote{Voor data aggregaties worden methodes als MapReduce of Monte Carlo gebruikt} wordt er mogelijk een betere performance behaalt door het gebruik van multicore CPU in plaats van GPU processor capiciteit. Zo omschrijft \textcite{lee2010debunking} "Monte Carlo algorithms are generally compute-bound with regular access patterns, which makes it a very good fit for SIMD architectures".
 
-
-\subsection{Conclusies}
-
-Er zijn een aantal oplossings richtingen gevonden:
-- clustered databases analytics / datawarehouses (RDBMS): google bigquery, vertica, redshift, hadoopDb, Teradata
-- map reduce platform: spark, hadoop, disco etc.
-- Hardware, software solutions: Forge en Golang Python, MATLAB, R, Golang, Rust
+Gegeven de huidige requirements en bevindingen geeft dit genoeg motivatie om een POC te starten in Golang.
 
