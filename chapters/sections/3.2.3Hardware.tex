@@ -1,20 +1,14 @@
-High performance Domain Specific Languages zijn veelbelovend.
+Een van de oplossingen die wordt onderzocht is het gebruik maken van krachtige hardware componenten (zowel de CPU en de GPU). Dit is mogelijk met expert talen zoals; Verilog, CUDA of OpenCL of C++.
 
-http://reconfigurablecomputing4themasses.net/files/1.2%20Kunle.pdf
+Op de universiteit van Standford is hier veel onderzoek gedaan. Veel hardware specifieke kennis moet in code worden uitgedrukt: "programming these devices to run efficiently and correctly is difficult, error-prone, and results in software that is harder to read and maintain." \parencite{sujeeth2011optiml}. Daarom zijn er een serie aan DSL's ontwikkeld\footnote{Veel voorkomende voorbeelden van DLS's zijn HTML, SQL en \TeX \parencite{sigplan2000dsl}}
 
-Verilog (VHDL)
-CUDA
-OpenCL
-Threads in (Java C++)
-OpenMP
+Terwijl \textcite{sujeeth2011optiml} een veelbelovende oplossing lijkt aan te bieden is het project\footnote{Zie de website van OptiML: \url{https://stanford-ppl.github.io/Delite/optiml/index.html}} nog altijd in Alpha versie. Het zelfde team presenteerde in 2014 Forge gepresenteerd. Een DSL voor expert talen waar de test resultaten erg veelbelovend zijn. "Forge-generated Delite DSLs perform within 2x of hand-optimized C++ and up to 40x better than Spark, an alternative high-level distributed programming environment." \parencite{sujeeth2014forge}. Helaas lijkt hierbij hetzelfde probleem te spelen en is er niet genoeg documentatie gevonden om hier een POC mee te starten.
 
-Zijn embedded programmeer talen die wel maximaal gebruik kunnen maken van hardware capiciteit. Echter is het programmer model niet vriendelijk en niet compatible met ieder platform.
+Binnen Shop2market zijn veel performance gerelateerde projecten opgelost met Golang. Een In de organisatie wordt met veel success gebruik gemaakt van Golang een moderne programmeer taal met een alternatief concurrency model ten opzichte van C++.
+
+Echter zijn dit geen geschikte kandidaten omdat geen geschikt programmeer model bieden. Zo wordt wordt herkend door de Machine learning researchers van (Standfort University) \cite{sujeeth2011optiml} dat deze talen niet productief genoeg zijn om effectief problemen op te lossen en maximaal gebruik te maken van de hardware componenten zoals CPU en GPU. Dit komt omdat de programmeur direct te maken krijgt met complexiteit van het paralliseren van functies en moet tevens rekening houden met hardware specifieken uitdagingen. \parencite{chafi2010language}
 
 
-
-Het programmeren van hardware is mogelijk met talen zoals CUDA, OpenCL en OpenMP. Deze worden in de rest van deze thesis benoemd als hardware frameworks. Echter zijn dit geen geschikte kandidaten omdat geen geschikt programmeer model bieden. Zo wordt wordt herkend door de Machine learning researchers van (Standfort University) \cite{sujeeth2011optiml} dat deze talen niet productief genoeg zijn om effectief problemen op te lossen en maximaal gebruik te maken van de hardware componenten zoals CPU en GPU. Dit komt omdat de programmeur direct te maken krijgt met complexiteit van het paralliseren van functies en moet tevens rekening houden met hardware specifieken uitdagingen. \parencite{chafi2010language}
-
-Terwijl \cite{sujeeth2011optiml} OptiML presenteerd als een alternatief is het project\footnote{Zie de website van OptiML: https://stanford-ppl.github.io/Delite/optiml/index.html} nog altijd in Alpha versie. Echter is in 2014 door hetzelfde team Forge gepresenteerd. Een DSL voor hardware frameworks waar de test resultaten erg veelbelovend zijn. "Forge-generated Delite DSLs perform within 2x of hand-optimized C++ and up to 40x better than Spark, an alternative high-level distributed programming environment." \parencite{sujeeth2014forge}
 
 
 Naast de gevonden technologieën wordt binnen shop2market veel gebruik gemaakt van Golang. (verdere uitleg nodig)
