@@ -1,68 +1,23 @@
-% Wanneer grootte hoeveelheden data worden verwerkt is een goed alternatief "Joe Hellerstein, our local expert in databases, said the future of databases was large data collections typically found on the Internet. A key primitive to explore such collections is MapReduce" \parencite{asanovic2006landscape}, 
+De huidige oplossing maakt gebruik van het MapReduce framework geimplementeerd in MongoDB. Waarom de huidige oplossing juist nu problemen introduceert wordt onderzocht besproken in \ref{sec:deelvraag3}
 
+% MapReduce wordt gezien als de oplossing wanneer de grootte van de dataesest niet effectief verwerkt kunnen worden door steeds groter groeiende databases. (TODO reference this)
+HP Vertica, werd al eerder besproken in \ref{subsec:database}, en wordt omschreven als een "distributed database to mean a sharednothing, scale-out system" \parencite{lamb2012vertica}. Hoewel alle MapReduce platformen hun performance behalen op zogeheten "Commodity hardware" wordt bij databases "Modern hardware" aanbevolen. Daarnaast zijn databases veelal commercieel waabij Hadoop veel opensource distributes kent. \parencite{dean2008mapreduce}
 
-- voor het verwerken van grootte hoevelheden data
-- toepassingen / reden van map reduce
-- toepassingen / reden van Spark
-- andere ervaringen
+Voor langere tijd nu, staat Hadoop bekende als een volwasse technologie en implementatie van Map Reduce, zo schrijft \textcite{hadoop2013selection}: "The open-source software framework known as Apache Hadoop has gained sizable acceptance in organizations, spurred on by the growing digital business appetite for big data". Echter weten veel organisaties niet hoe ze deze technologie effectief moeten inzetten. Zo valt te concluderen uit \textcite{hadoop2015adoption} dat adoptie van het Hadoop ecosysteem nog altijd nog altijd laag blijft.
 
-Verdere mogelijke technologieën zijn alternatieven 
-De huidige oplossing maakt gebruik van MongoDB die een MapReduce framework heeft geimplementeerd.
+Afgezien van de adoptie blijft Hadoop interresant. Doordat de groottste bedrijven Hadoop blijven inzetten, met een groot aantal gebruikers, blijft het platform zich sterk ontwikkelen. In de loop der tijd zijn er SQL talen zoals Hive ontwikkeld waardoor het gebruikersgemakt vele malen eenvoudiger is geworden. Echter introduceert dit nietuwe inzichten. Doordat data sets frequenter worden opgevraagd is er mogelijke terugval in performance\footnote{Lees, adhoc queryies vs reporting queries}. \parencite{thusoo2010hive}
 
+Daarnaast blijkt uit benchmarks door \textcite{armbrust2015spark} dat SparkSQL competitief is met vergelijkbare SQL talen op Hadoop zoals Impala.\footnote{Impala en Hive worden aangeboden, afhankelijk van de Hadoop distributie. De performance is vergelijkbaar afhankelijk van de configuratie en hoeveelheid queries. Zie \url{http://hortonworks.com/blog/impala-vs-hive-performance-benchmark/}
 
-Doordat de verhouding tussen hardware capiciteit en de kosten hiervan steeds gunstiger werden en de toenemende hoeveelheid data die gegenereerd wordt door het internet..
+\verb TODO: vervang de url naar hortonworks met APA referentie.
 
-Voor het verwerken van de toenemende hoeveelheid data gegenereerd door  internet
-"Joe Hellerstein, our local expert in databases, said the future of databases was large data
-collections typically found on the Internet. A key primitive to explore such collections is
-MapReduce, developed and widely used at Google \parencite{dean2008mapreduce}" \parencite{asanovic2006landscape}, 
-
-Het alternatief naast databases zijn MapReduce frameworks, waarbij data wordt opgeslagen en beheerd in een cluster, aldus een distributed systeem. Veel van de populaire 
-
-Voor het verwerken van grootte hoeveelheden data werden distributed systemen bij Google succesvol ingezet, 
-Skeptisch, databases niet geschikt voor het verwerken van grootte hoeveelheden data. 
-
-Distributed systemen zijn in 2006 geintroduceerd door google met het GFS en MapReduce. \parencite{dean2008mapreduce}
-In \textcite{asanovic2006landscape} werd MapReduce nog als het alternatief gezien voor het verwerken van grootte datasets. En hoewel databases later ook distributed systemen werden (Shared nothing, column stores zijn nl distributed), en dit tot Petabyte schaal kan worden ingezet. \parencite{lamb2012vertica}
-Is het vele malen duurder!
-De populaire MapReduce platformen zijn nog altijd te configureren met "Commodity Hardware" etc. \parencite{dean2008mapreduce}
-
-
-Voor langere tijd nu, staat Hadoop bekende als een volwasse technologie en implementatie van Map Reduce, zo schrijft Gartner in een recent rapport: "The open-source software framework known as Apache Hadoop has gained sizable acceptance in organizations, spurred on by the growing digital business appetite for big data" \parencite{hadoop2013selection}.
-
-Vele organisaties weten echter nog niet hoe ze deze technologie effectief kunnen inzetten. OOk al hebben organisaties nu wel de kennis, blijft de adoptie nog altijd laag. \parencite{hadoop2015adoption}
-
-
-\begin{comment}
-De evolutie van distributed applictions Google File System -> Map Reduce -> Apache Hadoop -> Hype is groot maar Mainstream Adoption is nog erg laag, complex landschap. De organisatie heeft eerder een Proof Of Concept gerealiseerd maar zag op tegen het beheer van een cluster. 
-Tegenwoordig is er ook success met hadoop in de cloud, aangeboden door Amazon EMR.
-Minpunten:
-- Hoge kosten
-- Opstart tijd van 17 minuten (zie benchmarks Spark vs Hadoop)
-
-Alternatief Spark erg enthasiaust vanuit het development Team, ook mogelijk op Amazon EMR
-\end{comment}
-
-% Rond 2009 MapReduce werd geïdentificeerd als een "Prominent parallel data processing tool" dat tractie kreeg vanuit zowel de industrie als de academische wereld. Zo concludeerde zij dat: "Naast traditionele Database Management Systems is Map Reduce een zeer schaalbare en flexibele oplossing is voor een variatie aan data analyses". \parencite{aarnio2009parallel} 
-
-
-% Kort nadat UC Berkley zijn cluster framework "Spark" heeft gedoneerd aan de Apache foundation in 2014, heeft het project enorme aandacht ontvangen vanuit de hele industrie. \parencite{spark2015intro}. Zo is er ook vanuit Shop2market enorme interesse in Apache Spark. Er zijn al eerder in 2015 Proof of Concept uitgevoerd met betrekking tot machine learning applicaties.
-
-% Terwijl nog veel organisaties zweven tussen het begrijpen en het vinden van de toepassing voor Hadoop \parencite{hadoop2015adoption}, is sinds 2013 een alternatief in memory implementatie van o.a. Map reduce enorm populair  \parencite{spark2015intro}
+Apache Spark, origineel ontwikkeld in UC Berkley heeft sinds zijn release in 2014 als opensource project meer contributies gezien dan Apache Hadoop in totaal heeft ontvangen\footnote{Met over 400 contributors is Apache Spark het meest actieve data processing framework in de industrie}. \parencite{armbrust2015spark}. Dit is veelbelovend en ook vanuit Shop2market is er een enorme interesse. In 2015 zijn er al successvolle expirimenten uitgevoerd met SparkML voor een Machine Learning applicatie.
 
 \subsubsection{\textbf{Conclusie}}
 
-De uiteindelijke selectie voor dit onderzoek is beperkt. De frameworks die zijn geselecteerd hebben genoeg herkenning vanuit de organisatie en industrie. De enorme lijst op github is getuige van de enorme hype rondom Big Data. Toch zijn veel organisaties nog zoekend naar wat technologie betekent en hoe het waarde toevoegd\parencite{hadoop2015adoption}.
+Er zijn verschillende technologieën gevonden die gebruik maken van een distributed of networked methode. Omdat in de huidige situatie de datasets niet groter zijn dan 2GB wordt er voor gekozen om geen POC uit te voeren met Hadoop.  In eerdere ervaring met Hive duren gegeven opdrachten minimaal tussen de 15 en 17 minuten. Dit is te verklaren doordat de SQL queries worden vertaalt naar de onderliggende MapReduce fases. \textcite{thusoo2010hive} Dit introduceert een significante overhead voor de huidige use-case.
 
-Verder zijn er in de eerder genoemde lijst (github) enorm veel tools benoemd. In dit onderzoek zullen naast Hadoop en Naast eerder besproken frameworks Spark en Hadoop zijn er andere technologieën waar colleg's eerdere ervaring mee hebben.
+Daarnaast is gevonden dat SparkSQL deze overhead niet ervaard doordat alle data communicatie in-memory plaats vindt. In tegendeel tot de vershillende fases in Hadoop waarbij er wordt gelezen en geschreven van het filesysteem (HDFS). Dit is genoeg motivatie om een POC uit te voeren met Apache Spark
+% waarbij Spark een vergelijkbaar algoritme toepast met dat van MapReduce maar veel performance gerelateerde issues voorkomen kunnen worden door het gebruik van in-memory data communicatie tussen verschillende fases.
+\verb TODO: add citation "Comparing Apache Spark and Map Reduce with Performance Analysis using K-Means"
 
-De selectie van technologieën komt uit op
-
-\begin{itemize}
-    \item Disco
-    \item Apache Flink
-    \item Hadoop (Apache MapReduce)
-    \item Apache Spark
-\end{itemize}
-
-Streaming methodes zoals bijvoorbeerld Apache Storm worden als toonaangeevend gezien maar zijn niet geselecteerd. Dit omdat de vorm waarin de data beschikbaar wordt gesteld aan het aggregatie proces altijd in batch is. Het valt buiten de scope om deze data flows te veranderen.

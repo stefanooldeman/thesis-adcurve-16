@@ -1,5 +1,9 @@
 Wat zijn de mogelijke oplossingen en hoe wordt dit gevalideerd?
 
+
+% Example story http://hortonworks.com/blog/benchmarking-apache-hive-13-enterprise-hadoop/
+
+
 Alle mogelijke oplossingen zijn besproken met het team, hierin is besloten dat er 3 mogelijke POC's worden uitgevoerd met de volgende technologieën:
 
 \begin{itemize}
@@ -12,12 +16,12 @@ De eerste fase uit het algoritme is een ETL stap, om csv en bson te converteren 
 De geconverteerde data wordt weg geschreven in bestanden per webwinkel als een methode om eenmalig te filteren i.p.v. meerdere malen tijdens het aggregatie proces.
 
 
-\textbf{Stategie 1, Hardware oplossing met Golang} 
-Het is praktisch mogelijk om data in sub sets te aggregeren omdat er een afzonderlijke data bron is per publisher. 
+\textbf{Stategie 1, Hardware oplossing met Golang}
+Het is praktisch mogelijk om data in sub sets te aggregeren omdat er een afzonderlijke data bron is per publisher.
 Het gebruiken van gesplitste bestanden per webshop zorgt voor kleine  en korte processen. Dit kan met verschillende technologieën worden geimplementeerd, voornamlijk General purpose languages, DSL, Hardware oplossingen.
 
 De totale performance hoeft niet te verbeteren, zolang het proces dat alleen data aggregatie uitvoert voor de specifieke webwinkel en publisher kort van duur is kan dit worden uitgevoerd op verschillende machines tegelijk om dit schaalbaar in te zetten.
-    
+
 \textbf{Strategie 2, Distributed oplossing met Spark}
 Alle data in een groep aggregeren, (op timezone en op publisher niveau). snel genoeg zodat er iedere dag de afgelopen 30 dagen wordt verwerkt.
 
