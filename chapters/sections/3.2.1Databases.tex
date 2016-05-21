@@ -1,8 +1,7 @@
-
-Een mogelijke oplossing is om een Datawarehouse te implementeren waarin alle benodigde data bronnen worden beheerd en data aggregaties worden uitgevoerd. 
+Een mogelijke oplossing is om een Datawarehouse te implementeren waarin alle benodigde data bronnen worden beheerd en data aggregaties worden uitgevoerd.
 
 Voor het maken van data aggregaties zijn basis SQL functies nodig: SUM, MIN, MAX, AVERAGE, samen met de SQL clauses: GROUP BY en HAVING. \parencite{data-mining}
-Omdat bijna alle database systemen deze functies ondersteunen is er gekeken naar databases die een hoog volume aan data kunnen verwerken. 
+Omdat bijna alle database systemen deze functies ondersteunen is er gekeken naar databases die een hoog volume aan data kunnen verwerken.
 
 Veel Database Management Systemen (DBMS), ondersteunen de benodigde functies maar implementeren transactionele mechanismes om data integriteit te garanderen, bijvoorbeeld: "locking-based concurrency control". Dit introduceert significante overhead. \parencite{harizopoulos2008oltp}. Verder raakt een DBMS overbelast wanneer een gevraagde opdracht\footnote{ Ieder SQL statement wordt vertaalt naar een opdracht door middel van een query plan.} niet optimaal kan worden uitgevoerd. Zo moet de opgevraagde dataset in het geheugen (RAM) passen, of er wordt terug gevallen op de harde schijf (zogeheten "Disk spills"). De gegeven use-case vraagt om het frequent uitvoeren van aggregaties en corrigeren van data bronnen. De combinatie hiervan introduceert mogelijke performance problemen. \parencite{kersten2011researcher}
 %"Moreover, database queries often contain blocking operations that lead to a pipeline stall or spilling large intermediates back to the disks." \parencite{kersten2011researcher}

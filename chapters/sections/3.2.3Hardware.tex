@@ -8,16 +8,4 @@ Binnen Shop2market zijn veel performance gerelateerde projecten opgelost met Gol
 
 \subsubsection{\textbf{Conclusie}}
 
-De besproken technologieën zijn de DSL talen: OptiML, OptiSQL en Forge. Bij gebrek aan praktische voorbeelden en algemeene documentatie is er voor gekozen om hier niet verder in te investeren. Er zou niet voldoende kennis zijn om een mogelijke POC naar productie te brengen. 
-
-%TODO: Voor data aggregaties worden methodes als MapReduce of Monte Carlo gebruikt
-
-Hoewel de Forge veelbelovende benchmarks presenteert wordt niet niet welke algoritmes hiervoor zijn gebruikt. In de use-case van dit onderzoek zal het MapReduce (de Monte Carlo methode) worden toegepast. \textcite{lee2010debunking} omschrijft "Monte Carlo algorithms are generally compute-bound with regular access patterns, which makes it a very good fit for SIMD architectures".
-
-Hierdoor wordt er mogelijk betere zou mogelijk betekenen dat er 
-Hieruit valt te concluderen dat er mogelijk een betere performance behaalt kan worden door het gebruik multicore CPU technologie zoals Golang in plaats van GPU processor capiciteit. 
-
-
-
-Gegeven de huidige requirements en bevindingen geeft dit genoeg motivatie om een POC te starten in Golang.
-
+De besproken technologieën zijn de DSL talen: OptiML, OptiSQL en Forge. Bij gebrek aan praktische voorbeelden en algemeene documentatie is er voor gekozen om hier niet verder in te investeren. Er zou niet voldoende kennis zijn om een mogelijke POC naar productie te brengen. Hoewel de Forge veelbelovende benchmarks presenteert, wordt niet vermeld welke algoritmes hierbij zijn gebruikt. Omdat in de huidige implementatie gebruik maakt van MapReduce (de Monte Carlo methode) hoeft deze performance niet behaalt te worden op een GPU. Zo schrijft \textcite{lee2010debunking}: "Monte Carlo algorithms are generally compute-bound with regular access patterns, which makes it a very good fit for SIMD architectures". Dit geeft genoeg motivatie om een POC in Golang te starten, gegeven dat het concurrency model van Golang optimaal gebruik maakt van Multicore CPU's.

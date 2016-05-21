@@ -5,7 +5,7 @@ Deelvraag 1 "Wat zijn de functionele en niet functionele eisen, waaraan de oplos
 
 Deelvraag 2 "Wat zijn toonaangevende methodes en technologieën om statistieken te berekenen, en passen bij de wensen en eisen van de opdracht?"\  wordt beantwoord in \ref{sec:deelvraag2}
 
-In \ref{sec:deelvraag3} wordt gekeken naar "Wat zijn de probleem scenario's waardoor gegevens niet te verklaren zijn, en wat zijn de mogelijke oplossingen?"\ 
+In \ref{sec:deelvraag3} wordt gekeken naar "Wat zijn de probleem scenario's waardoor gegevens niet te verklaren zijn, en wat zijn de mogelijke oplossingen?"\
 
 In Deelvraag 4 is beantwoord in \ref{sec:deelvraag4} wordt belicht hoe de expirementen zijn ontworpen
 
@@ -25,6 +25,8 @@ Conclusies en een vergelijking wordt gemaakt in het betantwoorden van Deelvraag 
 
 Wat zijn toonaangevende methodes en technologieën om statistieken te berekenen, en passen bij de wensen en eisen van de opdracht?
 
+Voor data aggregaties worden veeleal methodes als MapReduce gebruikt, deze methode werd eerder vernoemd als Monte Carlo door \textcite{asanovic2006landscape} en eerdere referenties zijn te vinden in \textcite{lee2010debunking}. Het algoritme wordt in de huidige situatie toegepast en is karakterstiek voor de gegeven use-case. Later wordt duidelijk hoe verschillende technologieën hier anders mee om gaan. Zo wordt gekeken mogelijke hardware specifieke oplossingen in \ref{sec:hardware}.
+
 Uit verschillende bronnen zijn richtingen gevonden voor mogelijke oplossingen. Zoals het gebruik van database oplossingen, distributed oplossingen, en hardware oplossingen.
 \footnote{
 Uit de volgende opgevraagde webpagina's zijn verschillende onderzoeksrichtingen gevonden. De github pagina heeft over 200 technologieën en referenties naar verschillende papers.
@@ -37,17 +39,27 @@ Uit de volgende opgevraagde webpagina's zijn verschillende onderzoeksrichtingen 
 \end{enumerate}
 }
 
+\begin{comment}
+Er zijn een aantal oplossingen gevonden die maximaal gebruik kunnen maken van de performance die moderne hardware te bieden heeft
+- clustered databases analytics / datawarehouses (RDBMS): google bigquery, vertica, redshift, hadoopDb, Teradata
+- map reduce platform: spark, hadoop, disco etc.
+- Hardware, software solutions: Forge en Golang Python, MATLAB, R, Golang, Rust
+\end{comment}
+
 \newpage
 
 \subsection{Databasese oplossingen}
+\label{subsec:databases}
 \input{chapters/sections/3.2.1Databases}
 \clearpage
 
 \subsection{Distributed oplossingen}
+\label{subsec:distributed}
 \input{chapters/sections/3.2.2Distributed}
 \clearpage
 
 \subsection{Hardware oplossingen}
+\label{subsec:hardware}
 \input{chapters/sections/3.2.3Hardware}
 \clearpage
 
