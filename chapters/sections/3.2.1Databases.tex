@@ -3,7 +3,7 @@ Een mogelijke oplossing is om een Datawarehouse te implementeren waarin alle ben
 Voor het maken van data aggregaties zijn basis SQL functies nodig: SUM, MIN, MAX, AVERAGE, samen met de SQL clauses: GROUP BY en HAVING. \parencite{data-mining}
 Omdat bijna alle database systemen deze functies ondersteunen is er gekeken naar databases die een hoog volume aan data kunnen verwerken.
 
-Veel Database Management Systemen (DBMS), ondersteunen de benodigde functies maar implementeren transactionele mechanismes om data integriteit te garanderen, bijvoorbeeld: "locking-based concurrency control". Dit introduceert significante overhead. \parencite{harizopoulos2008oltp}. Verder raakt een DBMS overbelast wanneer een gevraagde opdracht\footnote{ Ieder SQL statement wordt vertaalt naar een opdracht door middel van een query plan.} niet optimaal kan worden uitgevoerd. Zo moet de opgevraagde dataset in het geheugen (RAM) passen, of er wordt terug gevallen op de harde schijf (zogeheten "Disk spills"). De gegeven use-case vraagt om het frequent uitvoeren van aggregaties en corrigeren van data bronnen. De combinatie hiervan introduceert mogelijke performance problemen. \parencite{kersten2011researcher}
+Veel Database Management Systemen (DBMS), ondersteunen de benodigde functies maar implementeren transactionele mechanismes om data integriteit te garanderen, bijvoorbeeld: ``locking-based concurrency control". Dit introduceert significante overhead. \parencite{harizopoulos2008oltp}. Verder raakt een DBMS overbelast wanneer een gevraagde opdracht\footnote{ Ieder SQL statement wordt vertaalt naar een opdracht door middel van een query plan.} niet optimaal kan worden uitgevoerd. Zo moet de opgevraagde dataset in het geheugen (RAM) passen, of er wordt terug gevallen op de harde schijf (zogeheten ``Disk spills"). De gegeven use-case vraagt om het frequent uitvoeren van aggregaties en corrigeren van data bronnen. De combinatie hiervan introduceert mogelijke performance problemen. \parencite{kersten2011researcher}
 %"Moreover, database queries often contain blocking operations that lead to a pipeline stall or spilling large intermediates back to the disks." \parencite{kersten2011researcher}
 
 % \footnote{Door frequent te aggregeren en corrigeren van data bronnen door middel van incremental loading of vervangen van datasets door 'UPDATE' of 'DELETE and INSERT' statements}
@@ -17,7 +17,7 @@ Michael Stonebraker, database pionier en origineel auteur PostgreSQL
 \footnote{
  Opvallend is dat Bijna alle High Performance en Analytical databases afstammen van Postgres \parencite{postgresforks}. Dit dient als getuige van de enorme hoeveelheid research die is geïnvesteerd in (opensource) oplossingen op basis van PostgeSQL.
 }
-, omschrijft drie verschillende database storage engines: shared memory, shared disk en shared nothing. "Because shared nothing does not typically have nearly as severe bus or resource contention as shared-memory or shared-disk machines, shared nothing can be made to scale to hundreds or even thousands of machines. Because of this, it is generally regarded as the best-scaling architecture". \parencite{dewitt2006build}
+, omschrijft drie verschillende database storage engines: shared memory, shared disk en shared nothing. ``Because shared nothing does not typically have nearly as severe bus or resource contention as shared-memory or shared-disk machines, shared nothing can be made to scale to hundreds or even thousands of machines. Because of this, it is generally regarded as the best-scaling architecture". \parencite{dewitt2006build}
 
 
 \subsubsection{\textbf{Conclusie}}
@@ -27,14 +27,21 @@ Er zijn verschillende beschikbare technologieën gevonden in de vorm een DBMS op
 % Vervolgens  vergelijkings matrix zijn de requirements vergeleken met de eigenschappen van iedere DBMS.
 
 \begin{itemize}
-    \item Teradata
-    \item GreenplumDB, door Pivotal
+    \item Pivotal GreenplumDB
     \item HP Vertica
     \item Amazon Redshift
 \end{itemize}
 
 
-
-% De volgende lijst van database systemen bieden ook de mogelijkheid tot Analytics met behulp van "windowing" of "time-series" functies.
-% Redshift
-% Vertica
+\begin{table}[bh]
+\caption{My caption}
+\label{tab:matrix_databasese}
+\begin{tabular}{|l|l|l|l|l|l|l|}
+\hline
+keyword     & support & scalability / performance & productief & testbaar & kennis &       \\ \hline
+referentie  & a (3)   & b (2)                     & c (2)      & d (1)    & e (1)  & score \\ \hline
+GreenplumDB & +       & +                         & -          & -        & -      & 5     \\ \hline
+Vertica     & +       & +                         & +          & -        & +      & 8     \\ \hline
+Redshift    & +       & +                         & +          & -        & +      & 8     \\ \hline
+\end{tabular}
+\end{table}

@@ -1,4 +1,30 @@
 \documentclass[whitelogo]{tudelft-report}
+
+% options avaiable to fix white pages
+% http://www.nada.kth.se/~carsten/latex/class.html
+
+% 1) use `openany` to prevent white pages between chapters
+% 2)  `oneside`, but this mide have unwanted layout effects as well. like margins are different on uneven pages when printing
+
+% 3) overwrite cleardoublepage, the white pages appear on uneven pages, because the default option with book is openright 
+\makeatletter
+    \def\cleardoublepage{\clearpage%
+        \if@twoside
+            \ifodd\c@page\else
+                \vspace*{\fill}
+                \hfill
+                \begin{center}
+                This page intentionally left blank.
+                \end{center}
+                \vspace{\fill}
+                \thispagestyle{empty}
+                \newpage
+                \if@twocolumn\hbox{}\newpage\fi
+            \fi
+        \fi
+    }
+\makeatother
+
 \usepackage{changes}
 \usepackage{csquotes}
 \usepackage[dutch]{babel}

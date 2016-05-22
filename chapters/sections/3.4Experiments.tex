@@ -1,43 +1,111 @@
-Wat zijn de mogelijke oplossingen en hoe wordt dit gevalideerd?
+% \textbf{Hardware oplossing met Golang}
+% Het is praktisch mogelijk om data in sub sets te aggregeren omdat er een afzonderlijke data bron is per publisher.
+% Het gebruiken van gesplitste bestanden per webshop zorgt voor zeer korte levende processen. De totale performance hoeft niet te verbeteren, zolang het proces dat alleen data aggregatie uitvoert voor de specifieke webwinkel en publisher kort van duur is kan dit worden uitgevoerd op verschillende machines tegelijk om dit schaalbaar in te zetten. "We typically find that the highest performance is achieved when multiple threads are used per core. For Core i7, the best performance comes from running 8 threads on 4 cores" \parencite{lee2010debunking}
+
+% \textbf{Distributed oplossing met Spark}
+% Door gebruik te maken van distributed functionaliteiten van Spark wordt getest of de snelheid waar spark bekend om staat (paper) behaald kan worden in onze use case. Er is de mogelijkheid om unit tests en functional tests te schrijven, dit wordt aangeboden door het framework. Het wegschrijven van meerdere resultaten in een proces kan door het partitionener van output data op (PublisherID, ShopID). Ook kunnen er meerdere dagen in een proces worden verwerkt en het resultaat wordt weggeschreven per TimeID, PublisherID en ShopID
 
 
-% Example story http://hortonworks.com/blog/benchmarking-apache-hive-13-enterprise-hadoop/
+In dit hoofdstuk worden gepresenteerd hoe de POC / expirimenten zijn ontworpen. Zoals is te lezen in \ref{sec:deelvraag3} is zijn de best mogelijke oplossingen te ontwikkelen met behulp van \textit{Golang} en \textit{Apache Spark}. In overeenstemming met de organisatie zijn verdere succesfactoren gedefinieerd per POC.
 
 
-Alle mogelijke oplossingen zijn besproken met het team, hierin is besloten dat er 3 mogelijke POC's worden uitgevoerd met de volgende technologieën:
+% De uitvoer van het project bestaat uit drie fases; Data preperation, Go Aggregate en Spark SQL
+% In fase 1 vindt de ETl processing plaats. Als de resultaten snel genoeg zijn, zal dit worden hergebruikt in fase 2 en 3.
+% TODO Leg uit dat Spark SQL niet wordt aangeraden voor ETL wanneer dit alleen mapping fases heeft
+
+
+\subsection{Ontworpen expirimenten}
+
+zoals wordt omschreven in de originele doelstelling in \ref{sec:doelstelling} ``moet data op tijd worden verwerkt evenals het tijdig herstellen van fouten mogelijk zijn".
+
+Daarom wor welke mogelijke opr conneciton again..ssing  presteerd gegeven de huidige context.
+Voor het evalueren van de twee verschillende oplossingen is besloten om geen latency, IO, memory of CPU gerelateerde benchmarks te evalueren.
+% Door de beperkte tijd van het project 
+Dit omdat door de  academia en industry veel energie is geinvesteerd in het verbeteren van performance van bijv. data processing tools zoals hadoop en spark.
+
+
+De expirmenten worden uitgevoerd met een productie data set van één dag (, waarbij drie vershillende type aggregaties worden uitgevoerd op "commodity hardware", namelijk een Macbook pro waarvan de exacte specificaties later worden omschreven in sectie \ref{subsec:3.4hardware_specs}.
+
+Voor de ETl fase zijn 2 datasets gebruikt, namelijk.
+
+\textbf{Orders}
+
+het bestand is origineel 238MB groot, dit is in een Binary JSON (BSON) compressie formaat,
+Na het ETL is de dataset ... groot voor alle relevantie colommen zijn geconverteerd naar JSON. De dataset is ... groot wanneer de extra colommen voor visits zijn inbegrepen. 
+
+Dit betekend dat de input voor de latere aggregatie ... groot is voor orders.
+
+\textbf{Visits}
+het bestand is orgineel 1.0GB groot, dit is in een CSV bestand waarbij de TAB charachter als delimiter gebruikt wordt. Het bestand gebruikt geen compressie formaat.
+Na het ETL is de dataset ... groot voor alle relevantie colommen zijn geconverteerd naar JSON. De dataset is ... groot wanneer de extra colommen voor visits zijn inbegrepen. Voor de performance evaluatie worden wordt de productie data set geaggregeerd in op drie verschillende niveau's, per key
 
 \begin{itemize}
-    \item Golang
-    \item Apache Spark
+    \item TimeId, ChannelID
+    \item TimeId, ChannelID, ShopId
+    \item TimeId, ChannelID, ShopId, ShopProductId
 \end{itemize}
 
-\textbf{Data preperation}
-De eerste fase uit het algoritme is een ETL stap, om csv en bson te converteren naar een uniform schema.
-De geconverteerde data wordt weg geschreven in bestanden per webwinkel als een methode om eenmalig te filteren i.p.v. meerdere malen tijdens het aggregatie proces.
+Er worden twee metingen gedaan voor iedere aggregatie,  process dat de aggregatie uitvoert worden twee waardes geregistreerd.  De totale proces tijd gemeten door unix time (manpage: \url{http://linux.die.net/man/1/time} en de totale tijd zonder de warmup time.
+
+Omdat Golang compileerd naar assembly is er geen sprake van warmup time
+
+Warmup time wordt in dit expiremnt omschreven als de tijd die nodig tussen het starten van het proces en het werkelijk uitvoeren van de geschreven implementatie. Dit zijn mogelijke voorbereidende instructies zoals:
+- het vertalen van een programmeer taal naar de machine taal, in het geval zijn de meest significante stappen: vertalen van SQL naar Java, het starten van JVM en gebruik van JIT.
+
+y. The first three queries have three variants that each
+use the same input data size but have different result sizes
+to reflect a spectrum between business-intelligence-like
+queries (with result sizes that could fit in memory on a
+business intelligence tool) and ETL-like queries with
+large result sets that require many machines to store. We
+run the queries in series and run five iterations of each
+query.
 
 
-\textbf{Stategie 1, Hardware oplossing met Golang}
-Het is praktisch mogelijk om data in sub sets te aggregeren omdat er een afzonderlijke data bron is per publisher.
-Het gebruiken van gesplitste bestanden per webshop zorgt voor kleine  en korte processen. Dit kan met verschillende technologieën worden geimplementeerd, voornamlijk General purpose languages, DSL, Hardware oplossingen.
 
-De totale performance hoeft niet te verbeteren, zolang het proces dat alleen data aggregatie uitvoert voor de specifieke webwinkel en publisher kort van duur is kan dit worden uitgevoerd op verschillende machines tegelijk om dit schaalbaar in te zetten.
-
-\textbf{Strategie 2, Distributed oplossing met Spark}
-Alle data in een groep aggregeren, (op timezone en op publisher niveau). snel genoeg zodat er iedere dag de afgelopen 30 dagen wordt verwerkt.
+\subsection{ETL Process, Data preperation}
 
 
-\textbf{Databases} worden niet overwogen vanwege het programmeermodel, deze is zeer productief maar is niet eenvoudig te testen. Daarnaast heeft de organisatie niet de expertise om een Shared nothing database systeem (een cluster van machines) in een productie omgeving te onderhouden en te schalen.
-
-\textbf{Parallel programming} wordt gebruikt in het POC met Spark. Door gebruik te maken van distributed functionaliteiten van Spark wordt getest of de snelheid waar spark bekend om staat (paper) behaald kan worden in onze use case. Er is de mogelijkheid om unit tests en functional tests te schrijven, dit wordt aangeboden door het framework.
-het wegschrijven van meerdere resultaten in een proces kan door het partitionener van output data op (PublisherID, ShopID). Ook kunnen er meerdere dagen in een proces worden verwerkt en het resultaat wordt weggeschreven per TimeID, PublisherID en ShopID
-
-Als \textbf{Hardware oplossing} wordt gebruik gemaakt van Golang. Hierbij zal de performance van multicore processors worden getest. Deze taal is vergelijkbaar met C++ in zijn performance. Uit test resultaten door \cite{lee2010debunking} is gevonden dat een MapReduce operaties (Monte Carlo algoritme) sneller is op een CPU in vergelijking met een GPU (Te programmeren via eerder besproken andere DSL) "We typically find that the highest performance is achieved when multiple threads are used per core. For Core i7, the best performance comes from running 8 threads on 4 cores" \parencite{lee2010debunking}
-
-\subsection{De volgende kwaliteits eisen zijn vastgelegd aan ieder POC}
-
-TODO
-
-% De aanroep van het process moet data uit de volgende datasets uit s3 lezen:
+De eerste fase uit het algoritme is een ETL stap, om csv en bson te converteren naar een uniform schema. 
+dit heeft de volgende voordelen
 % de visits (csv) dump uit Cassandra, orders (bson) dump uit MongoDb, Geïmporteerde advertentiekosten van diverse publishers (csv)
+
+
+download data sets, unzip, run splitter. bson naar json en csv naar json. 
+de structuur van orders bson is als volgt
+
+de structuur van visits bson is als volgt
+
+dit resulteert in het volgende schema
+data wordt weg geschreven in bestanden per webwinkel
+dit heeft de volgende reden / voordelen
+% als een methode om eenmalig te filteren i.p.v. meerdere malen tijdens het aggregatie proces.
+
+
+\subsection{Golang}
+
+- wat zijn de eisen die zijn besproken
+
+- de oplossing is als volgt ontworpen
+
+- de gevonden resultaten
+
+
+\subsection{Spark}
+
+- wat zijn de eisen die zijn besproken
+
+- de oplossing is als volgt ontworpen
+
+- de gevonden resultaten
+
+
+\subsection{De setup}
+\label{subsec:3.4hardware_specs}
+
+
+
+
+
 
 

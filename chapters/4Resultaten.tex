@@ -27,8 +27,8 @@ Wat zijn toonaangevende methodes en technologieën om statistieken te berekenen,
 
 Voor data aggregaties worden veeleal methodes als MapReduce gebruikt, deze methode werd eerder vernoemd als Monte Carlo door \textcite{asanovic2006landscape} en eerdere referenties zijn te vinden in \textcite{lee2010debunking}. Het algoritme wordt in de huidige situatie toegepast en is karakterstiek voor de gegeven use-case. Later wordt duidelijk hoe verschillende technologieën hier anders mee om gaan. Zo wordt gekeken mogelijke hardware specifieke oplossingen in \ref{sec:hardware}.
 
-Uit verschillende bronnen zijn richtingen gevonden voor mogelijke oplossingen. Zoals het gebruik van database oplossingen, distributed oplossingen, en hardware oplossingen.
-\footnote{
+
+Uit verschillende bronnen zijn richtingen gevonden voor mogelijke oplossingen. Zoals het gebruik van database oplossingen, distributed oplossingen, en hardware oplossingen. \footnote{
 Uit de volgende opgevraagde webpagina's zijn verschillende onderzoeksrichtingen gevonden. De github pagina heeft over 200 technologieën en referenties naar verschillende papers.
 \begin{enumerate}
     \item \url{https://github.com/onurakpolat/awesome-bigdata}
@@ -38,6 +38,20 @@ Uit de volgende opgevraagde webpagina's zijn verschillende onderzoeksrichtingen 
     \item \url{http://radar.oreilly.com/2014/01/a-compelling-family-of-dsls-for-data-science.html}
 \end{enumerate}
 }
+
+
+De gevonden oplosingen zullen worden getoetst aan de volgende non-functional requirements:
+\begin{enumerate}[label=(\alph*)]
+   \item genoeg ondersteuning vanuit opensource of commerciële industry;
+   \item indicatoren tot schaalbaarheid en high performance;
+   \item onderstuend een productief programmeer model;
+   \item code is testbaar;
+   \item interne en externe beschikbare kennis in de vorm van documentatie en developers.
+\end{enumerate}
+
+Zie de volgende tabellen waarbij deze requirements worden getoetst.
+% TODO
+
 
 \begin{comment}
 Er zijn een aantal oplossingen gevonden die maximaal gebruik kunnen maken van de performance die moderne hardware te bieden heeft
@@ -49,17 +63,17 @@ Er zijn een aantal oplossingen gevonden die maximaal gebruik kunnen maken van de
 \newpage
 
 \subsection{Databasese oplossingen}
-\label{subsec:databases}
+\label{sec:databases}
 \input{chapters/sections/3.2.1Databases}
 \clearpage
 
 \subsection{Distributed oplossingen}
-\label{subsec:distributed}
+\label{sec:distributed}
 \input{chapters/sections/3.2.2Distributed}
 \clearpage
 
 \subsection{Hardware oplossingen}
-\label{subsec:hardware}
+\label{sec:hardware}
 \input{chapters/sections/3.2.3Hardware}
 \clearpage
 
