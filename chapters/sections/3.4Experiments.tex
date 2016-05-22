@@ -16,26 +16,23 @@ In dit hoofdstuk worden gepresenteerd hoe de POC / expirimenten zijn ontworpen. 
 
 \subsection{Ontworpen expirimenten}
 
-De voornaamste doelstelling van het POC is om te valideren welke mogelijke oplossing beter presteerd gegeven de huidige context.
-Voor het evalueren van de twee verschillende oplossingen is besloten om geen latency, IO, memory of CPU gerelateerde benchmarks te evalueren.
-% Door de beperkte tijd van het project 
-Dit omdat door de  academia en industry veel energie is geinvesteerd in het verbeteren van performance van bijv. data processing tools zoals hadoop en spark.
+Zoals wordt omschreven in de originele doelstelling in \ref{sec:doelstelling} ``moet data op tijd worden verwerkt evenals het tijdig herstellen van fouten mogelijk zijn".  Daarom valideert dit expiriment welk POC beter presteert gegeven de huidige context. Voor het meten van de prestaties worden er drie vershillende type aggregaties uitgevoerd op "Commodity hardware", de exacte specificaties worden later omschreven in sectie \ref{subsec:3.4hardware_specs}.  Er wordt gebruik gemaakt van een productie data set van één willekeurige dag.
 
+Tijdens iedere aggregatie worden er twee metingen: de totale proces \footnote{tijd word gemeten door unix \verb#time# zie de documentatie voor time: \url{http://linux.die.net/man/1/time}} en de totale tijd zonder de warmup time.  Warmup time wordt in dit expiremnt omschreven als de tijd die nodig tussen het starten van het proces en het werkelijk uitvoeren van de geschreven implementatie. Dit zal worden toegelicht per POC.
 
-De expirmenten worden uitgevoerd met een productie data set van één dag (, waarbij drie vershillende type aggregaties worden uitgevoerd op "commodity hardware", namelijk een Macbook pro waarvan de exacte specificaties later worden omschreven in sectie \ref{subsec:3.4hardware_specs}.
+Voor het evalueren van de twee POCs is besloten om geen latency, IO, memory of CPU gerelateerde benchmarks te evalueren. Veelal omdat dit inzicht in geeft in prestaties van de hardware. En omdat door de  academia en industry veel energie investeerd in het verbeteren van performance van bijv. data processing tools zoals hadoop en spark. Voor de doelstellingen van het project (in dit stadium) is de totale proces tijd belangrijker.
 
-Voor de ETl fase zijn 2 datasets gebruikt, namelijk.
+\subsection{Gebruikte data sets}
 
-\textbf{Orders}
+Tijdens de drie fases van het expirement wordt inconsistent gebruik gemaakt van een data set uit productie als data input. De data set bestaat uit visits en orders van 264 webwinkels uit de benelux.
 
-het bestand is origineel 238MB groot, dit is in een Binary JSON (BSON) compressie formaat,
-Na het ETL is de dataset ... groot voor alle relevantie colommen zijn geconverteerd naar JSON. De dataset is ... groot wanneer de extra colommen voor visits zijn inbegrepen. 
+\begin{itemize}
+    \item Het \textbf{Orders} bestand is origineel 0.2494 GB groot, dit is in een Binary JSON (BSON) compressie formaat, Na het ETL waarbij alleen de alleen de relevantie metrieken overblijven is de dataset 0.04734 GB groot. Dit is een JSON formaat waarbij alle extra colommen voor visits ook zijn inbegrepen en een default waarde hebben.
 
-Dit betekend dat de input voor de latere aggregatie ... groot is voor orders.
+    \item Het \textbf{Visits} bestand is orgineel 1.0GB groot, dit is in een CSV bestand waarbij de TAB charachter als delimiter wordt gebruikt.  Na het ETL waarbij alleen de alleen de relevantie metrieken overblijven is de dataset 0.04734 GB groot. Dit is hetzelfde JSON formaat waarbij alle extra colommen voor orders zijn ingebrepen en een default waarde hebben.
+\end{itemize}
 
-\textbf{Visits}
-het bestand is orgineel 1.0GB groot, dit is in een CSV bestand waarbij de TAB charachter als delimiter gebruikt wordt. Het bestand gebruikt geen compressie formaat.
-Na het ETL is de dataset ... groot voor alle relevantie colommen zijn geconverteerd naar JSON. De dataset is ... groot wanneer de extra colommen voor visits zijn inbegrepen. Voor de performance evaluatie worden wordt de productie data set geaggregeerd in op drie verschillende niveau's, per key
+Het resultaat van de ETL voor orders en visits wordt als input data gebruikt voor iedere aggregatie. De drie aggregaties zijn variaties waarbij dezelfde input data wordt gebruikt, maar waarvan het resultaat verschilt per aggregatie in data grootte. Dit is om de huidige situatie en business needs te simuleren. Een grotere data set past wellicht wel of niet in het geheugen (RAM). De drie variates maken gebruik van de volgende keys waarop de aggregatie functie \verb#SUM(metric)# wordt toegepast:
 
 \begin{itemize}
     \item TimeId, ChannelID
@@ -43,33 +40,16 @@ Na het ETL is de dataset ... groot voor alle relevantie colommen zijn geconverte
     \item TimeId, ChannelID, ShopId, ShopProductId
 \end{itemize}
 
-Er worden twee metingen gedaan voor iedere aggregatie,  process dat de aggregatie uitvoert worden twee waardes geregistreerd.  De totale proces tijd gemeten door unix time (manpage: \url{http://linux.die.net/man/1/time} en de totale tijd zonder de warmup time.
-
-Omdat Golang compileerd naar assembly is er geen sprake van warmup time
-
-Warmup time wordt in dit expiremnt omschreven als de tijd die nodig tussen het starten van het proces en het werkelijk uitvoeren van de geschreven implementatie. Dit zijn mogelijke voorbereidende instructies zoals:
-- het vertalen van een programmeer taal naar de machine taal, in het geval zijn de meest significante stappen: vertalen van SQL naar Java, het starten van JVM en gebruik van JIT.
-
-y. The first three queries have three variants that each
-use the same input data size but have different result sizes
-to reflect a spectrum between business-intelligence-like
-queries (with result sizes that could fit in memory on a
-business intelligence tool) and ETL-like queries with
-large result sets that require many machines to store. We
-run the queries in series and run five iterations of each
-query.
-
-
+Ieder opdracht (aggregatie) wordt in één serie vijf keer herhaalt, waarvan een vervolgens de twee metingen worden geregistreerd. Over de metingen wordt een gemiddelde genomen.
 
 \subsection{ETL Process, Data preperation}
 
-
-De eerste fase uit het algoritme is een ETL stap, om csv en bson te converteren naar een uniform schema. 
+De eerste fase uit het algoritme is een ETL stap, om csv en bson te converteren naar een uniform schema.
 dit heeft de volgende voordelen
 % de visits (csv) dump uit Cassandra, orders (bson) dump uit MongoDb, Geïmporteerde advertentiekosten van diverse publishers (csv)
 
 
-download data sets, unzip, run splitter. bson naar json en csv naar json. 
+download data sets, unzip, run splitter. bson naar json en csv naar json.
 de structuur van orders bson is als volgt
 
 de structuur van visits bson is als volgt
@@ -88,6 +68,8 @@ dit heeft de volgende reden / voordelen
 
 - de gevonden resultaten
 
+- warmup time is in gecompileerde Go code niet van toepassing.
+Omdat Golang compileerd naar assembly is er geen sprake van warmup time
 
 \subsection{Spark}
 
@@ -96,6 +78,9 @@ dit heeft de volgende reden / voordelen
 - de oplossing is als volgt ontworpen
 
 - de gevonden resultaten
+
+- warmup time
+De warmup tijd in spark is te verklaren doordat de Spark SQL syntax wordt veraalt naar Java, het de java code wordt vertaal naar systeem code door de JVM.
 
 
 \subsection{De setup}
