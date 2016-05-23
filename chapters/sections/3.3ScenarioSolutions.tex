@@ -1,80 +1,114 @@
 \textit{Wat zijn de probleem scenario's waardoor gegevens niet te verklaren zijn, en wat zijn de mogelijke oplossingen?}
 
-% Hiervoor zijn anekdotes verzameld van stakeholders waarbij zei vertelden over scenario 's die voor verwarring zorgen bij gebruikers.
-Uit interview met verschillende stakeholders binnen shop2market zijn een aantal problematische scenario's besproken. Deze hebben geleidt tot de functionele en non functionele eisen in tabel \ref{table:requirements}. Tijdens de interviews zijn veel symptomen besproken en de impact op de organisatie en de klanten van Shop2market. Hier worden deze scenario's en hun impact inzichtelijk gemaakt.
+Tijdens de project analyse is met verschillende stakeholders binnen de organisatie gesproken. Naast de gedefinieerde project eisen, eerder omschreven in tabel \ref{table:requirements} zijn er verschillende symptomen verzameld. Op basis hiervan is een Impact analyse gemaakt, waarbij de ernst van de situatie wordt uitgedrukt in een waarde. Zie hiervoor bijlage (TODO ref).
+% TODO leg uit hoe de waarde tot stant komt FEMA
 
-% "the right tool for the job"
-In het de vorige deelvraag in \ref{sec:deelvraag2} is een shortlist gepresenteerd van geschikte technologieën voor een POC's.
-Niet alleen moet een oplossing overeenkomen met de requirements, maar een verkeerde inzet van een technologie moet door deze analyse te voorkomen zijn.
+Vervolgens is per probleem scenario een mogelijke technische verklaring gezocht, zijn er criteria omschreven waaraan de mogelijk oplossing moet voldoen. Hierdoor wordt getoetst of de geselecteerde technologieën in  \ref{sec:gevonden_tools} toepasbaar zijn en de huidige probleem scenario werkelijk kunnen oplossen.
 
-De vraag wordt in delen beantwoord: Wat zijn de probleem scenario's, wat is hiervan de achterliggende oorzaak, en hoe kan dit worden opgelost?
+\subsection{Scenario's uit de Impact Analyse}
 
 
-% Wat zijn de probleem scenario's
-\subsection{Impact analyse}
+\begin{enumerate}
+    \item L6: Api's provided by the publisher are not available
+    \item M5: Apis' for google,change and the import stops working, or fail silent (values are not matched,,resulting in empty fields)
+    \item H6: Wrong costs by configuration, issues: mistakes in tracking Order amount, tracked wrong, multiplied by 100 bug
+    \item L7: Metrics calculated incorrectly because of mismatching product data (ids from tracking don't match cost exports from publisher)
+    \item L7: Calculations fail,because technology or infrastructure 
+    \item L4: Aggregations from different dimensions on the same data
+    don't match
+    \item H7 Bij het bekijken van dashboards in Adcurve zijn de gegevens over de vorige dag pas beschikbaar na 12:30 CET. Omdat alle data in een keer wordt verwerkt wordt het proces gestart nadat alle afhankelijke data bronnen beschikbaar zijn.
+\end{enumerate}
 
-In tabel / bijlage (impact analyse) zijn de volgende scenario's geclassificeerd in verschillende categorieën. Hieruit valt af te lezen wat de werkelijke impact is, en welke prioriteit (severity) het probleem daarom krijgt.
+Scenario een (1) tot en met vier (4) zijn niet te voorkomen omdat de organisatie zelf hier weinig invloed op kan hebben. Het wordt veroorzaakt door externe processen bij publishers, of mensen in diesnt van de webwinkel die de advertenties of webwinkel integraties verkeerd configureren. Scenario vijf (5) en zes (6) hebben een hoge impact en zijn specifieke problemen met de huidige implementatie. Deze scenario's zijn te voorkomen door het inzetten van andere technologie of een andere strategie als het aan komt op data processing.
+Scenario 7 is eerder besproken tijdens de non functionele eisen in \ref{table:requirements}. Deze is opgenomen zodat onderzocht wordt hoe dit het best kan worden voorkomen.  
 
-
-Scenario 1 en 2 [Costs Missing] zijn niet te voorkomen, (advies: implementeer detectie). Scenario 3 en 4 [Costs Incorrect] zijn lastig te detecteren, komt niet vaak voor
-
-Voor de hierboven besproken scenario's geldt: zodra er een oplossing is moeten de datakwaliteit worden herstelt door het proces te starten dat de correcties uitvoert ["effected datasources" opnieuw evalueren]
-Deze scenario's zijn ook tegelijkertijd lastig te voorkomen, alleen te herstellen. Het advies is daarom om hier "monitoring en alerting" voor te implementeren. Zie ook andere maatregelen zoals bijv. het aanwijzen van Data stewards (TODO: reference term, paper)
-
-Scenario 5 komt soms voor en heeft een grootte impact doordat het herstel momenteel erg veel tijd kost.
-
-
-Scenario 6 is specifiek probleem met de huidige implementatie en komt soms voor. 
-TODO: vraag Stanislav voor technische redenen, kennis etc.
-  
-
-% \item Bij het bekijken van dashboards in Adcurve zijn de gegevens over de vorige dag pas beschikbaar na 12:30 CET. Omdat alle data in een keer wordt geaggregeerd kan het proces worden gestart nadat alle afhankelijke data bronnen beschikbaar zijn. Door een publisher wordt de data beschikbaar gemaakt na 10 uur s\'ochtends. Daarom start het proces pas om 11 uur. \\ H6
-% Api not available,for admarkt, kieskeurig etc & L6
-% Apis' for google,change and the import stops working, or fail silent (values are not matched,,resulting in empty fields) & M5
-% Configuration or bugs & Wrong costs by configuration, issues: mistakes in tracking Order amount, tracked wrong, multiplied by 100 bug & H6
-% Costs incorrect & Metrics calculated incorrectly & L7
-% Stats not available & Calculations fail,because technology or infrastructure & L7
-% Aggregations \newline don't match & Aggregations from different dimensions on the same data don't match & L4
-
+\clearpage
 
 \subsection{Technische te verklaren oorzaken}
 
-Zoals besproken zijn scenario 5 en 6 mogelijk te voorkomen. Dit in conjunction met de non functional requirements besproken in \ref{sec:deelvraag1} zijn de voornaamste redenen om naar een andere oplossing te zoeken.
+Met betrekking tot scenario vijf (5) en zeven (6) zijn verschillende problemen gevonden in relatie tot de gebruikte versie van MongoDB \parencite{mongo_changelog}. Uit monitoring systemen zijn de foutmeldingen terug te relateren aan software bugs die aanwezige zijn in versie 2.4.
 
-De volgende technische redenen huidige implementatie zijn bekend binnen de organisatie
-
-% MongoDB version 2.4
-% https://docs.mongodb.com/v2.4/core/map-reduce/
+De consensus binnen de organisatie is dat een upgrade naar een volgende versie riskant is. Het is niet in te schatten hoe veel problemen er zullen optreden. Daarnaast moeten er processen worden ingericht om het synchroniseren van order te ondersteunen en data verlies te voorkomen wanneer de database offline moet.
+% TODO: is het mogelijke om machines van verschillende versies naast elkaar te draaien in een cluster?
+    
+Met betrekking tot scenario zeven (7) zijn de volgende mogelijke oorzaken gevonden:
 
 \begin{itemize}
-    \item inladen en wegschrijven van resultaten duurt lang => versnel IO operaties. "After every insert, update, or delete operation, MongoDB must update every index associated with the collection in addition to the data itself. Therefore, every index on a collection adds some amount of overhead for the performance of write operations."
-    % https://docs.mongodb.com/v2.4/core/write-performance/
-    
-    \item "Your working set should stay in memory to achieve good performance. Otherwise many random disk IO’s will occur, and unless you are using SSD, this can be quite slow." 
-    % https://docs.mongodb.com/v2.4/faq/diagnostics/
-    
-    \item Niet voldoende hardeschijfruimte
-    "MongoDB supports multiple record allocation strategies that determine how mongod adds padding to a document when creating a record. Because documents in MongoDB may grow after insertion and all records are contiguous on disk, the padding can reduce the need to relocate documents on disk following updates. Relocations are less efficient than in-place updates and can lead to storage fragmentation. As a result, all padding strategies trade additional space for increased efficiency and decreased fragmentation." % https://docs.mongodb.com/manual/core/mmapv1/#record-allocation-strategies
-    
-    "The usePowerOf2Sizes flag changes the method that MongoDB uses to allocate space on disk for documents in this collection. By setting usePowerOf2Sizes, you ensure that MongoDB will allocate space for documents in sizes that are powers of 2 (e.g. 4, 8, 16, 32, 64, 128, 256, 512...8388608). With usePowerOf2Sizes, MongoDB will be able to more effectively reuse space."
-    % https://docs.mongodb.com/v2.4/reference/command/collMod/#usePowerOf2Sizes
-    
-    \item map reduce algoritme in een notedop:
-    "mongos retrieves the results from each shard, performs a merge sort to order the results, and proceeds to the reduce/finalize phase as needed. mongos then writes the result to the output collection in sharded mode."
-    % https://docs.mongodb.com/v2.4/core/map-reduce-sharded-collections/
-    
-    \item 1 systeem voor analytics workload (mapreduce) en de reporting interface => mapreduce in 1 systeem en resultaten op 2e systeeem bijv. S3
-    
-    \item random mapreduce failures => geen onderhoud van cluster
-    \item - opruimen resterende data bij failures => geen entropy
-    \item productie load (transacties) heeft invloed op performance => onafhankelijk systeem van productie
+    \item Uit monitoring systemen blijkt dat het online productie processen van invloed zijn op de performance van het aggregatie proces. Omdat MongoDB direct wordt gebruikt voor het synchroniseren van bestellingen met webwinkels, en dit een realtime proces is, wordt het cluster hiermee belast. In de huidige situatie worden de MapReduce jobs op een aantal machines in het cluster uitgevoerd, toch word de performance beïnvloed.
+    \item het aggregeren van data kan in MongoDB wellicht trager zijn dan nodig omdat de tussentijdse resultaten uit de fases in MapReduce worden weggeschreven naar verschillende machines \parencite{mongo_mr_shards}. Zo valt ook af te lezen uit monitoring dat het wegschrijven van de uiteindelijk resultaten langer duurt dan het aggregeren zelf. Dit heeft mogelijk te maken met het bijhouden van indexes.  \parencite{mongo_write_performance}
+    % replica sets? sharding? grootte cluster?
 \end{itemize}
 
 
+\subsubsection{\textbf{Conclusie}}
+\label{subsec:3.3.2}
+
+Tijdens de root cause analysis zijn een aantal oorzaken omschreven. Hieruit valt te concluderen dat een mogelijke nieuwe oplossing aan de volgende criterea moet voldoen:
+
+\begin{enumerate}[label=(\alph*)]
+
+    % Er rekening moet worden gehouden met de mogelijke overhead van networking applications, en tegelijkertijd de mogelijkheid moet zijn om grootte data sets op te splitsen zodat er geen ``disk spills"\ optreden.
+    \item In de nieuwe situatie moet op efficiënte wijze worden om gegaan met een kleine hoeveelheid aan data, zodat de verschillende fases van het aggregeren (zoals map, reduce, shuffle en sort). Dit omdat voor 80\% van de webshops een kleine hoeveelheid data wordt verzameld. Tegelijkertijd is de input data set groot en zijn resultaten van aggregaties wellicht groter. Er moet in deze situatie op efficiënte wijze data worden weg geschreven naar een eindlocatie,  zoals het filesysteem. Hierbij moet het onderhouden van indexes worden voorkomen.
+    
+    \item Er moet situaties situatie worden voorkomen waarin het onmogelijk is om een technologie of systeem te upgraden naar een nieuwere versie. Dit is te voorkomen door a) geen state te bewaren in het systeem zelf, maar dit alleen te gebruiken bij data processing. b) door het systeem onafhankelijk te maken van productie / online processen. Dit biedt de mogelijkheid door bijvoorbeeld een database backup te doen, het systeem te migreren en de data opnieuw in te laden.
+\end{enumerate}
+
+\clearpage
+
 
 \subsection{Hoe wordt dit voorkomen met de gevonden tools / POC?}
-hoe wordt dit voorkomen met de gevonden tools / POC?
+\label{subsec:deelvraag3_vergelijking}
 
+
+\subsubsection{\textbf{Versie upgrades}}
+
+Door de tools binnen het Hadoop ecosysteem wordt geen state bewaard. Maar alle data wordt beheerd door HDFS en opgeslagen als toegankelijke bestanden in een gekozen bestandsformaat. Het risico is dat het upgraden van versies, niet compatible met verschillende bestands formaten. Ook de tools die opereren op het data formaat moetn compatible zij. Daarnaast bestaat de mogelijkheid dat HDFS data anders beheerd onder verschillende versies. Hierdoor zijn data migraties erg operationeel intensief is. Hierdoor is het sterk aan te raden om dit niet zelf te beheren, maar gebruik te maken van distributie zoals Amazon EMR, Hortonworks, Cloudera of MapR.
+
+Omdat Spark onder andere uitmaakt van het Hadoop ecosysteem zijn deze conclusies te generaliseren.
+
+Omdat databases bij definitie statefull zijn, moet er in dit geval een backup en restore mogelijkeid aanwezig zijn om upgrades te kunnen uitvoeren.
+
+In het geval van Golang, dat in het algemeen niet als data processing tool te beschouwen is maar als een General purpose language, is de implementatie code eenvoudig te upgraden naar nieuwere versies. Dit wordt gegarandeerd als de implementatie volledig getest is door unit tests. 
+
+\subsubsection{\textbf{Mogelijke overhead bij write operations}}
+% ====================================================
+% ====================================================
+
+% USE THE COST PAPER and 
+
+% https://www.usenix.org/conference/hotos15/workshop-program/presentation/mcsherry
+
+% USE THE PAPER MEASURING NETWORK OVERHEAD IN DATA PROCESSING TOOLS VS CPU
+% https://www.usenix.org/system/files/conference/nsdi15/nsdi15-paper-ousterhout.pdf
+
+% REFERENCE TO THE PAPER DESCRIBING THAT:
+% SPARK USES NO INDEX
+% MAP REDUCE (Google / Apache) USES NO INDEX
+% SHARED NOTHING DATABASES USE NO INDEXES
+
+% ALSO APPLY Amdahls LAW
+% https://en.wikipedia.org/wiki/Amdahl%27s_law
+
+%  AND MAYBE 
+% roughly 80\% of the effects come from 20\%
+% https://en.wikipedia.org/wiki/Pareto_principle
+
+% ====================================================
+% ====================================================
+    
+\subsection{Conclusie}
+
+\begin{comment}
+
+% ``De huidige oplossing is niet liniar-scalable", is algemene idee binnen de organisatie. 
+
+a) Een deel van het probleem is het actief monitoren van de data kwaliteit en processen starten om het te corrigeren. Hier wordt niet verder op in gegaan omdat een dergelijke oplossing hiervoor buiten scope valt.
+
+b) Hiervoor geldt, zodra er een oplossing is moeten de datakwaliteit worden herstelt door het proces te starten dat de correcties uitvoert [``effected datasources"\ opnieuw evalueren]
+Deze scenario's zijn ook tegelijkertijd lastig te voorkomen, alleen te herstellen. Het advies is daarom om hier ``monitoring en alerting\ voor te implementeren. Zie ook andere maatregelen zoals bijv. het aanwijzen van Data stewards (TODO: reference term, paper)
+
+
+In deelvraag 2 in sectie \ref{sec:deelvraag2} is een shortlist gepresenteerd van geschikte technologieën voor.
 
 - conclusie
     - data pipeline design
@@ -85,9 +119,4 @@ hoe wordt dit voorkomen met de gevonden tools / POC?
         - netwerken voorkomen wordt, workers zijn bewezen duizenden jobs aan te kunnen (kleine processen)
         - spark in memory oplossing is bewezen snel te zijn en EMR is managed service
         - (database column store heeft geen indexes maar partities, bewezen erg snel te zijn… maar geen voordelen worden behaald omdat  ons proces altijd N-max aantal columns wordt gebruikt opgevraagd)
-
-
-
-\subsection{Conclusie}
-
-% Een deel van het probleem is het actief monitoren van de data kwaliteit en processen starten om het te corrigeren. Hier wordt niet verder op in gegaan omdat een dergelijke oplossing hiervoor buiten scope valt.
+\end{comment}

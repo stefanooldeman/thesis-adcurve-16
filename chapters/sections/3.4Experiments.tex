@@ -20,9 +20,11 @@ zoals wordt omschreven in de originele doelstelling in \ref{sec:doelstelling} ``
 
 Voor het meten van performance worden er drie vershillende type aggregaties uitgevoerd op "commodity hardware", de exacte specificaties worden later omschreven in sectie \ref{subsec:3.4hardware_specs}.  Er wordt gebruik gemaakt van een productie data set van één willekeurige dag.
 
-Tijdens iedere aggregatie worden er twee metingen: de totale proces \footnote{tijd word gemeten door unix \verb#time# zie de documentatie voor time: \url{http://linux.die.net/man/1/time}} en de totale tijd zonder de warmup time.  Warmup time wordt in dit expiremnt omschreven als de tijd die nodig tussen het starten van het proces en het werkelijk uitvoeren van de geschreven implementatie. Dit zal worden toegelicht per POC.
+Tijdens iedere aggregatie worden er twee metingen: de totale proces \footnote{tijd word gemeten door unix `time` zie de documentatie voor time: \url{http://linux.die.net/man/1/time}} en de totale tijd zonder de warmup time.  Warmup time wordt in dit expiremnt omschreven als de tijd die nodig tussen het starten van het proces en het werkelijk uitvoeren van de geschreven implementatie. Dit zal worden toegelicht per POC.
 
-Voor het evalueren van de twee POCs is besloten om geen latency, IO, memory of CPU gerelateerde benchmarks te evalueren. Veelal omdat dit inzicht in ge prestaties van de hardware. En omdat door de  academia en industry veel energie investeerd in het verbeteren van performance van bijv. data processing tools zoals hadoop en spark. Voor de doelstellingen van het project (in dit stadium) is de totale proces tijd belangrijker.
+Voor het evalueren van de twee POCs is besloten om geen latency, IO, memory of CPU gerelateerde benchmarks te evalueren.
+% Veelal omdat dit inzicht geeft in de prestaties van de hardware. En omdat door de  academia en industry veel energie investeerd in het verbeteren van performance van bijv. data processing tools zoals hadoop en spark.
+Voor de doelstellingen van het project is de totale proces tijd belangrijker.
 
 
 \subsection{Gebruikte data sets}
@@ -35,7 +37,7 @@ Tijdens de drie fases van het expirement wordt inconsistent gebruik gemaakt van 
     \item Het \textbf{Visits} bestand is orgineel 1.0GB groot, dit is in een CSV bestand waarbij de TAB charachter als delimiter wordt gebruikt.  Na het ETL waarbij alleen de alleen de relevantie metrieken overblijven is de dataset 0.04734 GB groot. Dit is hetzelfde JSON formaat waarbij alle extra colommen voor orders zijn ingebrepen en een default waarde hebben.
 \end{itemize}
 
-Het resultaat van de ETL voor orders en visits wordt als input data gebruikt voor iedere aggregatie. De drie aggregaties zijn variaties waarbij dezelfde input data wordt gebruikt, maar waarvan het resultaat verschilt per aggregatie in data grootte. Dit is om de huidige situatie en business needs te simuleren. Een grotere data set past wellicht wel of niet in het geheugen (RAM). De drie variates maken gebruik van de volgende keys waarop de aggregatie functie \verb#SUM(metric)# wordt toegepast:
+Het resultaat van de ETL voor orders en visits wordt als input data gebruikt voor iedere aggregatie. De drie aggregaties zijn variaties waarbij dezelfde input data wordt gebruikt, maar waarvan het resultaat verschilt per aggregatie in data grootte. Dit is om de huidige situatie en business needs te simuleren. Een grotere data set past wellicht wel of niet in het geheugen (RAM). De drie variates maken gebruik van de volgende keys waarop de aggregatie functie \verb=SUM(metric)= wordt toegepast:
 
 \begin{itemize}
     \item TimeId, ChannelID
