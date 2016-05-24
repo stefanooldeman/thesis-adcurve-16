@@ -1,13 +1,13 @@
 \chapter{Resultaten}
 
 In dit hoofdstuk worden alle resultaten uit het onderzoek gepresenteerd
-Deelvraag 1 "Wat zijn de functionele en niet functionele eisen, waaraan de oplossing moet voldoen?" wordt beantwoord in \ref{sec:deelvraag1}
+Deelvraag 1 ``Wat zijn de functionele en niet functionele eisen, waaraan de oplossing moet voldoen?", wordt beantwoord in \ref{sec:deelvraag1}
 
 Deelvraag 2 "Wat zijn toonaangevende methodes en technologieën om statistieken te berekenen, en passen bij de wensen en eisen van de opdracht?"\  wordt beantwoord in \ref{sec:deelvraag2}
 
 In \ref{sec:deelvraag3} wordt gekeken naar "Wat zijn de probleem scenario's waardoor gegevens niet te verklaren zijn, en wat zijn de mogelijke oplossingen?"\
 
-In Deelvraag 4 is beantwoord in \ref{sec:deelvraag4} wordt belicht hoe de expirementen zijn ontworpen
+In Deelvraag 4 is beantwoord in \ref{sec:deelvraag4} wordt belicht hoe de experimenten zijn ontworpen
 
 Conclusies en een vergelijking wordt gemaakt in het betantwoorden van Deelvraag 5 "Wat zijn de gepresenteerde oplossingen en waarom zijn deze volledig of niet?" te lezen in \ref{sec:deelvraag5}
 
@@ -22,47 +22,11 @@ Conclusies en een vergelijking wordt gemaakt in het betantwoorden van Deelvraag 
 % ACTIVITY Onderzoeken van toonaangevende, passende technologieën
 \section{Toonaangevende methodes en technologieën}
 \label{sec:deelvraag2}
-
-Wat zijn toonaangevende methodes en technologieën om statistieken te berekenen, en passen bij de wensen en eisen van de opdracht?
-
-Voor data aggregaties worden veeleal methodes als MapReduce gebruikt, deze methode werd eerder vernoemd als Monte Carlo door \textcite{asanovic2006landscape} en eerdere referenties zijn te vinden in \textcite{lee2010debunking}. Het algoritme wordt in de huidige situatie toegepast en is karakterstiek voor de gegeven use-case. Later wordt duidelijk hoe verschillende technologieën hier anders mee om gaan. Zo wordt gekeken mogelijke hardware specifieke oplossingen in \ref{sec:hardware}.
-
-
-Uit verschillende bronnen zijn richtingen gevonden voor mogelijke oplossingen. Zoals het gebruik van database oplossingen, distributed oplossingen, en hardware oplossingen. \footnote{
-Uit de volgende opgevraagde webpagina's zijn verschillende onderzoeksrichtingen gevonden. De github pagina heeft over 200 technologieën en referenties naar verschillende papers.
-\begin{enumerate}
-    \item \url{https://github.com/onurakpolat/awesome-bigdata}
-    \item \url{https://experfy.com/blog/hadoop-market-size-adoption-growth-2020/}
-    \item \url{https://cs.arizona.edu/~bkmoon/papers/sigmodrec11.pdf}
-    \item \url{http://datanami.com/2014/11/21/spark-just-passed-hadoop-popularity-web-heres/}
-    \item \url{http://radar.oreilly.com/2014/01/a-compelling-family-of-dsls-for-data-science.html}
-\end{enumerate}
-}
-
-
-De gevonden oplosingen zullen worden getoetst aan de volgende non-functional requirements:
-\begin{enumerate}[label=(\alph*)]
-   \item genoeg ondersteuning vanuit opensource of commerciële industry;
-   \item indicatoren tot schaalbaarheid en high performance;
-   \item onderstuend een productief programmeer model;
-   \item code is testbaar;
-   \item interne en externe beschikbare kennis in de vorm van documentatie en developers.
-\end{enumerate}
-
-Zie de volgende tabellen waarbij deze requirements worden getoetst.
-% TODO
-
-
-\begin{comment}
-Er zijn een aantal oplossingen gevonden die maximaal gebruik kunnen maken van de performance die moderne hardware te bieden heeft
-- clustered databases analytics / datawarehouses (RDBMS): google bigquery, vertica, redshift, hadoopDb, Teradata
-- map reduce platform: spark, hadoop, disco etc.
-- Hardware, software solutions: Forge en Golang Python, MATLAB, R, Golang, Rust
-\end{comment}
+\input{chapter/sections/3.2.0Intro}
 
 \newpage
 
-\subsection{Databasese oplossingen}
+\subsection{Database oplossingen}
 \label{sec:databases}
 \input{chapters/sections/3.2.1Databases}
 \clearpage
@@ -79,10 +43,7 @@ Er zijn een aantal oplossingen gevonden die maximaal gebruik kunnen maken van de
 
 \subsection{Conclusie}
 \label{sec:gevonden_tools}
-
-Uit de verschillende oplossings richtingen zijn de volgende technologiën geselecteerd:
-
-
+\input{chapter/sections/3.2.4Conclusion}
 
 
 \clearpage
@@ -92,9 +53,6 @@ Uit de verschillende oplossings richtingen zijn de volgende technologiën gesele
 \label{sec:deelvraag3}
 \input{chapters/sections/3.3ScenarioSolutions}
 \clearpage
-
-
-
 
 % ACTIVITY Bespreken van ontwerpen en evt. aanpassen van ontwerpen
 % ACTIVITY Vastleggen kwaliteitscriteria Proof of concept's

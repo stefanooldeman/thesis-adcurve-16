@@ -9,8 +9,8 @@ Vervolgens is per probleem scenario een mogelijke technische verklaring gezocht,
 
 
 \begin{enumerate}
-    \item L6: Api's provided by the publisher are not available
-    \item M5: Apis' for google,change and the import stops working, or fail silent (values are not matched,,resulting in empty fields)
+    \item L6: API 's provided by the publisher are unavailable
+    \item M5: API 's for google, change frequently and the import stops working, or fail silent (values are not matched,,resulting in empty fields)
     \item H6: Wrong costs by configuration, issues: mistakes in tracking Order amount, tracked wrong, multiplied by 100 bug
     \item L7: Metrics calculated incorrectly because of mismatching product data (ids from tracking don't match cost exports from publisher)
     \item L7: Calculations fail,because technology or infrastructure 
@@ -43,14 +43,14 @@ Met betrekking tot scenario zeven (7) zijn de volgende mogelijke oorzaken gevond
 \subsubsection{\textbf{Conclusie}}
 \label{subsec:3.3.2}
 
-Tijdens de root cause analysis zijn een aantal oorzaken omschreven. Hieruit valt te concluderen dat een mogelijke nieuwe oplossing aan de volgende criterea moet voldoen:
+Tijdens de root cause analysis zijn een aantal oorzaken omschreven. Hieruit valt te concluderen dat een mogelijke nieuwe oplossing aan de volgende criteria moet voldoen:
 
 \begin{enumerate}[label=(\alph*)]
 
     % Er rekening moet worden gehouden met de mogelijke overhead van networking applications, en tegelijkertijd de mogelijkheid moet zijn om grootte data sets op te splitsen zodat er geen ``disk spills"\ optreden.
     \item In de nieuwe situatie moet op efficiënte wijze worden om gegaan met een kleine hoeveelheid aan data, zodat de verschillende fases van het aggregeren (zoals map, reduce, shuffle en sort). Dit omdat voor 80\% van de webshops een kleine hoeveelheid data wordt verzameld. Tegelijkertijd is de input data set groot en zijn resultaten van aggregaties wellicht groter. Er moet in deze situatie op efficiënte wijze data worden weg geschreven naar een eindlocatie,  zoals het filesysteem. Hierbij moet het onderhouden van indexes worden voorkomen.
     
-    \item Er moet situaties situatie worden voorkomen waarin het onmogelijk is om een technologie of systeem te upgraden naar een nieuwere versie. Dit is te voorkomen door a) geen state te bewaren in het systeem zelf, maar dit alleen te gebruiken bij data processing. b) door het systeem onafhankelijk te maken van productie / online processen. Dit biedt de mogelijkheid door bijvoorbeeld een database backup te doen, het systeem te migreren en de data opnieuw in te laden.
+    \item Er moet situaties situatie worden voorkomen waarin het onmogelijk is om een technologie of systeem te upgraden naar een nieuwere versie. Dit is te voorkomen door a) geen state te bewaren in het systeem zelf, maar dit alleen te gebruiken bij data processing. b) door het systeem onafhankelijk te maken van productie / online processen. Dit biedt de mogelijkheid door bijvoorbeeld een database back-up te doen, het systeem te migreren en de data opnieuw in te laden.
 \end{enumerate}
 
 \clearpage
@@ -62,61 +62,64 @@ Tijdens de root cause analysis zijn een aantal oorzaken omschreven. Hieruit valt
 
 \subsubsection{\textbf{Versie upgrades}}
 
-Door de tools binnen het Hadoop ecosysteem wordt geen state bewaard. Maar alle data wordt beheerd door HDFS en opgeslagen als toegankelijke bestanden in een gekozen bestandsformaat. Het risico is dat het upgraden van versies, niet compatible met verschillende bestands formaten. Ook de tools die opereren op het data formaat moetn compatible zij. Daarnaast bestaat de mogelijkheid dat HDFS data anders beheerd onder verschillende versies. Hierdoor zijn data migraties erg operationeel intensief is. Hierdoor is het sterk aan te raden om dit niet zelf te beheren, maar gebruik te maken van distributie zoals Amazon EMR, Hortonworks, Cloudera of MapR.
+Door de tools binnen het Hadoop ecosysteem wordt geen state bewaard. Maar alle data wordt beheerd door HDFS en opgeslagen als toegankelijke bestanden in een gekozen bestandsformaat. Het risico is dat het upgraden van versies, niet compatible met verschillende bestands formaten. Ook de tools die opereren op het data formaat moeten compatible zij. Daarnaast bestaat de mogelijkheid dat HDFS data anders beheerd onder verschillende versies. Hierdoor zijn data migraties erg operationeel intensief is. Hierdoor is het sterk aan te raden om dit niet zelf te beheren, maar gebruik te maken van distributie zoals Amazon EMR, Hortonworks, Cloudera of MapR.
 
 Omdat Spark onder andere uitmaakt van het Hadoop ecosysteem zijn deze conclusies te generaliseren.
 
-Omdat databases bij definitie statefull zijn, moet er in dit geval een backup en restore mogelijkeid aanwezig zijn om upgrades te kunnen uitvoeren.
+Omdat databases bij definitie statefull zijn, moet er in dit geval een back-up en restore mogelijkheid aanwezig zijn om upgrades te kunnen uitvoeren.
 
 In het geval van Golang, dat in het algemeen niet als data processing tool te beschouwen is maar als een General purpose language, is de implementatie code eenvoudig te upgraden naar nieuwere versies. Dit wordt gegarandeerd als de implementatie volledig getest is door unit tests. 
 
 \subsubsection{\textbf{Mogelijke overhead bij write operations}}
-% ====================================================
-% ====================================================
 
-% USE THE COST PAPER and 
 
-% https://www.usenix.org/conference/hotos15/workshop-program/presentation/mcsherry
+\begin{verbatim}
 
-% USE THE PAPER MEASURING NETWORK OVERHEAD IN DATA PROCESSING TOOLS VS CPU
-% https://www.usenix.org/system/files/conference/nsdi15/nsdi15-paper-ousterhout.pdf
+Use the COST PAPER (single threading vs. network overhead)
 
-% REFERENCE TO THE PAPER DESCRIBING THAT:
-% SPARK USES NO INDEX
-% MAP REDUCE (Google / Apache) USES NO INDEX
-% SHARED NOTHING DATABASES USE NO INDEXES
+https://www.usenix.org/conference/hotos15/workshop-program/presentation/mcsherry
 
-% ALSO APPLY Amdahls LAW
-% https://en.wikipedia.org/wiki/Amdahl%27s_law
+AND The paper measuring NETWORK OPTIMIZATIONS vs CPU/MEM in DATA PROCESSING TOOLS VS CPU
+https://www.usenix.org/system/files/conference/nsdi15/nsdi15-paper-ousterhout.pdf
 
-%  AND MAYBE 
-% roughly 80\% of the effects come from 20\%
-% https://en.wikipedia.org/wiki/Pareto_principle
+Reference to the paper and explain:
+SPARK USES NO INDEX \parencite{armbrust2015spark}
+MAP REDUCE (Google / Apache) USES NO INDEX 
+SHARED NOTHING DATABASES USE NO INDEXES \parencite{lamb2012vertica} of \parencite{harizopoulos2008oltp} / \parencite{dewitt2006build}
 
-% ====================================================
-% ====================================================
+MAYBE ALSO APPLY 'Amdahls law'
+https://en.wikipedia.org/wiki/Amdahl%27s_law
+
+ AND MAYBE 
+"roughly 80\% of the effects come from 20\%"
+https://en.wikipedia.org/wiki/Pareto_principle
+
+\end{verbatim}
+
+
+\subsubsection{\textbf{Oplosing om  high query speed en good analytics performance te behalen met  twee losse systemen}}
+
+Het splitsen van data verwerken en data opslag / opvragen betekend dat de geaggregeerde data zal worden opgeslagen in s3, zodat de bestaande API de data kan uitserveren. 
+De aggregaties op basis van week, jaar en maand komen te vervallen. De overige aggregatie die nodig is om API client snel te houden wordt gedaan door Saki. Doordat de bestanden gesorteerd worden opgeslagen op s3, kan saki deze binnen 100 milliseconden aggregeren per query.
+
+Dit heeft als gevolg dat data opslag volledig verplaatst naar Amazon S3, zowel de input data als de output data. (data pipeline)
+
     
 \subsection{Conclusie}
 
-\begin{comment}
-
-% ``De huidige oplossing is niet liniar-scalable", is algemene idee binnen de organisatie. 
-
-a) Een deel van het probleem is het actief monitoren van de data kwaliteit en processen starten om het te corrigeren. Hier wordt niet verder op in gegaan omdat een dergelijke oplossing hiervoor buiten scope valt.
-
-b) Hiervoor geldt, zodra er een oplossing is moeten de datakwaliteit worden herstelt door het proces te starten dat de correcties uitvoert [``effected datasources"\ opnieuw evalueren]
+Een deel van het probleem is het actief monitoren van de data kwaliteit en processen starten om het te corrigeren. Hier wordt niet verder op in gegaan omdat een dergelijke oplossing hiervoor buiten scope valt. Hiervoor geldt, zodra er een oplossing is moeten de datakwaliteit worden herstelt door het proces te starten dat de correcties uitvoert [``effected datasources"\ opnieuw evalueren]
 Deze scenario's zijn ook tegelijkertijd lastig te voorkomen, alleen te herstellen. Het advies is daarom om hier ``monitoring en alerting\ voor te implementeren. Zie ook andere maatregelen zoals bijv. het aanwijzen van Data stewards (TODO: reference term, paper)
 
+Spark SQL is bewezen snel erg snel te zijn en Amazon EMR is managed service
 
-In deelvraag 2 in sectie \ref{sec:deelvraag2} is een shortlist gepresenteerd van geschikte technologieën voor.
+database column store heeft geen indexes maar partities, bewezen erg snel te zijn… maar geen voordelen worden behaald omdat  ons proces altijd N-max aantal columns worden opgevraagd. Daarom zal de query nooit sneller zijn, unless er meerdere query 's zijn waarbij verschillende columnen worden opgevraagd. Daarom zijn er te weinig voordelen om hier een POC mee te starten, daarnaast zullen versie upgrades lastig zijn. 
 
-- conclusie
-    - data pipeline design
-        - oplossing om  high query speed en good analytics performance te behalen met  twee losse systemen
-        - S3 als datawarehouse storage ipv een database (geen limitations)
-    - query speed wordt opgelost door extern systeem (Saki)
-    - nieuwe systeeem voor mapreduce hebben de bestaande problemen niet omdat:
-        - netwerken voorkomen wordt, workers zijn bewezen duizenden jobs aan te kunnen (kleine processen)
-        - spark in memory oplossing is bewezen snel te zijn en EMR is managed service
-        - (database column store heeft geen indexes maar partities, bewezen erg snel te zijn… maar geen voordelen worden behaald omdat  ons proces altijd N-max aantal columns wordt gebruikt opgevraagd)
-\end{comment}
+De Aggregatie processen met Golang zullen erg klein worden gemaakt door de data van te voren te partitioneren per shop. Dit biedt de mogelijkheid om het deze processen uit te voeren op verschillende machines (scale-out), door het gebruikt van resqueue workers "Resque workers can be distributed between multiple machines, support priorities, are resilient to memory bloat / "leaks," \parencite{github2016reque} 
+
+
+Kort: Er wordt niet verder geïnvesteerd in een POC met databases omdat er te veel keuze is, en technologie niet effectief is toe te passen
+
+Wel wordt er een POC uitgevoerd met Golang en Spark
+
+
+% Het splitsen van data verwerken en een databases waaruit de data is op te vragen, heeft met gevolg dat Saki, een applicatie die in real time aggregaties op het hoogste niveau pakt (channel, shop, shop_product_id) en deze flexibel aggregeerd op basis van datum.
