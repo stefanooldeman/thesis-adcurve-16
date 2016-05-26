@@ -31,7 +31,6 @@ Shop2market is met zijn team gevestigd in Hilversum en kent op dit moment achtti
     \label{fig:orgchart}
 \end{figure}
 
-
 \clearpage
 
 \section{De kwestie} % een kwestie (aanleiding, het op te lossen probleem, de te vervullen behoefte of de te benutten kans);
@@ -39,7 +38,7 @@ Shop2market is met zijn team gevestigd in Hilversum en kent op dit moment achtti
 Zoals te lezen valt in de aanleiding zijn er meerdere redenen voor dit project.
 
 \begin{enumerate}
-    \item De tijd die het kost om statistieken te berekenen is aan de hoge kant. De berekeningen worden uitgevoerd met behulp van MongoDB MapReduce. Het team voorziet dat deze technologie niet genoeg schaalbaarheid biedt. Dit omdat rekentijd niet lineair is toegenomen in relatie tot de hoeveelheid data. Met de verwachte groei van Adcurve komen nieuwe eisen aan het licht en er moet naar een nieuwe oplossing worden gezocht.
+    \item De tijd die het kost om statistieken te berekenen is aan de hoge kant. De berekeningen worden uitgevoerd met behulp van MongoDB MapReduce. Het team voorziet dat deze technologie niet genoeg schaalbaarheid biedt. Dit omdat rekentijd non-lineair is toegenomen in relatie tot de hoeveelheid data. Met de verwachte groei van Adcurve komen nieuwe eisen aan het licht en er moet naar een nieuwe oplossing worden gezocht.
     \item Bij voorkeur worden publishers geïntegreerd met behulp van API 's oftewel; een externe data bron. Op deze manier worden berekeningen uitgevoerd met precieze advertentiekosten. Maar doordat externe factoren nu een rol spelen in de berekeningen is het niet te garanderen dat de uitkomst altijd correct is. Zodra fouten intern of extern hersteld zijn, worden berekeningen voor een bepaalde dag, webwinkel of publisher opnieuw uitgevoerd. Het uitvoeren van dit soort correcties is tijdrovend door de huidige implementatie en gebruikte technieken.
     \item Webwinkels ontvangen tot soms tot 30 dagen na een bestelling een retournering van een of meerdere producten. Dit betekent dat een product niet verkocht is en de omzet uit de bestelling lager ligt dan is berekend. Het is wenselijk om berekende statistieken met betrekken tot retour bestellingen opnieuw te kunnen berekenen.
 \end{enumerate}
