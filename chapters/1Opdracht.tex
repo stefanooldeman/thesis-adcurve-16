@@ -20,10 +20,6 @@ Omdat de belangrijkste functionaliteiten berusten op de beschikbaarheid van stat
 
 Naast het garanderen van data kwaliteit is het belangrijk om functionaliteiten te verbeteren. Een voorbeeld hiervan is dat de statistieken s' middags pas beschikbaar zijn. De huidige strategie is om meer klanten aan te trekken door meer landen en industrieën te ondersteunen. Met de groei van het aantal publishers en data integraties is het probleem duidelijker geworden. De verbeterde oplossing moet helpen om internationale groei van Adcurve te ondersteunen en ruimte bieden om functionaliteiten betrouwbaarder en te maken. Er is hierdoor een toenemende wens ontstaan om de huidige oplossing te herzien.
 
-\section{Etische overweging}
-
-TODO lorem ipsum dollar sit amet
-
 \section{Organisatie} % beschrijving van de organisatie van de opdrachtgever en de plaats van de student daarin
 
 Shop2market is met zijn team gevestigd in Hilversum en kent op dit moment achttien werknemers (zie figuur \ref{fig:orgchart}). De organisatie kan naar de theorie van
@@ -43,11 +39,10 @@ Shop2market is met zijn team gevestigd in Hilversum en kent op dit moment achtti
 Zoals te lezen valt in de aanleiding zijn er meerdere redenen voor dit project.
 
 \begin{enumerate}
-    \item De tijd die het kost om statistieken te berekenen is aan de hoge kant. De berekeningen worden uitgevoerd met behulp van MongoDB MapReduce. Het team voorziet dat deze technologie niet genoeg schaalbaarheid biedt. Dit omdat rekentijd lineair is toegenomen in relatie tot de hoeveelheid data. Met de verwachte groei van Adcurve komen nieuwe eisen aan het licht en er moet naar een nieuwe oplossing worden gezocht.
+    \item De tijd die het kost om statistieken te berekenen is aan de hoge kant. De berekeningen worden uitgevoerd met behulp van MongoDB MapReduce. Het team voorziet dat deze technologie niet genoeg schaalbaarheid biedt. Dit omdat rekentijd niet lineair is toegenomen in relatie tot de hoeveelheid data. Met de verwachte groei van Adcurve komen nieuwe eisen aan het licht en er moet naar een nieuwe oplossing worden gezocht.
     \item Bij voorkeur worden publishers geïntegreerd met behulp van API 's oftewel; een externe data bron. Op deze manier worden berekeningen uitgevoerd met precieze advertentiekosten. Maar doordat externe factoren nu een rol spelen in de berekeningen is het niet te garanderen dat de uitkomst altijd correct is. Zodra fouten intern of extern hersteld zijn, worden berekeningen voor een bepaalde dag, webwinkel of publisher opnieuw uitgevoerd. Het uitvoeren van dit soort correcties is tijdrovend door de huidige implementatie en gebruikte technieken.
     \item Webwinkels ontvangen tot soms tot 30 dagen na een bestelling een retournering van een of meerdere producten. Dit betekent dat een product niet verkocht is en de omzet uit de bestelling lager ligt dan is berekend. Het is wenselijk om berekende statistieken met betrekken tot retour bestellingen opnieuw te kunnen berekenen.
 \end{enumerate}
-
 
 \section{Doelstelling} % de doelstellingen (wat moet na afloop van het afstudeerproject zijn bereikt);
 \label{sec:doelstelling}
@@ -57,4 +52,17 @@ Webwinkel eigenaren moeten in staat zijn om beslissingen te maken op basis van c
 \section{Type opdracht}
 
 Aan de hand van beschikbare technieken wordt er gekozen voor een aantal mogelijke oplossingen.\newline Deze oplossingen worden vervolgens getest middels een POC. Door dit onderzoek moet duidelijk gaan worden: Hoe kan de opdracht worden opgelost? Is dit mogelijk? En wat is er nodig om de oplossing naar productie te krijgen? Door de opdrachtgever is gevraagd om een aantal POC 's te ontwikkelen om tot een inzicht over de oplossing te komen. Er is hierdoor sprake van een ontwikkelopdracht.
+
+
+\section{Ethische overweging}
+
+Zoals duidelijk wordt tijdens het onderzoek zijn er veel technologieën beschikbaar voor het verwerken van data. Om te voorkomen dat een oplossing wordt ontworpen op basis van de hype factor van een tool is er voor gekozen om een POC uit te voeren voor een kleine selectie aan technologieën.
+Dit moet voorkomen dat een technologie in theorie wellicht de beste en de snelste is, maar uiteindelijk in een gegeven context niet werkt.
+
+Met de rol van software engineer voelt de student zich mede verantwoordelijk voor het adequaat adviseren van stakeholders. Vanuit een Estische code is daarom overwogen om dieper onderzoek te doen naar de kernoorzaken achter de huidige probleemsituatie, zie \label{sec:deelvraag3}.
+Op de wijze wordt er ook op een objectieve wijze gekeken naar de situatie, om beslissingen tijdens het  project te valideren.
+
+% Door het organiseren van groepsdiscussies wordt de organisatie betrokken in beslissingen.
+Door het organiseren van groepsdiscussies wordt de inbreng vanuit de organisatie meegenomen. Zo is de student zich ervan bewust dat een gekozen technologie goed moet aansluiten bij de cultuur en kennis van de organisatie.
+
 
