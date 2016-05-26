@@ -1,0 +1,74 @@
+\begin{comment}
+het volgende algoritme is geïmplementeerd voor de data aggregatie:
+Iedere regel die is uitgelezen uit een input bestand wordt gecommuniceerd in een goroutine.
+Een ander goroutine leest leest dir 
+
+een proces verwerkt het inlezen van data uit een bestand. Voor twee bestanden worden er twee concurrent processen gestart. 
+Daarnaast is een een proces dat voor ieder bericht de functies uitvoert om iedere kolomn uit op te tellen aan het vorige resultaat.
+het resultaat wordt opgeslagen in een mapping, waarbij iedere key één regel representeer in het eindresultaat. Iedere regel uit de data input met een overeenkomstige key, wordt opgezocht in de mapping, en alle alle waardes uit de kolommen worden opgeteld.
+
+het volgende voorbeeld visualeerd de mapping:
+\begin{verbatim}
+{
+ Key{TimeID: 19881231, ShopID: 117, ChannelID: 4}:  Result{Visits: 100, Orders: 6},
+ Key{TimeID: 19881231, ShopID: 117, ChannelID: 110}: Result{Visits: 47, Orders: 6}
+}
+\end{verbatim}
+
+De key bevat de volgende waarden:  en de waardes voor data zijn te omschrijven als
+
+\end{comment}
+
+Het algoritme heeft een aantal stappen en past het braodcast principe toe, waarbij meerdere consumers (voor iedere data bron een), communiceren naar een receiver (de aggregatie functie):
+
+
+\begin{enumerate}
+\item lees de inhoud van ieder bestand in een \textit{goroutine} (één proces per bestand)
+\item decodeiedere regel met de json package, naar struct ExportRow{} 
+\item communiceer iedere regel als een door middel van Go \textit{channels} (zie dataChannel in figuur \ref{fig:golang_code1})
+\item met behulp van een andere \textit{goroutine} wordt er gewacht op een bericht en de data opgeteld in een \textit{struct} Record{} (zie figuur \ref{fig:golang_code2})
+\end{enumerate}
+
+\clearpage
+
+\begin{figure}[h]
+\caption{Golang code for reading the input data } \label{fig:golang_code1}
+\begin{lstlisting}[language=Golang]
+dec := json.NewDecoder(file)
+go func() {
+    message := &domain.ExportRow{}
+    for {
+        err := dec.Decode(&message)
+        if err == io.EOF {
+            file.Close()
+            return
+        } else if err != nil {
+            panic(err)
+        }
+        dataChannel <- *message
+    }
+}()
+\end{lstlisting}
+\end{figure}
+
+\begin{figure}[!h]
+\caption{Golang code for aggregating and writing output data }
+\label{fig:golang_code2}
+\begin{lstlisting}
+r := map[Key]*domain.Record{}
+go func() {
+	for {
+		dat := <-dataChannel
+		key := Key{TimeId: dat.TimeId, ShopID: dat.ShopID}
+		if r[key] == nil {
+			r[key] = &domain.Record{TimeId: dat.TimeId, ShopProductID: dat.ShopProductID}
+		}
+		var rec *domain.Record = r[key]
+		rec.ExAmount += dat.ExAmount
+		rec.Amount += dat.Amount
+		rec.Orders += dat.Order
+		rec.Traffic += dat.Traffic
+	}
+}()
+\end{lstlisting}
+\end{figure}

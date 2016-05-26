@@ -6,7 +6,7 @@
 % Door gebruik te maken van distributed functionaliteiten van Spark wordt getest of de snelheid waar spark bekend om staat (paper) behaald kan worden in onze use case. Er is de mogelijkheid om unit tests en functional tests te schrijven, dit wordt aangeboden door het framework. Het wegschrijven van meerdere resultaten in een proces kan door het partitionener van output data op (PublisherID, ShopID). Ook kunnen er meerdere dagen in een proces worden verwerkt en het resultaat wordt weggeschreven per TimeID, PublisherID en ShopID
 
 
-In dit hoofdstuk wordt omschreven hoe Proof of concept 's zijn ontworpen. Zoals is te lezen in \ref{sec:deelvraag3} is zijn de best mogelijke oplossingen te ontwikkelen met behulp van \textit{Golang} en \textit{Apache Spark}. In overeenstemming met de organisatie zijn verdere succesfactoren gedefinieerd per POC.
+In dit hoofdstuk wordt omschreven hoe de Proof of concept 's zijn ontworpen. Zoals is te lezen in \ref{sec:deelvraag3} zijn de best mogelijke oplossingen te ontwikkelen met behulp van \textit{Golang} en \textit{Apache Spark}. In overeenstemming met de organisatie zijn verdere succesfactoren gedefinieerd per POC.
 
 
 % De uitvoer van het project bestaat uit drie fases; Data preperation, Go Aggregate en Spark SQL
@@ -16,9 +16,7 @@ In dit hoofdstuk wordt omschreven hoe Proof of concept 's zijn ontworpen. Zoals 
 
 \subsection{Ontworpen experimenten}
 
-zoals wordt omschreven in de originele doelstelling in \ref{sec:doelstelling} ``moet data op tijd worden verwerkt evenals het tijdig herstellen van fouten mogelijk zijn".  Daarom valideert dit experiment welke oplossing de beste prestatie levert in de huidige situatie (context).
-
-Voor het meten van performance worden er drie verschillende type aggregaties uitgevoerd op "commodity hardware", de exacte specificaties worden later omschreven in sectie \ref{subsec:3.4hardware_specs}.  Er wordt gebruik gemaakt van een productie data set van één willekeurige dag.
+Zoals wordt omschreven in de originele doelstelling in \ref{sec:doelstelling} ``moet data op tijd worden verwerkt evenals het tijdig herstellen van fouten mogelijk zijn".  Daarom valideert dit experiment welke oplossing de beste prestatie levert in de huidige situatie. Voor het meten van performance worden er drie verschillende type aggregaties uitgevoerd op "commodity hardware", de exacte specificaties worden later omschreven in sectie \ref{subsec:hardware_specs}.  Er wordt gebruik gemaakt van een productie data set van één willekeurige dag.
 
 Tijdens iedere aggregatie worden er twee metingen uitgevoerd: de totale proces tijd \footnote{tijd word gemeten door unix `time` zie de documentatie voor time: \url{http://linux.die.net/man/1/time}} en de  tijd zonder ``warmup time".  Warmup time wordt in dit experiment omschreven als de tijd tussen het starten van het proces en het werkelijk uitvoeren van de geschreven implementatie. Voor het evalueren van de twee POC 's is besloten om geen latency, IO, memory of CPU gerelateerde benchmarks te evalueren. Dit is wel gewoonlijk bij \textbf{industrie benchmarks} van verschillende data processing tools. Maar dit wordt gedaan vanuit een competitief perspectief  \parencite{ousterhout2015making}. Voor de doelstellingen van dit project is de totale proces tijd belangrijker.
 
@@ -41,6 +39,22 @@ Het resultaat van de ETL voor orders en visits wordt als input data gebruikt voo
 \end{itemize}
 
 Ieder opdracht (aggregatie) wordt in één serie vijf keer herhaalt, waarvan een vervolgens de twee metingen worden geregistreerd. Over de metingen wordt een gemiddelde genomen voor het resultaat.
+
+\subsection{Gebruikte Hardware}
+\label{subsec:hardware_specs}
+
+Tijdens het onderzoek naar verschillende technologiën zijn ook benchmarks gevonden. Hierbij wordt er vaak gepretendeert dat er een schaalbaarheid kan worden bereikt door het gebruiken van "Commodity hardware". Hiermee worden machines bedoelt die algemeen beschikbaar zijn, geen bijzondere performance voordelen bieden. Om in deze trend te blijven is er voor gekozen om geen speciale omgeving te installeren voor de experimenten. Uiteindelijk is er gebruik gemaakt van een Macbook Pro met de volgende specificaties:
+
+\begin{table}[h]
+\caption{Hardware specificaties van de gebruikte machine}
+\label{tab:hardware_specs}
+\begin{tabular}{ll}
+Merk:      & MacBook Pro (Retina, 13-inch, Mid 2014) \\
+Processor: & 2.6 GHz Intel Core i5                   \\
+Geheugen:  & 8 GB 1600 MHz DDR3                      \\
+Storage:   & Apple SSD                                  
+\end{tabular}
+\end{table}
 
 \subsection{ETL Process, Data preparation}
 
@@ -98,84 +112,9 @@ In het scenario wanneer er data correcties worden uitgevoerd voor één data bro
 
 \subsection{Golang}
 
-De input voor dit proces is het resultaat van de ETL fase. Om het proces te starten wordt een argument gegeven. Dit is de locatie op het filesysteem van de data bronnen die zijn voorbewerkt. Bijvoorbeeld
-\verb+./bin/go_aggregator ./exports/1001/+
+De input voor dit proces is het resultaat van de ETL fase. Dit proces representeerd de reduce fase van een MapReduce algoritme. Om het proces te starten wordt de locatie van een de data partities van shop. Ter voorbeeld: \newline\verb+./bin/go_aggregator ./exports/1001/+
 
-het volgende algoritme is geïmplementeerd voor de data aggregatie:
-
-De implemenentatie maakt gebruik van message passing over een goroutine. 
-
-Iedere regel die is uitgelezen uit een input bestand wordt gecommuniceerd in een goroutine.
-Een ander goroutine leest leest dir 
-
-een proces verwerkt het inlezen van data uit een bestand. Voor twee bestanden worden er twee concurrent processen gestart. 
-Daarnaast is een een proces dat voor ieder bericht de functies uitvoert om iedere kolomn uit op te tellen aan het vorige resultaat.
-het resultaat wordt opgeslagen in een mapping, waarbij iedere key één regel representeer in het eindresultaat. Iedere regel uit de data input met een overeenkomstige key, wordt opgezocht in de mapping, en alle alle waardes uit de kolommen worden opgeteld.
-
-het volgende voorbeeld visualeerd de mapping:
-\begin{verbatim}
-{
- Key{TimeID: 19881231, ShopID: 117, ChannelID: 4}:  Result{Visits: 100, Orders: 6},
- Key{TimeID: 19881231, ShopID: 117, ChannelID: 110}: Result{Visits: 47, Orders: 6}
-}
-\end{verbatim}
-
-De key bevat de volgende waarden:  en de waardes voor data zijn te omschrijven als
-
-
-
-Het algoritme heeft een aantal stappen
-
-\begin{enumerate}
-\item voor iede bestand een goroutine op. 
-\item lees iedere regel uit het bestand naar een gedefinieerd data-type ExportRow\footnote{dit is hetzelfde datatype dat in de splitter wordt gebruikt om bestanden mee weg te schrijven}
-\item schrijf 
-\end{enumerate}
-    
-. Dit is een struct van het type \verb+ExportRow+ en wordt op een channel geschreven. Dit werkt ongeveer zo:
-
-\clearpage
-
-\begin{figure}[h]
-\caption{Golang code for reading the input data }
-\begin{lstlisting}[language=Golang]
-dec := json.NewDecoder(file)
-go func() {
-    message := &domain.ExportRow{}
-    for {
-        err := dec.Decode(&message)
-        if err == io.EOF {
-            file.Close()
-            return
-        } else if err != nil {
-            panic(err)
-        }
-        dataChannel <- *message
-    }
-}()
-\end{lstlisting}
-\end{figure}
-
-\begin{figure}[!h]
-\caption{Golang code for aggregating and writing output data }
-\begin{lstlisting}
-r := map[Key]*domain.Record{}
-go func() {
-	for {
-		dat := <-dataChannel
-		key := Key{TimeId: dat.TimeId, ShopID: dat.ShopID}
-		if r[key] == nil {
-			r[key] = &domain.Record{TimeId: dat.TimeId, ShopProductID: dat.ShopProductID}
-		}
-		var rec *domain.Record = r[key]
-		rec.ExAmount += dat.ExAmount
-		rec.Amount += dat.Amount
-		rec.Orders += dat.Order
-		rec.Traffic += dat.Traffic
-	}
-}()
-\end{lstlisting}
-\end{figure}
+in bijlage \ref{app:golang_code}
 
 
 - wat zijn de eisen die zijn besproken?
@@ -191,39 +130,10 @@ Omdat Golang compileert naar assembly is er geen sprake van warmup time
 
 \subsection{Spark}
 
-\begin{figure}[h]
-\caption{Python code for reading input and aggregating }
-\begin{lstlisting}[language=python]
-SQLContext(sc).read.json(args.inputFile).registerTempTable("s2m_mapped")
-query = """
-SELECT ShopID, ChannelID, ShopProductID,
-       sum(Traffic) as traffic, sum(`Order`) as orders, sum(Cost) as costs
-FROM s2m_mapped
-WHERE TimeId={timeId}, ChannelID={channelId}
-GROUP BY ShopID, ChannelID, ShopProductID
-""".format(timeId=args.timeId, channelId=args.channelId)
-job = sqlContext.sql(query)
-job.write.partitionBy('ShopID').json(pathPrefix)
-\end{lstlisting}
-\end{figure}
-
-
 - wat zijn de eisen die zijn besproken
 
 - de oplossing is als volgt ontworpen
 
 - de gevonden resultaten
 
-- warmup time
 De warmup tijd in spark is te verklaren doordat de Spark SQL syntax wordt vertaalt naar Java, het de java code wordt vertaal naar systeem code door de JVM.
-
-
-\subsection{De setup}
-\label{subsec:3.4hardware_specs}
-
-
-2.6 GHz Intel Core i5
-
-8 GB 1600 MHz DDR3
-
-Apple SSD

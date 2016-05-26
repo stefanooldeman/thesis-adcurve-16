@@ -130,10 +130,13 @@
 %% Include an optional title page.
 \input{title}
 
-% \input{preface}
+\input{preface}
 
 \tableofcontents
 
+% \listoffigures
+ 
+% \listoftables
 
 %% Use Arabic numerals for the page numbers of the chapters.
 \mainmatter
@@ -142,19 +145,34 @@
 
 % \linenumbers
 
-\input{chapters/1Opdracht}
+\input{chapters/1Context}
 
-\input{chapters/2Onderzoeksplan}
+\input{chapters/2Project}
 
 % \input{chapters/3Planning}
 
-\input{chapters/4Resultaten}
+\input{chapters/3Onderzoek}
+
+\input{chapters/4Resultaat}
 
 %% Use letters for the chapter numbers of the appendices.
 \appendix
 
+\chapter{Overzicht planning en fases}
+\label{app:planning}
+\input{appendix/planning}
+
+\chapter{Impact analyse}
+\label{app:impact_analyse}
 \input{appendix/impact_analyse}
-% \input{appendix/planning}
+
+\chapter{Implementatie in Golang}
+\label{app:golang_code}
+\input{appendix/golang_code}
+
+\chapter{Implementatie in Spark SQL}
+\label{app:spark_code}
+\input{appendix/spark_code}
 
 \printbibliography
 

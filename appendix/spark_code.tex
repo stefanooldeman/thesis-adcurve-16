@@ -1,0 +1,16 @@
+
+\begin{figure}[h]
+\caption{Python code for reading input and aggregating }
+\begin{lstlisting}[language=python]
+SQLContext(sc).read.json(args.inputFile).registerTempTable("s2m_mapped")
+query = """
+SELECT ShopID, ChannelID, ShopProductID,
+       sum(Traffic) as traffic, sum(`Order`) as orders, sum(Cost) as costs
+FROM s2m_mapped
+WHERE TimeId={timeId}, ChannelID={channelId}
+GROUP BY ShopID, ChannelID, ShopProductID
+""".format(timeId=args.timeId, channelId=args.channelId)
+job = sqlContext.sql(query)
+job.write.partitionBy('ShopID').json(pathPrefix)
+\end{lstlisting}
+\end{figure}
