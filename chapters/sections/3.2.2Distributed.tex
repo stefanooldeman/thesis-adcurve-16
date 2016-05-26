@@ -1,29 +1,27 @@
-De indruk binnen de organisatie is dat de huidige oplossing niet schaalbaar genoeg is. Binnen distribtuted systemen wordt schaalbaarheid gerealiseerd door de ``scale out"\ methode.
+De indruk binnen de organisatie is dat de huidige oplossing niet schaalbaar genoeg is. Binnen distributed systemen wordt schaalbaarheid gerealiseerd door de ``scale out"\ methode.
 
 % MapReduce wordt gezien als de oplossing wanneer de grootte van de dataesest niet effectief verwerkt kunnen worden door steeds groter groeiende databases. (TODO reference this)
 
-HP Vertica, werd al eerder besproken in \ref{sec:databases}, en wordt omschreven als een ``distributed database to mean a sharednothing, scale-out system" \parencite{lamb2012vertica}. Hoewel alle MapReduce platformen hun performance behalen op zogeheten ``Commodity hardware"\ wordt bij databases ``Modern hardware\ aanbevolen. Daarnaast zijn databases veelal commercieel waarbij Hadoop veel open source distributies kent. \parencite{dean2008mapreduce}
+HP Vertica, werd al eerder besproken in \ref{sec:databases}, en wordt omschreven als een ``distributed database to mean a sharednothing, scale-out system" \parencite{lamb2012vertica}. Hoewel alle MapReduce platformen hun performance behalen op zogeheten ``Commodity hardware"\ wordt bij databases ``Modern hardware"\ aanbevolen. Daarnaast zijn databases veelal commercieel waarbij Hadoop veel open source distributies kent. \parencite{dean2008mapreduce}
 
-Hadoop staat bekend als de technologie met grootte clusters, een voorbeeld van een distributed oplossing en een implementatie van Map Reduce, zo schrijft \textcite{hadoop2013selection}: ``The open-source software framework known as Apache Hadoop has gained sizable acceptance in organizations, spurred on by the growing digital business appetite for big data". Echter weten veel organisaties niet hoe ze deze technologie effectief moeten inzetten. Zo valt te concluderen uit \textcite{hadoop2015adoption} dat adoptie van het Hadoop ecosysteem nog altijd nog altijd laag blijft.
+Hadoop staat bekend als de technologie met grote clusters, een voorbeeld van een distributed oplossing en een implementatie van Map Reduce, zo schrijft \textcite{hadoop2013selection}: ``The open-source software framework known as Apache Hadoop has gained sizable acceptance in organizations, spurred on by the growing digital business appetite for big data". Echter weten veel organisaties niet hoe ze deze technologie effectief moeten inzetten. Zo valt te concluderen uit \textcite{hadoop2015adoption} dat adoptie van het Hadoop ecosysteem nog altijd nog altijd laag blijft.
 
 Afgezien van de adoptie blijft Hadoop interessant. Doordat de grootste bedrijven Hadoop blijven inzetten, met een groot aantal gebruikers, blijft het platform zich sterk ontwikkelen. In de loop der tijd zijn er SQL talen zoals Hive ontwikkeld waardoor het gebruikersgemak vele malen eenvoudiger is geworden. Echter introduceert dit nieuwe uitdagingen. Doordat data sets frequenter worden opgevraagd is er mogelijke terugval in performance\footnote{Lees: adhoc query 's vs. reporting query 's}. \parencite{thusoo2010hive}
 
-Daarnaast blijkt uit benchmarks door \textcite{armbrust2015spark} dat Spark SQL competitief is met vergelijkbare SQL talen op Hadoop zoals Impala.\footnote{Impala en Hive worden aangeboden, afhankelijk van de Hadoop distributie. De performance is vergelijkbaar afhankelijk van de configuratie en hoeveelheid query 's. Zie \url{http://hortonworks.com/blog/impala-vs-hive-performance-benchmark/}}
-
-\verb TODO: vervang de url naar Hortonworks met APA referentie.
+Daarnaast blijkt uit benchmarks door \textcite{armbrust2015spark} dat Spark SQL competitief is met vergelijkbare SQL talen op Hadoop zoals Hive en Impala\footnote{Impala en Hive worden aangeboden, afhankelijk van de Hadoop distributie. De performance is vergelijkbaar afhankelijk van de configuratie en hoeveelheid query 's. \parencite{hortonworks_benchmark}}.
 
 Apache Spark, origineel ontwikkeld in UC Berkley heeft sinds zijn release in 2014 als open source project meer contributies gezien dan Apache Hadoop in totaal heeft ontvangen\footnote{Met over 400 contributies is Apache Spark het meest actieve data processing framework in de industrie}. \parencite{armbrust2015spark}. Dit is veelbelovend en ook vanuit Shop2market is er een enorme interesse. In 2015 zijn er al succesvolle experimenten uitgevoerd met SparkML voor een Machine Learning applicatie.
 
 \subsubsection{\textbf{Conclusie}}
 
-Er zijn verschillende technologieën gevonden die gebruik maken van een distributed of networked methode. Omdat in de huidige situatie de data sets niet groter zijn dan 2GB wordt er voor gekozen om geen POC uit te voeren met Hadoop.  In eerdere ervaring met Hive duren gegeven opdrachten minimaal tussen de 15 en 17 minuten. Dit is te verklaren doordat de SQL query 's worden vertaalt naar de onderliggende MapReduce fases. \parencite{thusoo2010hive} Dit introduceert een significante overhead voor de huidige use case.
+Er zijn verschillende technologieën gevonden die gebruik maken van een distributed of networked methode. Omdat in de huidige situatie de data sets niet groter zijn dan 2GB wordt er voor gekozen om geen POC uit te voeren met Hadoop.  In eerdere ervaring met Hive duren gegeven opdrachten minimaal tussen de 15 en 17 minuten. Dit is te verklaren doordat de SQL query 's worden vertaald naar de onderliggende MapReduce fases. \parencite{thusoo2010hive} Dit introduceert een significante overhead voor de huidige use case.
 
 Daarnaast is gevonden dat Spark SQL deze overhead niet ervaart doordat alle data communicatie in-memory plaats vindt. In tegendeel tot de verschillende fases in Hadoop waarbij er wordt gelezen en geschreven van het filesysteem (HDFS). Dit is genoeg motivatie om een POC uit te voeren met Apache Spark
 % waarbij Spark een vergelijkbaar algoritme toepast met dat van MapReduce maar veel performance gerelateerde issues voorkomen kunnen worden door het gebruik van in-memory data communicatie tussen verschillende fases.
 % \verb TODO: add citation ``Comparing Apache Spark and Map Reduce with Performance Analysis using K-Means"
 
 \begin{table}[bh]
-\caption{Vergelijkings matrix waarin eisen worden getoetst tegenover de gevonden distributed systemen}
+\caption{Vergelijkingsmatrix waarin eisen worden getoetst tegenover de gevonden distributed systemen}
 \label{tab:matrix_distributed}
 \begin{tabular}{|l|l|l|l|l|l|l|}
 \hline

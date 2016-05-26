@@ -6,7 +6,7 @@
 % Door gebruik te maken van distributed functionaliteiten van Spark wordt getest of de snelheid waar spark bekend om staat (paper) behaald kan worden in onze use case. Er is de mogelijkheid om unit tests en functional tests te schrijven, dit wordt aangeboden door het framework. Het wegschrijven van meerdere resultaten in een proces kan door het partitionener van output data op (PublisherID, ShopID). Ook kunnen er meerdere dagen in een proces worden verwerkt en het resultaat wordt weggeschreven per TimeID, PublisherID en ShopID
 
 
-In dit hoofdstuk worden gepresenteerd hoe de POC / experimenten zijn ontworpen. Zoals is te lezen in \ref{sec:deelvraag3} is zijn de best mogelijke oplossingen te ontwikkelen met behulp van \textit{Golang} en \textit{Apache Spark}. In overeenstemming met de organisatie zijn verdere succesfactoren gedefinieerd per POC.
+In dit hoofdstuk wordt omschreven hoe Proof of concept 's zijn ontworpen. Zoals is te lezen in \ref{sec:deelvraag3} is zijn de best mogelijke oplossingen te ontwikkelen met behulp van \textit{Golang} en \textit{Apache Spark}. In overeenstemming met de organisatie zijn verdere succesfactoren gedefinieerd per POC.
 
 
 % De uitvoer van het project bestaat uit drie fases; Data preperation, Go Aggregate en Spark SQL
@@ -42,21 +42,59 @@ Het resultaat van de ETL voor orders en visits wordt als input data gebruikt voo
 
 Ieder opdracht (aggregatie) wordt in één serie vijf keer herhaalt, waarvan een vervolgens de twee metingen worden geregistreerd. Over de metingen wordt een gemiddelde genomen voor het resultaat.
 
-\subsection{ETL Process, Data preperation}
+\subsection{ETL Process, Data preparation}
 
-De eerste fase uit het algoritme is een ETL stap, om CSV en BSON te converteren naar een uniform schema.
-dit heeft de volgende voordelen
+Het proces dat voorziet in de eerste fase van het proces is geschreven in Golang. Hier zal voor de rest van het document naar worden gerefereerd als de splitter. ETL (Extract, Transform and Load) is een manier om data uit een externe databron te transformeren naar een ander schema   \parencite{data-mining}. Dit zorgt voor een uniform of formaat waardoor latere processen geen logica hoeven toe te passen om met de data te werken. In deze context worden er alleen met bestanden gewerkt, de dataflow gaat als volgt:
 
-download data sets, unzip, run splitter. BSON naar JSON en CSV naar JSON.
-de structuur van orders BSON is als volgt
+\begin{enumerate}
+    \item Extract / download bestanden van Amazon S3
+    \item Transform / bewerk de bestanden op locale hardeschijf met de splitter implementatie in Golang waardoor een BSON of CSV formaat wordt omgezet naar JSON met een uniform schema.
+    \item Load / het resultaat wordt weg geschreven naar de locale hardeschijf. In het ontwerp is er voor gekozen om data te partitioneren per \verb+shop_id+ voor later gebruik.
+\end{enumerate}
 
-de structuur van visits BSON is als volgt
+Ter illustratie is in tabel \ref{tab:etl_input_example} worden een aantal kolommen uit de input data gebruikt, in dit geval uit de CSV met visits. Iedere regel in dit bestand representeert een bezoek op de website van een webshop. Deze bezoeken komen voort uit advertenties die door Adcurve zijn gepubliceerd bij de publishers.
 
-dit resulteert in het volgende schema
-data wordt weg geschreven in bestanden per webwinkel
-dit heeft de volgende reden / voordelen
-% als een methode om eenmalig te filteren i.p.v. meerdere malen tijdens het aggregatie proces.
+\begin{table}[bh]
+\centering
+\caption{Een voorbeeld van de input data gebruikt tijdens ETL}
+\label{tab:etl_input_example}
+\begin{tabular}{|l|l|l|l|l|l|}
+\hline
+timestamp  & time\_id & publisher\_id & shop\_id & shop\_product\_id & shop\_category\_id \\ \hline
+1464154281 & 20160424 & 410         & 224      & 103774145         & 338790             \\ \hline
+1464154306 & 20160424 & 61          & 910      & 108837485         & 6782117            \\ \hline
+1464154314 & 20160424 & 410         & 224      & 100670758         & 9152995            \\ \hline
+\end{tabular}
+\end{table}
 
+Zoals te zien is in figuur \ref{fig:visits.json_after_etl} wordt iedere regel uit het CSV bestand getransformeerd naar het JSON formaat. Daarnaast wordt er een extra kolom toegevoegd: \verb+Traffic=1+, naast de andere kollomen die dienen als ``placeholders"\ voor de orders data. Dit is een bewuste keuze in het ontwerp voor het behalen van mogelijke betere performance. Dit komt ook ten goede van de data consistentie omdat de data interpretatie van data in één fase plaatsvindt. De vervolg fases kunnen hierdoor gebruik maken van pure functies die in een framework, technologie of taal zijn geïmplementeerd.
+
+\begin{figure}[htb]
+% \centering
+\caption{De bestanden en hun formaat na het ETL proces door de Splitter}
+\label{fig:visits.json_after_etl}
+\begin{verbatim}
+/Users/stefano/dev/go-aggregate/exports/224/visits.json
+{"TimeId":"20160424","OrderID":"","ShopID":224,"ChannelID":410,
+"ShopProductID":103774145,"ShopCategoryID":338790,"Traffic":1,
+ "Order":0,"Amount":0,"ExAmount":0,"Cost":0}\n
+{"TimeId":"20160424","OrderID":"","ShopID":224,"ChannelID":410,
+ "ShopProductID":100670758,"ShopCategoryID":9152995,"Traffic":1,
+ "Order":0,"Amount":0,"ExAmount":0,"Cost":0}\%
+    
+/Users/stefano/dev/go-aggregate/exports/910/visits.json
+{"TimeId":"20160424","OrderID":"","ShopID":910,"ChannelID":61,
+ "ShopProductID":108837485,"ShopCategoryID":6782117,"Traffic":1,
+ "Order":0,"Amount":0,"ExAmount":0,"Cost":0}\%
+\end{verbatim}
+\end{figure}
+
+Als laatste is er voor gekozen om data op te splitsen per webshop als een methode van data partitionering. Dit biedt de mogelijkheid om in latere fases gebruik te maken van concurrency of parallellisatie implementaties, omdat data kan worden verwerkt in een proces per partitie.
+
+Als laatste biedt dit ontwerp de mogelijkheid om de data voor een specifieke webshop opnieuw te verwerken. Dit betekend dat data eenmalig wordt gefilterd. 
+
+Door de bestanden te bewaren op de hardeschijf voor de laatste 30 dagen wordt er nog meer voordeel behaald.
+In het scenario wanneer er data correcties worden uitgevoerd voor één data bron op een specifieke datum, worden er minder bestanden verwerkt tijdens de ETL omdat de andere overige data bronnen al eerder zijn verwerkt. Dit betekend dat data eenmalig wordt gefilterd.
 
 \subsection{Golang}
 
@@ -85,8 +123,8 @@ De warmup tijd in spark is te verklaren doordat de Spark SQL syntax wordt vertaa
 \label{subsec:3.4hardware_specs}
 
 
+2.6 GHz Intel Core i5
 
+8 GB 1600 MHz DDR3
 
-
-
-
+Apple SSD

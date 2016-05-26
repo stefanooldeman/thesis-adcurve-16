@@ -1,12 +1,11 @@
 \textit{Wat zijn de probleem scenario's waardoor gegevens niet te verklaren zijn, en wat zijn de mogelijke oplossingen?}
 
-Tijdens de project analyse is met verschillende stakeholders binnen de organisatie gesproken. Naast de gedefinieerde project eisen, eerder omschreven in tabel \ref{table:requirements} zijn er verschillende symptomen verzameld. Op basis hiervan is een Impact analyse gemaakt, waarbij de ernst van de situatie wordt uitgedrukt in een waarde. Zie hiervoor bijlage (TODO ref).
+Tijdens de project analyse is met verschillende stakeholders binnen de organisatie gesproken. Naast de gedefinieerde projecteisen, eerder omschreven in tabel \ref{table:requirements} zijn er verschillende symptomen verzameld. Op basis hiervan is een Impact analyse gemaakt, waarbij de ernst van de situatie wordt uitgedrukt in een waarde. Zie hiervoor bijlage (TODO ref).
 % TODO leg uit hoe de waarde tot stant komt FEMA
 
-Vervolgens is per probleem scenario een mogelijke technische verklaring gezocht, zijn er criteria omschreven waaraan de mogelijk oplossing moet voldoen. Hierdoor wordt getoetst of de geselecteerde technologieën in  \ref{sec:gevonden_tools} toepasbaar zijn en de huidige probleem scenario werkelijk kunnen oplossen.
+Vervolgens is per probleemscenario een mogelijke technische verklaring gezocht, zijn er criteria omschreven waaraan de gebruikte technologie bij een mogelijk oplossing moet voldoen. Hierdoor wordt getoetst of de geselecteerde technologieën in \ref{sec:gevonden_tools} toepasbaar zijn en de huidige probleem scenario werkelijk kunnen oplossen.
 
 \subsection{Scenario's uit de Impact Analyse}
-
 
 \begin{enumerate}
     \item L6: API 's provided by the publisher are unavailable
@@ -70,8 +69,8 @@ Omdat databases bij definitie statefull zijn, moet er in dit geval een back-up e
 
 In het geval van Golang, dat in het algemeen niet als data processing tool te beschouwen is maar als een General purpose language, is de implementatie code eenvoudig te upgraden naar nieuwere versies. Dit wordt gegarandeerd als de implementatie volledig getest is door unit tests. 
 
-\subsubsection{\textbf{Mogelijke overhead bij write operations}}
 
+\subsubsection{\textbf{Mogelijke overhead voorkomen}}
 
 \begin{verbatim}
 
@@ -108,7 +107,7 @@ Dit heeft als gevolg dat data opslag volledig verplaatst naar Amazon S3, zowel d
 \subsection{Conclusie}
 
 Een deel van het probleem is het actief monitoren van de data kwaliteit en processen starten om het te corrigeren. Hier wordt niet verder op in gegaan omdat een dergelijke oplossing hiervoor buiten scope valt. Hiervoor geldt, zodra er een oplossing is moeten de datakwaliteit worden herstelt door het proces te starten dat de correcties uitvoert [``effected datasources"\ opnieuw evalueren]
-Deze scenario's zijn ook tegelijkertijd lastig te voorkomen, alleen te herstellen. Het advies is daarom om hier ``monitoring en alerting\ voor te implementeren. Zie ook andere maatregelen zoals bijv. het aanwijzen van Data stewards (TODO: reference term, paper)
+Deze scenario's zijn ook tegelijkertijd lastig te voorkomen, alleen te herstellen. Het advies is daarom om hier ``monitoring en alerting\ voor te implementeren en verder onderzoek doen naar bestaande methodieken voor beheersen van datakwaliteit. Bijvoorbeeld door starten van een ``Data Stewardship Program" zoals omschreven wordt in het ``TDWI Report, The Data Warehouse Institute"\ door  \textcite{eckerson2002data}.
 
 Spark SQL is bewezen snel erg snel te zijn en Amazon EMR is managed service
 
