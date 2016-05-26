@@ -98,7 +98,87 @@ In het scenario wanneer er data correcties worden uitgevoerd voor één data bro
 
 \subsection{Golang}
 
-- wat zijn de eisen die zijn besproken
+De input voor dit proces is het resultaat van de ETL fase. Om het proces te starten wordt een argument gegeven. Dit is de locatie op het filesysteem van de data bronnen die zijn voorbewerkt. Bijvoorbeeld
+\verb+./bin/go_aggregator ./exports/1001/+
+
+het volgende algoritme is geïmplementeerd voor de data aggregatie:
+
+De implemenentatie maakt gebruik van message passing over een goroutine. 
+
+Iedere regel die is uitgelezen uit een input bestand wordt gecommuniceerd in een goroutine.
+Een ander goroutine leest leest dir 
+
+een proces verwerkt het inlezen van data uit een bestand. Voor twee bestanden worden er twee concurrent processen gestart. 
+Daarnaast is een een proces dat voor ieder bericht de functies uitvoert om iedere kolomn uit op te tellen aan het vorige resultaat.
+het resultaat wordt opgeslagen in een mapping, waarbij iedere key één regel representeer in het eindresultaat. Iedere regel uit de data input met een overeenkomstige key, wordt opgezocht in de mapping, en alle alle waardes uit de kolommen worden opgeteld.
+
+het volgende voorbeeld visualeerd de mapping:
+\begin{verbatim}
+{
+ Key{TimeID: 19881231, ShopID: 117, ChannelID: 4}:  Result{Visits: 100, Orders: 6},
+ Key{TimeID: 19881231, ShopID: 117, ChannelID: 110}: Result{Visits: 47, Orders: 6}
+}
+\end{verbatim}
+
+De key bevat de volgende waarden:  en de waardes voor data zijn te omschrijven als
+
+
+
+Het algoritme heeft een aantal stappen
+
+\begin{enumerate}
+\item voor iede bestand een goroutine op. 
+\item lees iedere regel uit het bestand naar een gedefinieerd data-type ExportRow\footnote{dit is hetzelfde datatype dat in de splitter wordt gebruikt om bestanden mee weg te schrijven}
+\item schrijf 
+\end{enumerate}
+    
+. Dit is een struct van het type \verb+ExportRow+ en wordt op een channel geschreven. Dit werkt ongeveer zo:
+
+\clearpage
+
+\begin{figure}[h]
+\caption{Golang code for reading the input data }
+\begin{lstlisting}[language=Golang]
+dec := json.NewDecoder(file)
+go func() {
+    message := &domain.ExportRow{}
+    for {
+        err := dec.Decode(&message)
+        if err == io.EOF {
+            file.Close()
+            return
+        } else if err != nil {
+            panic(err)
+        }
+        dataChannel <- *message
+    }
+}()
+\end{lstlisting}
+\end{figure}
+
+\begin{figure}[!h]
+\caption{Golang code for aggregating and writing output data }
+\begin{lstlisting}
+r := map[Key]*domain.Record{}
+go func() {
+	for {
+		dat := <-dataChannel
+		key := Key{TimeId: dat.TimeId, ShopID: dat.ShopID}
+		if r[key] == nil {
+			r[key] = &domain.Record{TimeId: dat.TimeId, ShopProductID: dat.ShopProductID}
+		}
+		var rec *domain.Record = r[key]
+		rec.ExAmount += dat.ExAmount
+		rec.Amount += dat.Amount
+		rec.Orders += dat.Order
+		rec.Traffic += dat.Traffic
+	}
+}()
+\end{lstlisting}
+\end{figure}
+
+
+- wat zijn de eisen die zijn besproken?
 
 - de oplossing is als volgt ontworpen
 
@@ -107,7 +187,26 @@ In het scenario wanneer er data correcties worden uitgevoerd voor één data bro
 - warmup time is in gecompileerde Go code niet van toepassing.
 Omdat Golang compileert naar assembly is er geen sprake van warmup time
 
+\clearpage
+
 \subsection{Spark}
+
+\begin{figure}[h]
+\caption{Python code for reading input and aggregating }
+\begin{lstlisting}[language=python]
+SQLContext(sc).read.json(args.inputFile).registerTempTable("s2m_mapped")
+query = """
+SELECT ShopID, ChannelID, ShopProductID,
+       sum(Traffic) as traffic, sum(`Order`) as orders, sum(Cost) as costs
+FROM s2m_mapped
+WHERE TimeId={timeId}, ChannelID={channelId}
+GROUP BY ShopID, ChannelID, ShopProductID
+""".format(timeId=args.timeId, channelId=args.channelId)
+job = sqlContext.sql(query)
+job.write.partitionBy('ShopID').json(pathPrefix)
+\end{lstlisting}
+\end{figure}
+
 
 - wat zijn de eisen die zijn besproken
 

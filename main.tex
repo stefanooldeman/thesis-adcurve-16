@@ -61,6 +61,27 @@
     }
 }
 
+\usepackage{listings}
+\usepackage{listings-golang}
+
+\lstset{ % add your own preferences
+    % frame=single,
+    basicstyle=\footnotesize,
+    % keywordstyle=\color{red},
+    % numbers=left,
+    % numbersep=5pt,
+    showstringspaces=false, 
+    stringstyle=\color{blue},
+    tabsize=4,
+    language=Golang % this is it !
+}
+\usepackage{fancybox}
+\makeatletter
+\newenvironment{CenteredBox}{% 
+\begin{Sbox}}{% Save the content in a box
+\end{Sbox}\centerline{\parbox{\wd\@Sbox}{\TheSbox}}}% And output it centered
+\makeatother
+
 \begin{document}
 % 
 %% Use Roman numerals for the page numbers of the title pages and table of

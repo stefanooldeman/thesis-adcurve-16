@@ -1,1 +1,47 @@
 Uit de verschillende oplossingsrichtingen zijn de volgende technologieën geselecteerd:
+
+\subsubsection{Database oplossingen}
+
+\begin{table}[bh]
+\caption{Vergelijkingsmatrix waarin eisen worden getoetst tegenover de gevonden databases}
+\label{tab:matrix_databasese}
+\begin{tabular}{|p{3cm}|l|l|l|l|l|l|}
+\hline
+keyword     & support & scalability / performance & productief & testbaar & kennis &       \\ \hline
+referentie  & a (3)   & b (2)                     & c (2)      & d (1)    & e (1)  & score \\ \hline
+GreenplumDB & +       & +                         & -          & -        & -      & 5     \\ \hline
+Vertica     & +       & +                         & +          & -        & +      & 8     \\ \hline
+Redshift    & +       & +                         & +          & -        & +      & 8     \\ \hline
+\end{tabular}
+\end{table}
+
+\subsubsection{Distributed systems}
+
+\begin{table}[bh]
+\caption{Vergelijkingsmatrix waarin eisen worden getoetst tegenover de gevonden distributed systemen}
+\label{tab:matrix_distributed}
+\begin{tabular}{|p{3cm}|l|l|l|l|l|l|}
+\hline
+keyword         & support & scalability / performance & productief & testbaar & kennis &       \\ \hline
+referentie      & a (3)   & b (2)                     & c (2)      & d (1)    & e (1)  & score \\ \hline
+Hadoop / Hive   & +       & +                         & -          & -        & +      & 6     \\ \hline
+Hadoop / Python & +       & +                         & -          & +        & +      & 7     \\ \hline
+Spark SQL       & +       & +                         & +          & -        & +      & 8     \\ \hline
+Spark / Python  & +       & -*                        & +          & +        & +      & 8     \\ \hline
+\end{tabular}
+\end{table}
+
+\subsubsection{Hardware oplossingen}
+
+\begin{table}[bh]
+\caption{Vergelijkingsmatrix waarin eisen worden getoetst tegenover de gevonden programmeer talen}
+\label{tab:matrix_hardware}
+\begin{tabular}{|p{3cm}|l|l|l|l|l|l|}
+\hline
+keyword    & support & scalability / performance & productief & testbaar & kennis &       \\ \hline
+referentie & a (3)   & b (2)                     & c (2)      & d (1)    & e (1)  & score \\ \hline
+C++        & +       & +                         & -          & -        & +      & 6     \\ \hline
+Golang     & +       & +                         & +          & +        & +      & 8     \\ \hline
+Forge      & -       & +                         & +          & +        & -      & 5     \\ \hline
+\end{tabular}
+\end{table}

@@ -19,17 +19,3 @@ Er zijn verschillende technologieën gevonden die gebruik maken van een distribu
 Daarnaast is gevonden dat Spark SQL deze overhead niet ervaart doordat alle data communicatie in-memory plaats vindt. In tegendeel tot de verschillende fases in Hadoop waarbij er wordt gelezen en geschreven van het filesysteem (HDFS). Dit is genoeg motivatie om een POC uit te voeren met Apache Spark
 % waarbij Spark een vergelijkbaar algoritme toepast met dat van MapReduce maar veel performance gerelateerde issues voorkomen kunnen worden door het gebruik van in-memory data communicatie tussen verschillende fases.
 % \verb TODO: add citation ``Comparing Apache Spark and Map Reduce with Performance Analysis using K-Means"
-
-\begin{table}[bh]
-\caption{Vergelijkingsmatrix waarin eisen worden getoetst tegenover de gevonden distributed systemen}
-\label{tab:matrix_distributed}
-\begin{tabular}{|l|l|l|l|l|l|l|}
-\hline
-keyword         & support & scalability / performance & productief & testbaar & kennis &       \\ \hline
-referentie      & a (3)   & b (2)                     & c (2)      & d (1)    & e (1)  & score \\ \hline
-Hadoop / Hive   & +       & +                         & -          & -        & +      & 6     \\ \hline
-Hadoop / Python & +       & +                         & -          & +        & +      & 7     \\ \hline
-Spark SQL       & +       & +                         & +          & -        & +      & 8     \\ \hline
-Spark / Python  & +       & -*                        & +          & +        & +      & 8     \\ \hline
-\end{tabular}
-\end{table}
