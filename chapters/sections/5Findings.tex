@@ -1,6 +1,48 @@
 Wat zijn de gepresenteerde oplossingen en waarom zijn deze volledig of niet?
 
+
+De volgende doelstelling:
+
+Webwinkel eigenaren moeten in staat zijn om beslissingen te maken op basis van correcte en actuele gegevens in Adcurve. Dit betekent dat de gegevens die Adcurve toont altijd te verklaren zijn en overeenkomen met de werkelijkheid. De data moet op tijd verwerkt zijn, en fouten moeten tijdig hersteld kunnen worden.
+
+HET ETL proces
+% De snelheid waarmee de dataset wordt verwerkt in Golang is:
+% 61.19s user 13.02s system 100\% cpu 1:13.75 total
+
+% Als laatste biedt dit ETL ontwerp de mogelijkheid om de data voor een specifieke webshop opnieuw te verwerken. Dit betekend dat data eenmalig wordt gefilterd. 
+Door de bestanden te bewaren op de hardeschijf voor de laatste 30 dagen wordt er nog meer voordeel behaald.
+In het scenario wanneer er data correcties worden uitgevoerd voor één data bron op een specifieke datum, worden er minder bestanden verwerkt tijdens de ETL omdat de andere overige data bronnen al eerder zijn verwerkt. Dit betekend dat data eenmalig wordt gefilterd.
+
+
+
+De Aggregatie processen met Golang zullen erg klein worden gemaakt door de data van te voren te partitioneren per shop. Dit biedt de mogelijkheid om het deze processen uit te voeren op verschillende machines (scale-out), door het gebruikt van resqueue workers "Resque workers can be distributed between multiple machines, support priorities, are resilient to memory bloat / "leaks," \parencite{github2016reque} 
+
+
+
+
 \textbf{Go Aggregator}
+
+
+per Shop:
+average 1.42, 1.35, 1.40, 1.41, 1.32
+1.38
+output is 1 regel output en 401 bytes groot
+
+per shop en publisher:
+average 1.46, 1.35, 1.44, 1.41, 1.44
+1.42
+output is 27 regels output en 10640 bytes groot
+
+
+per shop, publisher en advertentieproduct:
+average 1.66, 1.51, 1.69, 1.59, 1.57
+1.59 seconds is average time
+output is 12982 regels 4722905 bytes
+
+
+Omdat Golang compileert naar assembly is er geen sprake van warmup time. En er is daarom alleen de totale tijd.
+
+
 Split all orders and visits for all shops (264 shops)
 
 \begin{lstlisting}

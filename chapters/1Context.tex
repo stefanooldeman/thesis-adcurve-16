@@ -41,16 +41,7 @@ Shop2market is met zijn team gevestigd in Hilversum en kent op dit moment achtti
 Zoals te lezen valt in de aanleiding zijn er meerdere redenen voor dit project.
 
 \begin{enumerate}
-    \item De tijd die het kost om statistieken te berekenen is aan de hoge kant. De berekeningen worden uitgevoerd met behulp van MongoDB MapReduce. Het team voorziet dat deze technologie niet genoeg schaalbaarheid biedt. Dit omdat rekentijd non-lineair is toegenomen in relatie tot de hoeveelheid data. Met de verwachte groei van Adcurve komen nieuwe eisen aan het licht en er moet naar een nieuwe oplossing worden gezocht.
+    \item Het kost momenteel te veel tijd om statistieken te berekenen. De berekeningen worden uitgevoerd met behulp van MongoDB MapReduce. Het team voorziet dat deze technologie niet genoeg schaalbaarheid biedt. Dit omdat rekentijd non-lineair is toegenomen in relatie tot de hoeveelheid data. Met de verwachte groei van Adcurve komen nieuwe eisen aan het licht en er moet naar een nieuwe oplossing worden gezocht.
     \item Bij voorkeur worden publishers geïntegreerd met behulp van API 's oftewel; een externe data bron. Op deze manier worden berekeningen uitgevoerd met precieze advertentiekosten. Maar doordat externe factoren nu een rol spelen in de berekeningen is het niet te garanderen dat de uitkomst altijd correct is. Zodra fouten intern of extern hersteld zijn, worden berekeningen voor een bepaalde dag, webwinkel of publisher opnieuw uitgevoerd. Het uitvoeren van dit soort correcties is tijdrovend door de huidige implementatie en gebruikte technieken.
     \item Webwinkels ontvangen tot soms tot 30 dagen na een bestelling een retournering van een of meerdere producten. Dit betekent dat een product niet verkocht is en de omzet uit de bestelling lager ligt dan is berekend. Het is wenselijk om berekende statistieken met betrekken tot retour bestellingen opnieuw te kunnen berekenen.
 \end{enumerate}
-
-\section{Doelstelling} % de doelstellingen (wat moet na afloop van het afstudeerproject zijn bereikt);
-\label{sec:doelstelling}
-
-Webwinkel eigenaren moeten in staat zijn om beslissingen te maken op basis van correcte en actuele gegevens in Adcurve. Dit betekent dat de gegevens die Adcurve toont altijd te verklaren zijn en overeenkomen met de werkelijkheid. De data moet op tijd verwerkt zijn, en fouten moeten tijdig hersteld kunnen worden.
-
-\section{Type opdracht}
-
-Aan de hand van beschikbare technieken wordt er gekozen voor een aantal mogelijke oplossingen.\newline Deze oplossingen worden vervolgens getest middels een POC. Door dit onderzoek moet duidelijk gaan worden: Hoe kan de opdracht worden opgelost? Is dit mogelijk? En wat is er nodig om de oplossing naar productie te krijgen? Door de opdrachtgever is gevraagd om een aantal POC 's te ontwikkelen om tot een inzicht over de oplossing te komen. Er is hierdoor sprake van een ontwikkelopdracht.

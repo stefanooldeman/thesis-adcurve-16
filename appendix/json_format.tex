@@ -1,0 +1,45 @@
+Het ETL proces heeft ongeveer het volgende algoritme
+
+\begin{enumerate}
+    \item Extract / download bestanden van Amazon S3
+    \item Transform / bewerk de bestanden op locale hardeschijf met de splitter implementatie in Golang waardoor een BSON of CSV formaat wordt omgezet naar JSON met een uniform schema.
+    \item Load / het resultaat wordt weg geschreven naar de locale hardeschijf. In het ontwerp is er voor gekozen om data te partitioneren per \verb+shop_id+ voor later gebruik.
+\end{enumerate}
+
+
+
+Het ETL proces neemt de volgende input data zoals in figuur \ref{fig:visits.json_before_etl2}, en transformeert dit in een JSON formaat zoals in figuur \ref{fig:visits.json_after_etl}
+
+\begin{figure}[bh]
+\centering
+\caption{Een voorbeeld van de input data gebruikt tijdens ETL}
+\label{fig:visits.json_before_etl2}
+\begin{tabular}{|l|l|l|l|l|l|}
+\hline
+timestamp  & time\_id & publisher\_id & shop\_id & shop\_product\_id & shop\_category\_id \\ \hline
+1464154281 & 20160424 & 410         & 224      & 103774145         & 338790             \\ \hline
+1464154306 & 20160424 & 61          & 910      & 108837485         & 6782117            \\ \hline
+1464154314 & 20160424 & 410         & 224      & 100670758         & 9152995            \\ \hline
+\end{tabular}
+\end{figure}
+
+
+\begin{figure}[htb]
+% \centering
+\caption{De bestanden en hun formaat na het ETL proces door de Splitter}
+\label{fig:visits.json_after_etl}
+\begin{verbatim}
+/Users/stefano/dev/go-aggregate/exports/224/visits.json
+{"TimeId":"20160424","OrderID":"","ShopID":224,"ChannelID":410,
+"ShopProductID":103774145,"ShopCategoryID":338790,"Traffic":1,
+ "Order":0,"Amount":0,"ExAmount":0,"Cost":0}\n
+{"TimeId":"20160424","OrderID":"","ShopID":224,"ChannelID":410,
+ "ShopProductID":100670758,"ShopCategoryID":9152995,"Traffic":1,
+ "Order":0,"Amount":0,"ExAmount":0,"Cost":0}\%
+    
+/Users/stefano/dev/go-aggregate/exports/910/visits.json
+{"TimeId":"20160424","OrderID":"","ShopID":910,"ChannelID":61,
+ "ShopProductID":108837485,"ShopCategoryID":6782117,"Traffic":1,
+ "Order":0,"Amount":0,"ExAmount":0,"Cost":0}\%
+\end{verbatim}
+\end{figure}

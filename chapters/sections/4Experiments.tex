@@ -1,44 +1,82 @@
-% \textbf{Hardware oplossing met Golang}
-% Het is praktisch mogelijk om data in sub sets te aggregeren omdat er een afzonderlijke data bron is per publisher.
-% Het gebruiken van gesplitste bestanden per webshop zorgt voor zeer korte levende processen. De totale performance hoeft niet te verbeteren, zolang het proces dat alleen data aggregatie uitvoert voor de specifieke webwinkel en publisher kort van duur is kan dit worden uitgevoerd op verschillende machines tegelijk om dit schaalbaar in te zetten. "We typically find that the highest performance is achieved when multiple threads are used per core. For Core i7, the best performance comes from running 8 threads on 4 cores" \parencite{lee2010debunking}
+Wat zijn de mogelijke oplossingen en hoe wordt dit gevalideerd?
 
-% \textbf{Distributed oplossing met Spark}
-% Door gebruik te maken van distributed functionaliteiten van Spark wordt getest of de snelheid waar spark bekend om staat (paper) behaald kan worden in onze use case. Er is de mogelijkheid om unit tests en functional tests te schrijven, dit wordt aangeboden door het framework. Het wegschrijven van meerdere resultaten in een proces kan door het partitionener van output data op (PublisherID, ShopID). Ook kunnen er meerdere dagen in een proces worden verwerkt en het resultaat wordt weggeschreven per TimeID, PublisherID en ShopID
+In dit hoofdstuk wordt omschreven hoe de Proof of Concept 's op basis van Golang en Spark zijn uitgevoerd. Zoals is te lezen in \ref{sec:gevonden_tools} is er voor gekozen om de POC te ontwikkelen met van Golang en Apache Spark. Hieruit moet blijken of de technologieën die geselecteerd zijn in het onderzoek ook werkelijk toepasbaar zijn in de context.
+
+Zoals wordt omschreven in de originele doelstelling in \ref{sec:doelstelling}
+``moet data op tijd worden verwerkt evenals het tijdig herstellen van fouten mogelijk zijn". Daarom valideert dit experiment welke oplossing de beste prestatie levert in de huidige situatie.
+
+Het expiriment bestaat uit twee fases. Eerst wordt er een Map fase uitgevoerd en vervolgens een Reduce, zoals bij MapReduce. De map fase is 
+ETL en de reduce fase is een aggregatie met Golang of Spark SQL.
+
+\subsection{Gebruikte methode}
+
+Voor ieder POC worden er twee metingen uitgevoerd: de totale proces tijd, gemeten door GNU time \parencite{gnu_time}. En de totale tijd zonder de tijd tussen het starten van het proces en het werkelijk uitvoeren van de implementatie (ook wel warmup-time genoemgd). Dit wordt in één serie vijf keer herhaalt, waarvan een vervolgens de twee metingen worden geregistreerd. Over de metingen wordt een gemiddelde genomen en dit wordt vormt het resultaat.
+
+Tijdens de drie fases van het experiment wordt gebruik gemaakt van een dataset uit productie als data input. De data set bestaat uit visits en orders van 264 webwinkels.
+
+\begin{table}[h]
+\centering
+\caption{Gebruikte data bronnen met eigenschappen}
+\label{tab:datasets}
+\begin{tabular}{|l|l|l|l|l|l|}
+\hline
+data bron & datagrootte voor & datagrootte na & aantal regels voor & aantal regels na \\ \hline
+orders.bson    &  0.2494 GB & 0.04734 GB       & N/A                & 31.869           \\ \hline
+visits.json & 1.064 GB               & 0.3986 GB      & 2.345.341          & 2.345.090        \\ \hline
+\end{tabular}
+\end{table}
 
 
-In dit hoofdstuk wordt omschreven hoe de Proof of concept 's zijn ontworpen. Zoals is te lezen in \ref{sec:deelvraag3} zijn de best mogelijke oplossingen te ontwikkelen met behulp van \textit{Golang} en \textit{Apache Spark}. In overeenstemming met de organisatie zijn verdere succesfactoren gedefinieerd per POC.
+\subsection{ETL}
+
+ETL (Extract, Transform and Load) is een manier om data uit een externe databron te transformeren naar een ander schema \parencite{data-mining}. Dit zorgt voor een uniform formaat waardoor latere processen geen logica hoeven toe te passen om met de data te werken. In tabel \ref{tab:etl_input_example} is het dataformaat omschreven van de visits data bron. Iedere regel in dit bestand representeert een bezoek op de website van een webshop. Na het uitvoeren van het ETL proces worden er twee bestanden weg geschreven, een per webshop het bestand ``./exports/910/visits.json"\ bevat een regel en het bestand ``./exports/224/visits.json" heeft twee regels. Een voorbeeld hiervan is te vinden in appendix \ref{app:json_format}
+
+Tijden de ETL wordt er kolom toegevoegd: \verb+Traffic=1+, dit is een vorm van data interpretatie. Dit komt ook ten goede van de data consistentie omdat de data interpretatie van data in één fase plaatsvindt. De vervolg fases kunnen hierdoor gebruik maken van pure functies die in een framework, technologie of taal zijn geïmplementeerd.
+
+\begin{table}[bh]
+\centering
+\caption{Een voorbeeld van de input data gebruikt tijdens ETL}
+\label{tab:etl_input_example}
+\begin{tabular}{|l|l|l|l|l|l|}
+\hline
+timestamp  & time\_id & publisher\_id & shop\_id & shop\_product\_id & shop\_category\_id \\ \hline
+1464154281 & 20160424 & 410         & 224      & 103774145         & 338790             \\ \hline
+1464154306 & 20160424 & 61          & 910      & 108837485         & 6782117            \\ \hline
+1464154314 & 20160424 & 410         & 224      & 100670758         & 9152995            \\ \hline
+\end{tabular}
+\end{table}
 
 
-% De uitvoer van het project bestaat uit drie fases; Data preperation, Go Aggregate en Spark SQL
-% In fase 1 vindt de ETl processing plaats. Als de resultaten snel genoeg zijn, zal dit worden hergebruikt in fase 2 en 3.
-% TODO Leg uit dat Spark SQL niet wordt aangeraden voor ETL wanneer dit alleen mapping fases heeft
+Het ETL proces is in de eerste iteratie van het project  geschreven in Golang. Hier is voor gekozen omdat er meer betere ondersteuning is voor data formaten zoals BSON, een binary formaat. Als laatste is er voor gekozen om data op te splitsen per webshop als een methode van data partitionering. Dit biedt de mogelijkheid om in latere fases gebruik te maken van concurrency of parallellisatie implementaties, omdat data kan worden verwerkt in een proces per partitie. 
+Uit onderzoek blijkt dat MapReduce deze methode gebruikt om data te schalen naar een terabyte schaal.
+
+In de ETL fase is dat verwerkt voor 265 webshops. Er worden daarom met twee databronnen maximaal 530  (= 265 * 2) bestanden geschreven. Maar omdat het kan dat sommige webwinkels geen data heeft voor een databron wordt er geen bestand weg geschreven. Met de huidige dataset resulteerde het ETL proces in 462 bestanden.
+
+En hierop volgende fase representeert de reduce fase van een MapReduce algoritme. De input voor dit het reduce proces is het resultaat van de ETL fase.
+
+\clearpage
+
+% data verlies van -0.010702068483857997 voor visits
+
+\subsection{Golang}
+
+Om het proces te starten wordt de locatie van een de data partities van shop. Ter voorbeeld: \newline\verb+./bin/go_aggregator ./exports/1001/+
+De implementatie gebruikt voor iedere databron een aparte thread (goroutine) om de data in te lezen. Een apart thread wordt gebruikt om de data te ontvangen en voert de aggregatie functie SUM uit op alle kolommen. Alle data wordt gegroepeerd op basis van de key ShopID, PublisherID, en ProductID. Er zijn geen bijzonderheden gevonden waaruit blijkt dat dit proces niet schaalbaar is in te zetten.
+
+Het verwerken van een partitie gebeurt tussen de 1.4 seconden en de 2 milliseconden. En als het het programma wordt uitgevoerd voor alle webwinkels duurt dit 1 minuut en 22 seconden.
+
+\subsection{Spark}
+
+Voor spark is de opdracht gegeven aan het cluster dat in standalone modus is gestart. Er is 7 GB geheugen beschikbaar gesteld en 8 CPU cores. Om het proces te starten voor spark wordt eer een bestand gegeven gegeven aan het spark-submit commando. Ter voorbeeld:\newline\verb+spark-submit query.py --input ./exports_combined.json+
+
+De implementatie gebruikt Spark SQL in een python script "query.py". Tijdens het proof of concept is gevonden dat de beste performance wordt behaald wanneer alle data in een groot bestand wordt gegeven. Spark voert hier zelf de optimale partitionering in over de beschikbare hardware. Daarom worden eerst alle bestanden samengevoegd met het volgende unix commando:\newline\verb+cat ./exports/*/{orders,visits}.json >> exports_combined.json+.
 
 
-\subsection{Ontworpen experimenten}
+In Spark is er wel spraken van warmup-time, dit is te verklaren doordat de Spark SQL syntax wordt vertaalt naar Java, de java code wordt vertaal naar systeem code door de JVM.
 
-Zoals wordt omschreven in de originele doelstelling in \ref{sec:doelstelling} ``moet data op tijd worden verwerkt evenals het tijdig herstellen van fouten mogelijk zijn".  Daarom valideert dit experiment welke oplossing de beste prestatie levert in de huidige situatie. Voor het meten van performance worden er drie verschillende type aggregaties uitgevoerd op "commodity hardware", de exacte specificaties worden later omschreven in sectie \ref{subsec:hardware_specs}.  Er wordt gebruik gemaakt van een productie data set van één willekeurige dag.
+Het verwerken van alle partities gebeurt in 3 minuten en 22 seconden, en de tijd zonder warmup-time is 2 minutes 21 seconds.
 
-Tijdens iedere aggregatie worden er twee metingen uitgevoerd: de totale proces tijd \footnote{tijd word gemeten door unix `time` zie de documentatie voor time: \url{http://linux.die.net/man/1/time}} en de  tijd zonder ``warmup time".  Warmup time wordt in dit experiment omschreven als de tijd tussen het starten van het proces en het werkelijk uitvoeren van de geschreven implementatie. Voor het evalueren van de twee POC 's is besloten om geen latency, IO, memory of CPU gerelateerde benchmarks te evalueren. Dit is wel gewoonlijk bij \textbf{industrie benchmarks} van verschillende data processing tools. Maar dit wordt gedaan vanuit een competitief perspectief  \parencite{ousterhout2015making}. Voor de doelstellingen van dit project is de totale proces tijd belangrijker.
 
-\subsection{Gebruikte data sets}
-
-Tijdens de drie fases van het experiment wordt gebruik gemaakt van een data set uit productie als data input. De data set bestaat uit visits en orders van 264 webwinkels.
-
-\begin{itemize}
-    \item Het \textbf{orders} bestand is origineel 0.2494 GB (249.0 MB) groot, dit is in een Binary JSON (BSON) compressie formaat, Na het ETL waarbij alleen de alleen de relevantie metrieke overblijven is de dataset 0.04734 GB (5.0 MB) groot. Dit is een JSON formaat waarbij alle extra kolommen voor visits ook zijn inbegrepen en een default waarde hebben.
-
-    \item Het \textbf{visits} bestand is origineel 1.0GB groot, dit is in een CSV bestand waarbij de TAB charachter als delimiter wordt gebruikt.  Na het ETL waarbij alleen de alleen de relevantie metrieken overblijven is de dataset 0.04734 GB groot. Dit is hetzelfde JSON formaat waarbij alle extra kolommen voor orders zijn inbegrepen en een default waarde hebben.
-\end{itemize}
-
-Het resultaat van de ETL voor orders en visits wordt als input data gebruikt voor iedere aggregatie. De drie aggregaties zijn variaties waarbij dezelfde input data wordt gebruikt, maar waarvan het resultaat verschilt per aggregatie in data grootte. Dit is om de huidige situatie en business needs te simuleren. Een grotere data set past wellicht wel of niet in het geheugen (RAM). De drie variaties maken gebruik van de volgende keys waarop de aggregatie functie \verb=SUM(metric)= wordt toegepast:
-
-\begin{itemize}
-    \item TimeId, ChannelID
-    \item TimeId, ChannelID, ShopId
-    \item TimeId, ChannelID, ShopId, ShopProductId
-\end{itemize}
-
-Ieder opdracht (aggregatie) wordt in één serie vijf keer herhaalt, waarvan een vervolgens de twee metingen worden geregistreerd. Over de metingen wordt een gemiddelde genomen voor het resultaat.
 
 \subsection{Gebruikte Hardware}
 \label{subsec:hardware_specs}
@@ -56,84 +94,6 @@ Storage:   & Apple SSD
 \end{tabular}
 \end{table}
 
-\subsection{ETL Process, Data preparation}
+\subsection{Overige vragen}
 
-Het proces dat voorziet in de eerste fase van het proces is geschreven in Golang. Hier zal voor de rest van het document naar worden gerefereerd als de splitter. ETL (Extract, Transform and Load) is een manier om data uit een externe databron te transformeren naar een ander schema   \parencite{data-mining}. Dit zorgt voor een uniform of formaat waardoor latere processen geen logica hoeven toe te passen om met de data te werken. In deze context worden er alleen met bestanden gewerkt, de dataflow gaat als volgt:
-
-\begin{enumerate}
-    \item Extract / download bestanden van Amazon S3
-    \item Transform / bewerk de bestanden op locale hardeschijf met de splitter implementatie in Golang waardoor een BSON of CSV formaat wordt omgezet naar JSON met een uniform schema.
-    \item Load / het resultaat wordt weg geschreven naar de locale hardeschijf. In het ontwerp is er voor gekozen om data te partitioneren per \verb+shop_id+ voor later gebruik.
-\end{enumerate}
-
-Ter illustratie is in tabel \ref{tab:etl_input_example} worden een aantal kolommen uit de input data gebruikt, in dit geval uit de CSV met visits. Iedere regel in dit bestand representeert een bezoek op de website van een webshop. Deze bezoeken komen voort uit advertenties die door Adcurve zijn gepubliceerd bij de publishers.
-
-\begin{table}[bh]
-\centering
-\caption{Een voorbeeld van de input data gebruikt tijdens ETL}
-\label{tab:etl_input_example}
-\begin{tabular}{|l|l|l|l|l|l|}
-\hline
-timestamp  & time\_id & publisher\_id & shop\_id & shop\_product\_id & shop\_category\_id \\ \hline
-1464154281 & 20160424 & 410         & 224      & 103774145         & 338790             \\ \hline
-1464154306 & 20160424 & 61          & 910      & 108837485         & 6782117            \\ \hline
-1464154314 & 20160424 & 410         & 224      & 100670758         & 9152995            \\ \hline
-\end{tabular}
-\end{table}
-
-Zoals te zien is in figuur \ref{fig:visits.json_after_etl} wordt iedere regel uit het CSV bestand getransformeerd naar het JSON formaat. Daarnaast wordt er een extra kolom toegevoegd: \verb+Traffic=1+, naast de andere kollomen die dienen als ``placeholders"\ voor de orders data. Dit is een bewuste keuze in het ontwerp voor het behalen van mogelijke betere performance. Dit komt ook ten goede van de data consistentie omdat de data interpretatie van data in één fase plaatsvindt. De vervolg fases kunnen hierdoor gebruik maken van pure functies die in een framework, technologie of taal zijn geïmplementeerd.
-
-\begin{figure}[htb]
-% \centering
-\caption{De bestanden en hun formaat na het ETL proces door de Splitter}
-\label{fig:visits.json_after_etl}
-\begin{verbatim}
-/Users/stefano/dev/go-aggregate/exports/224/visits.json
-{"TimeId":"20160424","OrderID":"","ShopID":224,"ChannelID":410,
-"ShopProductID":103774145,"ShopCategoryID":338790,"Traffic":1,
- "Order":0,"Amount":0,"ExAmount":0,"Cost":0}\n
-{"TimeId":"20160424","OrderID":"","ShopID":224,"ChannelID":410,
- "ShopProductID":100670758,"ShopCategoryID":9152995,"Traffic":1,
- "Order":0,"Amount":0,"ExAmount":0,"Cost":0}\%
-    
-/Users/stefano/dev/go-aggregate/exports/910/visits.json
-{"TimeId":"20160424","OrderID":"","ShopID":910,"ChannelID":61,
- "ShopProductID":108837485,"ShopCategoryID":6782117,"Traffic":1,
- "Order":0,"Amount":0,"ExAmount":0,"Cost":0}\%
-\end{verbatim}
-\end{figure}
-
-Als laatste is er voor gekozen om data op te splitsen per webshop als een methode van data partitionering. Dit biedt de mogelijkheid om in latere fases gebruik te maken van concurrency of parallellisatie implementaties, omdat data kan worden verwerkt in een proces per partitie.
-
-Als laatste biedt dit ontwerp de mogelijkheid om de data voor een specifieke webshop opnieuw te verwerken. Dit betekend dat data eenmalig wordt gefilterd. 
-
-Door de bestanden te bewaren op de hardeschijf voor de laatste 30 dagen wordt er nog meer voordeel behaald.
-In het scenario wanneer er data correcties worden uitgevoerd voor één data bron op een specifieke datum, worden er minder bestanden verwerkt tijdens de ETL omdat de andere overige data bronnen al eerder zijn verwerkt. Dit betekend dat data eenmalig wordt gefilterd.
-
-\subsection{Golang}
-
-De input voor dit proces is het resultaat van de ETL fase. Dit proces representeerd de reduce fase van een MapReduce algoritme. Om het proces te starten wordt de locatie van een de data partities van shop. Ter voorbeeld: \newline\verb+./bin/go_aggregator ./exports/1001/+
-
-in bijlage \ref{app:golang_code}
-
-
-- wat zijn de eisen die zijn besproken?
-
-- de oplossing is als volgt ontworpen
-
-- de gevonden resultaten
-
-- warmup time is in gecompileerde Go code niet van toepassing.
-Omdat Golang compileert naar assembly is er geen sprake van warmup time
-
-\clearpage
-
-\subsection{Spark}
-
-- wat zijn de eisen die zijn besproken
-
-- de oplossing is als volgt ontworpen
-
-- de gevonden resultaten
-
-De warmup tijd in spark is te verklaren doordat de Spark SQL syntax wordt vertaalt naar Java, het de java code wordt vertaal naar systeem code door de JVM.
+Voor het evalueren van de twee POC 's is besloten om geen latency, IO, memory of CPU gerelateerde benchmarks te evalueren. Dit is wel gewoonlijk bij industrie benchmarks van verschillende data processing tools. Maar dit wordt gedaan vanuit een competitief perspectief  \parencite{ousterhout2015making}. Voor de doelstellingen van dit project is de totale proces tijd belangrijker.

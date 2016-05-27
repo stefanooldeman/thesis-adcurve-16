@@ -75,12 +75,6 @@
     tabsize=4,
     language=Golang % this is it !
 }
-\usepackage{fancybox}
-\makeatletter
-\newenvironment{CenteredBox}{% 
-\begin{Sbox}}{% Save the content in a box
-\end{Sbox}\centerline{\parbox{\wd\@Sbox}{\TheSbox}}}% And output it centered
-\makeatother
 
 \begin{document}
 % 
@@ -132,6 +126,8 @@
 
 \input{preface}
 
+% \chapter{Managementsamenvatting}
+
 \tableofcontents
 
 % \listoffigures
@@ -144,6 +140,8 @@
 \setlength{\parskip}{1em}
 
 % \linenumbers
+
+% \chapter{Inleiding}
 
 \input{chapters/1Context}
 
@@ -165,6 +163,10 @@
 \chapter{Impact analyse}
 \label{app:impact_analyse}
 \input{appendix/impact_analyse}
+
+\chapter{Implementatie ETL}
+\label{app:json_format}
+\input{appendix/json_format}
 
 \chapter{Implementatie in Golang}
 \label{app:golang_code}

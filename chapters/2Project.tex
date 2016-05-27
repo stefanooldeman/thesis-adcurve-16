@@ -1,14 +1,40 @@
 \chapter{Project}
 % de onderzoeksvragen, hoofdvraag met daaruit voortvloeiende deelvragen die moeten worden beantwoord
 
+In dit hoofdstuk worden het project kort toegelicht in de vorm van de doelstellingen, het type opdracht en de scope hiervan. Vervolgens wordt het ontwerp van het onderzoek gepresenteerd door de onderzoeksvragen te omschrijven en de methodes die worden gebruikt tijdens het onderzoek.
+
+\section{Doelstelling} % de doelstellingen (wat moet na afloop van het afstudeerproject zijn bereikt);
+\label{sec:doelstelling}
+
+Webwinkel eigenaren moeten in staat zijn om beslissingen te maken op basis van correcte en actuele gegevens in Adcurve. Dit betekent dat de gegevens die Adcurve toont altijd te verklaren zijn en overeenkomen met de werkelijkheid. De data moet op tijd verwerkt zijn, en fouten moeten tijdig hersteld kunnen worden.
+
+\section{Type opdracht}
+
+Aan de hand van beschikbare technieken wordt er gekozen voor een aantal mogelijke oplossingen.\newline Deze oplossingen worden vervolgens getest middels een Proof of Concept (POC). Door dit onderzoek moet duidelijk gaan worden: Hoe kan de opdracht worden opgelost? Is dit mogelijk? En wat is er nodig om de oplossing naar productie te krijgen? Door de opdrachtgever is gevraagd om een aantal POC 's te ontwikkelen om tot een inzicht over de oplossing te komen. Er is hierdoor sprake van een ontwikkelopdracht.
+
+
+\section{Scope}
+
+De data aggregaties worden momenteel berekend op een aantal dimensies: per jaar, per maand, per week en per dag. De aggregaties worden in een aantal stappen uitgevoerd, in de volgende volgorde:
+\begin{itemize}
+\item per geadverteerd product bij een publisher.
+\item totalen per publisher
+\item totalen voor de gehele webwinkel
+\end{itemize}
+Het berekenen van statistieken op het laagste niveau geeft de grootste uitdaging. Dit komt mede omdat de invoer data (input) een groter volume heeft op dit niveau, in vergelijking tot latere aggregaties. Ieder POC beperkt zich daarom tot het berekenen van een aantal metrieken op het laagste aggregatie niveau voor webwinkels: geadverteerde producten.
+
+\section{Onderzoek}
+
 In \ref{sec:doelstelling} is de volgende doelstelling omschreven: ``Webwinkel eigenaren moeten in staat zijn om beslissingen te maken op basis van correcte en actuele gegevens in Adcurve. Dit betekent dat de gegevens die Adcurve toont altijd te verklaren zijn en overeenkomen met de werkelijkheid. De data moet op tijd verwerkt zijn, en fouten moeten tijdig hersteld kunnen worden.". 
 
-Hieruit is een onderzoeksplan opgesteld. In het onderzoeksplan worden vijf deelvragen behandeld die samen de volgende hoofdvraag beantwoorden, namelijk:
+Hieruit is een onderzoeksplan opgesteld. In het onderzoeksplan worden vijf deelvragen behandeld die samen de volgende 
+hoofdvraag beantwoorden, namelijk:
 
+\medskip
 {\large \textit{"Hoe verzorgt een nieuwe implementatie voor het up-to-date houden van statistieken in Adcurve zodat gegevens altijd te verklaren zijn?"}}
 \medskip
 
-\section{Onderzoeksvragen}
+\subsection{Onderzoeksvragen}
 
 Om de hoofdvraag te beantwoorden zijn de volgende deelvragen geformuleerd
 
@@ -20,24 +46,9 @@ Om de hoofdvraag te beantwoorden zijn de volgende deelvragen geformuleerd
 \item Wat zijn de gepresenteerde oplossingen en waarom zijn deze volledig of niet?
 \end{enumerate}
 
-\begin{comment}
-\section{Literatuur} %  (optioneel) een beschrijving van de belangrijkste literatuur die onderzocht zal worden
-
-Voorbeelden van mogelijk jargon die zullen voorkomen in de thesis zijn data aggregaties, data transformaties en het selecteren en installeren van big data tools. Deze concepten worden onderlegd door onder andere de volgende literatuur:
-
-\begin{itemize}
-    \item Data Mining, Concepts and Techniques \parencite{data-mining}
-    \item I <3 Logs, Event data, stream processing, and data integration \parencite{logs}
-    \item Fast Data Processing with Spark \parencite{spark}
-    \item Real-Time Big Data Analytics \parencite{realtime-architectures}
-\end{itemize}
-
-Tijdens de selectie wordt mogelijk gebruik gemaakt van verschillende fases uit “de Berenschot-methode” \parencite{cuppen}.
-Daarnaast zal tijdens het voeren van gesprekken, interviews en presentaties binnen de organisatie mogelijk gebruik worden gemaakt van de theorie uit “Adviseren als tweede beroep, resultaat bereiken als adviseur” \parencite{adviseren}.
-\end{comment}
 
 \newpage
-\section{Onderzoek methode} % de te gebruiken methoden/technieken/middelen (ook van het onderzoek) en, indien van toepassing, de
+\subsection{Onderzoek methode} % de te gebruiken methoden/technieken/middelen (ook van het onderzoek) en, indien van toepassing, de
 \label{sec:onderzoekmethode}
 
 % \section{Deelvragen} deelvragen voorkomend uit de gekozen ontwerpmethode (optioneel);
@@ -91,13 +102,12 @@ Voor kwalitatief onderzoek wordt een \textit{Case studie} gebruikt om de problem
 
 \section{Ethische overweging}
 
-Zoals duidelijk wordt tijdens het onderzoek zijn er veel technologieën beschikbaar voor het verwerken van data. Om te voorkomen dat een oplossing wordt ontworpen op basis van de hype factor van een tool is er voor gekozen om een POC uit te voeren voor een kleine selectie aan technologieën.
-Dit moet voorkomen dat een technologie in theorie wellicht de beste en de snelste is, maar uiteindelijk in een gegeven context niet werkt.
+In het boek ``Business research methods"\ door \textcite{bryman2015business} worden ethische principes besproken om te valideren of een project op ethische wijze is uitgevoerd.
 
-Met de rol van software engineer voelt de student zich mede verantwoordelijk voor het adequaat adviseren van stakeholders. Vanuit een Estische code is daarom overwogen om dieper onderzoek te doen naar de kernoorzaken achter de huidige probleemsituatie, zie \ref{sec:deelvraag3}.
-Op de wijze wordt er ook op een objectieve wijze gekeken naar de situatie, om beslissingen tijdens het  project te valideren.
-
-% Door het organiseren van groepsdiscussies wordt de organisatie betrokken in beslissingen.
-Door het organiseren van groepsdiscussies wordt de inbreng vanuit de organisatie meegenomen. Zo is de student zich ervan bewust dat een gekozen technologie goed moet aansluiten bij de cultuur en kennis van de organisatie.
-
-\clearpage
+\begin{itemize}
+    \item Is er schade toegebracht aan de deelnemers? Nee, omdat er sprake is van kwalitatief onderzoek zijn er geen deelnemers betrokken in dit onderzoek.
+    \item Is er een gebrek aan toestemming of overeenstemming? Nee, De gebruikte data bronnen in dit onderzoek zijn verzameld voor het de ondersteuning van functionaliteiten van Shop2market en Adcurve. Hiervoor is instemming van alle klanten voor het gebruiken van de software door Shop2market. De data die mogelijk is verzameld over internetgebruikers is met instemming gebeurd middels de cookiewet.
+    \item Is er sprake van een inbreuk van privacy? Nee, in de gebruikte data bronnen is geen aanwezigheid van persoonsgebonden informatie. Daarnaast zijn privacy gevoelige informatie zoals IP adressen en cookies niet aanwezig in de gebruikte data bronnen.
+    \item Is er sprake geweest van bedrog? Dit is niet van toepassing omdat er geen deelnemers zijn betrokken in dit onderzoek.
+    \item Als laatste verklaar ik dat deze thesis mijn eigen werk is. Tot mijn kennis is er geen vorm van copyright schending of zelfs plagiaat. Werken van andere zoals onderzoeken worden vermeld met gebruik van het APA referentie systeem.
+\end{itemize}
