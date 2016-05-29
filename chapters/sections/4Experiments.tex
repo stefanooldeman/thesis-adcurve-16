@@ -28,6 +28,7 @@ visits.json & 1.064 GB               & 0.3986 GB      & 2.345.341          & 2.3
 
 
 \subsection{ETL}
+\label{sec:etl}
 
 ETL (Extract, Transform and Load) is een manier om data uit een externe databron te transformeren naar een ander schema \parencite{data-mining}. Dit zorgt voor een uniform formaat waardoor latere processen geen logica hoeven toe te passen om met de data te werken. In tabel \ref{tab:etl_input_example} is het dataformaat omschreven van de visits data bron. Iedere regel in dit bestand representeert een bezoek op de website van een webshop. Na het uitvoeren van het ETL proces worden er twee bestanden weg geschreven, een per webshop het bestand ``./exports/910/visits.json"\ bevat een regel en het bestand ``./exports/224/visits.json" heeft twee regels. Een voorbeeld hiervan is te vinden in appendix \ref{app:json_format}
 
@@ -47,23 +48,16 @@ timestamp  & time\_id & publisher\_id & shop\_id & shop\_product\_id & shop\_cat
 \end{table}
 
 
-Het ETL proces is in de eerste iteratie van het project  geschreven in Golang. Hier is voor gekozen omdat er meer betere ondersteuning is voor data formaten zoals BSON, een binary formaat. Als laatste is er voor gekozen om data op te splitsen per webshop als een methode van data partitionering. Dit biedt de mogelijkheid om in latere fases gebruik te maken van concurrency of parallellisatie implementaties, omdat data kan worden verwerkt in een proces per partitie. 
-Uit onderzoek blijkt dat MapReduce deze methode gebruikt om data te schalen naar een terabyte schaal.
+Het ETL proces is in de eerste iteratie van het project  geschreven in Golang. Hier is voor gekozen omdat er meer betere ondersteuning is voor data formaten zoals BSON, een binary formaat. Als laatste is er voor gekozen om data op te splitsen per webshop als een methode van data partitionering. Dit biedt de mogelijkheid om in latere fases gebruik te maken van concurrency of parallellisatie implementaties, omdat data kan worden verwerkt in een proces per partitie. Uit onderzoek blijkt dat MapReduce deze methode gebruikt om data te schalen naar een ``terabyte-scale".
 
 In de ETL fase is dat verwerkt voor 265 webshops. Er worden daarom met twee databronnen maximaal 530  (= 265 * 2) bestanden geschreven. Maar omdat het kan dat sommige webwinkels geen data heeft voor een databron wordt er geen bestand weg geschreven. Met de huidige dataset resulteerde het ETL proces in 462 bestanden.
 
 En hierop volgende fase representeert de reduce fase van een MapReduce algoritme. De input voor dit het reduce proces is het resultaat van de ETL fase.
 
-\clearpage
-
-% data verlies van -0.010702068483857997 voor visits
-
 \subsection{Golang}
 
 Om het proces te starten wordt de locatie van een de data partities van shop. Ter voorbeeld: \newline\verb+./bin/go_aggregator ./exports/1001/+
 De implementatie gebruikt voor iedere databron een aparte thread (goroutine) om de data in te lezen. Een apart thread wordt gebruikt om de data te ontvangen en voert de aggregatie functie SUM uit op alle kolommen. Alle data wordt gegroepeerd op basis van de key ShopID, PublisherID, en ProductID. Er zijn geen bijzonderheden gevonden waaruit blijkt dat dit proces niet schaalbaar is in te zetten.
-
-Het verwerken van een partitie gebeurt tussen de 1.4 seconden en de 2 milliseconden. En als het het programma wordt uitgevoerd voor alle webwinkels duurt dit 1 minuut en 22 seconden.
 
 \subsection{Spark}
 
@@ -71,12 +65,9 @@ Voor spark is de opdracht gegeven aan het cluster dat in standalone modus is ges
 
 De implementatie gebruikt Spark SQL in een python script "query.py". Tijdens het proof of concept is gevonden dat de beste performance wordt behaald wanneer alle data in een groot bestand wordt gegeven. Spark voert hier zelf de optimale partitionering in over de beschikbare hardware. Daarom worden eerst alle bestanden samengevoegd met het volgende unix commando:\newline\verb+cat ./exports/*/{orders,visits}.json >> exports_combined.json+.
 
-
 In Spark is er wel spraken van warmup-time, dit is te verklaren doordat de Spark SQL syntax wordt vertaalt naar Java, de java code wordt vertaal naar systeem code door de JVM.
 
-Het verwerken van alle partities gebeurt in 3 minuten en 22 seconden, en de tijd zonder warmup-time is 2 minutes 21 seconds.
-
-
+\clearpage
 
 \subsection{Gebruikte Hardware}
 \label{subsec:hardware_specs}
@@ -97,3 +88,37 @@ Storage:   & Apple SSD
 \subsection{Overige vragen}
 
 Voor het evalueren van de twee POC 's is besloten om geen latency, IO, memory of CPU gerelateerde benchmarks te evalueren. Dit is wel gewoonlijk bij industrie benchmarks van verschillende data processing tools. Maar dit wordt gedaan vanuit een competitief perspectief  \parencite{ousterhout2015making}. Voor de doelstellingen van dit project is de totale proces tijd belangrijker.
+
+\subsection{Benchmarks}
+
+Voor de benchmars zijn uiteindelijk 3 experimenten uitgevoerd per POC. Hierbij zijn product advertenties geaggregeerd over verschillende partitites, waarbij test 3 all partities aggregeerde in een serie.
+
+\begin{itemize}
+    \item data partitie van 68KB, dit wordt beschouwd als een kleine webwinkel.
+    \item een partitie voor grote webshop met een data grootte van 9MB
+    \item alle partities van alle shops met een data grootte van 387MB
+\end{itemize}
+
+
+Het verwerken van een partitie van minder dan 68K duurt gemiddeld 200 milliseconden.
+Het verwerken van een partitie van 9.6MB duurt 1.4 seconden. Als het het programma wordt uitgevoerd voor alle webwinkels duurt dit 1 minuut en 22 seconden.
+
+Het verwerken van een partitie van minder dan 68KB duurt in totaal 27 seconden, en de tijd zonder warmup-time is 9 seconden
+Het verwerken van een partitie van 9.6MB duurt in totaal 37 seconden, en de tijd zonder warmup-time is 14 seconden. Het verwerken van alle partities gebeurt in 3 minuten en 22 seconden, en de tijd zonder warmup-time is 2 minutes 21 seconds.
+
+\begin{table}[h]
+\centering
+\caption{Benchmark resultaten voor Golang en Spark POC}
+\label{tab:benchmarks}
+\begin{tabular}{|l|l|l|l|l|l|l|}
+\hline
+            & test1 total & test1 warmup & test2 total & test2 warmup & test3 total & test3 warmup \\ \hline
+Golang      & 200ms       & NA           & 1.4s        & NA           & 1m en 22s   & NA           \\ \hline
+Spark total & 27s         & 18s          & 37s         & 23s          & 3m en 22s   & 1m en 20s    \\ \hline
+\end{tabular}
+\end{table}
+
+\subsection{Conclusies}
+
+In sectie \ref{subsec:3.3.2} werd gesteld dat: \textit{``In de nieuwe situatie moet op efficiënte wijze worden om gegaan met een kleine hoeveelheid aan data."}. In het experiment met Golang worden kleine partities van 68KB in 200 miliseconden verwerkt. In vergelijking met Spark is dit 27 seconden. Opvallend is ook dat de warmup-time in Spark toeneemt op basis van de data input. In tabel \ref{tab:benchmarks} valt af te lezen dat de implementatie in Golang altijd betere prestaties levert, ook wanneer alle webwinkels worden geaggregeerd. In het onderzoek werd al eerder geconstateerd dat mogelijke overhead een rol speelt in distributed systemen. De implementatie in Golang lijkt hier geen last van te hebben, en is ook sneller.
+

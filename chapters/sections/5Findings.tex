@@ -1,78 +1,25 @@
 Wat zijn de gepresenteerde oplossingen en waarom zijn deze volledig of niet?
 
+In de volgende lijst worden nogmaals de functionele en niet functionele eisen nagelopen om te controleren of de gepresenteerde oplossingen ontwikkeld in Golang en Spark volledig zijn.
 
-De volgende doelstelling:
+\begin{itemize}
+    \item \textit{Kunnen de statistieken voor één webwinkel opnieuw worden gegenereerd?} Ja, doordat het ETL proces de data opsplitst in partities per webwinkel kan er een apart proces worden gestart per webwinkel. In Golang duurt maximaal 1 seconde en minimaal 200 milisiconde. In Spark duurt dit maximaal 37 seconden en minimaal 15 seconde.
+    
+    \item \textit{ Het creëren van data aggregaties voor alle webwinkels duurt niet langer dan 1 uur en 30 minuten.} Ja, dit is mogelijk. In Golang duurt dit gemiddeld 1 minuut en 22 seconden. In Spark duurt dit gemiddeld 3 minuten en 22 seconden.
+    
+    \item \textit{De kosten voor eventuele licenties en infrastructuur mogen niet hoger zijn dan dat voor de huidige oplossing.} De gebruikte hardware omschreven in \ref{subsec:hardware_specs} is slechts een machine. Het huidige mongodb cluster bestaat uit meerdere machines. Daarnaast zijn er geen licentie kosten verbonden aan de gebruikte technologieën.
+    
+    \item \textit{Statistieken zijn altijd voor kantoor uren beschikbaar}. Afhankelijk van de tijd waarop publishers hun data beschikbaar stellen is dit mogelijk. Door de aggregatie een aantal keer te herhalen is er altijd data beschikbaar, afhankelijk van de data bronnen zijn de statistieken voor een webwinkel volledig. Voorbeeld: om 02:00 zijn alle orders en visits beschikbaar, op dit moment wordt er een aggregatie gestart voor alle shops. Vervolgens zijn de kosten voor een publisher beschikbaar om 03:00. Op dit moment wordt er opnieuw een aggregatie gestart voor alle shops die gebruik maken van deze publisher. Op deze wijze worden statistieken zo snel mogelijk beschikbaar gemaakt aan het systemen.
+    
+    \item \textit{De gekozen oplossing heeft een productief programmeermodel en is afhankelijk van hardware architectuur}. Ja, dit blijkt uit onderzoek omschreven in  \ref{sec:gevonden_tools}
+    
+    \item \textit{De programmatuur is testbaar en hierdoor eenvoudig te onderhouden.}  Ja, dit blijkt uit onderzoek omschreven in  \ref{sec:gevonden_tools}
+    
+    \item \textit{Data aggregaties voor een groep webwinkels kunnen op een ander tijdstip worden geaggregeerd i.v.m. verschillende tijdszones}. Ja dit is mogelijk door een aantal processen achtereenvolgend te starten. In Golang zullen dit losse processen zijn. In Spark is het mogelijk om deze als een proces te verwerken zodat Spark dit opdracht kan optimaliseren.
+    
+    \item \textit{De nieuwe oplossing moet schaalbaar zijn tot 10.000 webshops} Ja, dit blijkt uit onderzoek omschreven in \label{sec:distributed}. Daarnaast is het Golang proces te verdelen over meerdere machines door het gebruikt van resqueue workers\footnote{``Resque workers can be distributed between multiple machines, support priorities, are resilient to memory leaks" \parencite{github2016reque}} een methode die al wordt gebruikt binnen de organisatie. 
+\end{itemize}
 
-Webwinkel eigenaren moeten in staat zijn om beslissingen te maken op basis van correcte en actuele gegevens in Adcurve. Dit betekent dat de gegevens die Adcurve toont altijd te verklaren zijn en overeenkomen met de werkelijkheid. De data moet op tijd verwerkt zijn, en fouten moeten tijdig hersteld kunnen worden.
-
-HET ETL proces
-% De snelheid waarmee de dataset wordt verwerkt in Golang is:
-% 61.19s user 13.02s system 100\% cpu 1:13.75 total
-
-% Als laatste biedt dit ETL ontwerp de mogelijkheid om de data voor een specifieke webshop opnieuw te verwerken. Dit betekend dat data eenmalig wordt gefilterd. 
-Door de bestanden te bewaren op de hardeschijf voor de laatste 30 dagen wordt er nog meer voordeel behaald.
-In het scenario wanneer er data correcties worden uitgevoerd voor één data bron op een specifieke datum, worden er minder bestanden verwerkt tijdens de ETL omdat de andere overige data bronnen al eerder zijn verwerkt. Dit betekend dat data eenmalig wordt gefilterd.
-
-
-
-De Aggregatie processen met Golang zullen erg klein worden gemaakt door de data van te voren te partitioneren per shop. Dit biedt de mogelijkheid om het deze processen uit te voeren op verschillende machines (scale-out), door het gebruikt van resqueue workers "Resque workers can be distributed between multiple machines, support priorities, are resilient to memory bloat / "leaks," \parencite{github2016reque} 
-
-
-
-
-\textbf{Go Aggregator}
-
-
-per Shop:
-average 1.42, 1.35, 1.40, 1.41, 1.32
-1.38
-output is 1 regel output en 401 bytes groot
-
-per shop en publisher:
-average 1.46, 1.35, 1.44, 1.41, 1.44
-1.42
-output is 27 regels output en 10640 bytes groot
-
-
-per shop, publisher en advertentieproduct:
-average 1.66, 1.51, 1.69, 1.59, 1.57
-1.59 seconds is average time
-output is 12982 regels 4722905 bytes
-
-
-Omdat Golang compileert naar assembly is er geen sprake van warmup time. En er is daarom alleen de totale tijd.
-
-
-Split all orders and visits for all shops (264 shops)
-
-\begin{lstlisting}
-2016/05/11 11:38:45 Begin
-2016/05/11 11:40:09 Main Done
-./start.sh  69.83s user 16.12s system 101% CPU 1:24.70 total
-
-total time: 1 minute 9 seconds
-\end{lstlisting}
-
-\textbf{Spark all shop products, file per shop}
-
-(one file contains all products for all channels)
-
-\begin{lstlisting}
-16/05/11 10:09:58 INFO SparkContext: Running Spark version 1.6.0
-[2016-05-11 10:10:03] Start loading data
-[2016-05-11 10:12:24] Finished writing data
-Total time:     0:02:21.378717
-16/05/11 10:12:24 INFO ShutdownHookManager: Deleting directory /private/var/folders/tp/….
-
-time without job submit: 2 minutes 21 seconds
-\end{lstlisting}
-
-
-\textbf{Conclusie}
-
-[todo]
-
-Het gebruik van big data systemen is zeer schaalbaar, maar introduceerd een hoop overhead. (paper).
-
-Voordelen van een programmeer taal is dat complexe business logic hierin kan worden geschreven zonder rekening te houden met veel abstracties zoals in parallel programming zoals map reduce of sql.. In zo'n paradigm moet een probleem naar code worden vertaalt met extra kennis naast het programmeren, kennis over het map reduce paradigm, sql join. Daarnaast wordt code vertaalt naar een query plan en het gebruik van indexes etc..
-
+\subsection{Gevonden oplossing}
+ 
+In het gegeven overzicht wordt duidelijk dat beide oplossingen gehoor geven aan alle functionele en niet functionele eisen. Daarom wordt geconcludeerd dat de gevonden oplossing volledig is bevonden. Het advies is om de oplossing in Golang verder door te ontwikkelen naar productie omdat uit onderzoek blijkt dat deze nog sneller is dan de implementatie in Spark.

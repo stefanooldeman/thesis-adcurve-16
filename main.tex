@@ -126,10 +126,13 @@
 
 \input{preface}
 
-% \chapter{Managementsamenvatting}
+\setlength{\parskip}{1em}
+\chapter{Managementsamenvatting}
+\input{chapters/0Samenvatting}
 
+\setlength{\parskip}{0pt}
 \tableofcontents
-
+\setlength{\parskip}{1em}
 % \listoffigures
  
 % \listoftables
@@ -141,7 +144,7 @@
 
 % \linenumbers
 
-% \chapter{Inleiding}
+\input{chapters/0Inleiding}
 
 \input{chapters/1Context}
 
@@ -153,26 +156,34 @@
 
 \input{chapters/4Resultaat}
 
+\input{chapters/5Conclusie}
+
 %% Use letters for the chapter numbers of the appendices.
 \appendix
 
-\chapter{Overzicht planning en fases}
+\chapter{Planning}
 \label{app:planning}
-\input{appendix/planning}
+% \includepdf[]{appendix/planning.pdf}
 
-\chapter{Impact analyse}
+\chapter{Overige bijlage}
+
+\section{Impact analyse}
 \label{app:impact_analyse}
 \input{appendix/impact_analyse}
 
-\chapter{Implementatie ETL}
+\section{Implementatie ETL}
 \label{app:json_format}
 \input{appendix/json_format}
 
-\chapter{Implementatie in Golang}
+\section{Data partities}
+\label{app:partities}
+\input{appendix/partities}
+
+\section{Implementatie in Golang}
 \label{app:golang_code}
 \input{appendix/golang_code}
 
-\chapter{Implementatie in Spark SQL}
+\section{Implementatie in Spark SQL}
 \label{app:spark_code}
 \input{appendix/spark_code}
 

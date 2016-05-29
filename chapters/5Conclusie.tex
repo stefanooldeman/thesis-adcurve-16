@@ -1,0 +1,22 @@
+\chapter{Afsluitend}
+
+In dit onderzoek hebben de verschillende fases bijgedragen aan het beantwoorden van de volgende hoofdvraag: \textit{Hoe verzorgt een nieuwe implementatie voor het up-to-date houden van statistieken in Adcurve zodat gegevens altijd te verklaren zijn?}.
+
+Tijdens het project zijn vele technologieën onderzocht en gevalideerd. Uit het onderzoek is gekomen dat de tweetal technologieën die al bekend zijn binnen de organisatie perfect toepasbaar zijn voor het gegeven probleem. In \ref{sec:deelvraag5} is geconcludeerd dat de beste prestaties levert worden behaald met een implementatie in Golang.
+
+De hoofdvraag wordt beantwoord doordat de gevalideerde oplossing voldoet aan alle gedefinieerde functionele en niet functionele. Daarnaast zijn er een aantal adviezen die bijdragen aan de beantwoording van de hoofdvraag:
+
+In de huidige situatie worden de data aggregaties op een tijdstip uitgevoerd. Het advies is om dit proces anders in te richten, namelijk:
+Groepeer alle webshops per publisher, en verwerkt de data bronnen van publishers direct nadat deze beschikbaar worden gesteld. Dit betekend data inzicht hebben afhankelijk van de publishers, en niet alle dashboards in Adcurve up-to-date zullen zijn. Dit moet worden gecommuniceerd bijvoorbeeld bij het bekijken van het dashboard. Doordat het proces transparant is voor de gebruikers zullen vertragingen te verklaren zijn voor de gebruikers.
+
+Verklaarbaarheid duidt ook op het corrigeren van gegevens die incorrect zijn. Het advies is daarom om hier een processen in te richten waardoor incorrecte gegevens worden tijdig gedetecteerd. Dit is niet verder onderzocht omdat dit buiten scope viel.
+
+In de visie van de student is het mogelijk om data correcties automatisch uit te voeren wanneer data bronnen zijn hersteld. Dit moet echter wel worden onderzocht en zou de organisatie ondersteunen bij de gewenste groei. Het is namelijk zeer waarschijnlijk dat bij het integreren van meer publishers, het aantal data integraties resulteer in vele operationele belasting. Daarom is het goed om per integratie een systeem in te richten waarbij het ontbreken van data wordt gedetecteerd, en na het herstel aggregaties opnieuw worden gestart. 
+Op deze wijze wordt het tweede deel van de hoofdvraag beantwoord en zullen statistieken in Adcurve altijd te verklaren zijn. 
+
+
+De gegeven opdracht was om een Proof of Concept te ontwikkelen. Hierbij is de volgende doelstelling gebruikt:
+
+\textit{Webwinkel eigenaren moeten in staat zijn om beslissingen te maken op basis van correcte en actuele gegevens in Adcurve. Dit betekent dat de gegevens die Adcurve toont altijd te verklaren zijn en overeenkomen met de werkelijkheid. De data moet op tijd verwerkt zijn, en fouten moeten tijdig hersteld kunnen worden.}
+
+De student is er van overtuigt dat een vervolg project met de gegeven doelstelling met succes kan worden afgerond. Hierbij kunnen de adviezen worden gebruikt in het wijzigen van huidige processen, en de gepresenteerd methodes kunnen worden gebruikt voor het berekenen van statistieken.
