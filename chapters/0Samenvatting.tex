@@ -1,15 +1,14 @@
 
 In deze thesis is wordt omschreven hoe onderzoek is gedaan naar een nieuwe implementatie voor data aggregatie processen binnen de organisatie Shop2market.
 
-Dit project werd gestart tijdens de ontwikkeling van een nieuwe dienst op basis van bestaande Shop2market platform: Adcurve. Om de gewenste groei van Adcurve te ondersteunen en ruimte bieden voor nieuwe functionaliteiten werd duidelijk dat de huidige oplossing wellicht moest worden onderzocht.
+Dit project werd gestart tijdens de ontwikkeling van Adcurve, een nieuwe dienst op basis van het bestaande Shop2market platform. Om de gewenste groei van Adcurve te ondersteunen en ruimte te bieden aan nieuwe functionaliteiten werd duidelijk dat de huidige oplossing wellicht moest worden verbeterd.
 
-
-Voor dit project is in de volgende doelstelling omschreven:
+Voor dit project is de volgende doelstelling omschreven:
 
 \textit{Webwinkel eigenaren moeten in staat zijn om beslissingen te maken op basis van correcte en actuele gegevens in Adcurve. Dit betekent dat de gegevens die Adcurve toont altijd te verklaren zijn en overeenkomen met de werkelijkheid. De data moet op tijd verwerkt zijn, en fouten moeten tijdig hersteld kunnen worden}
 
 
-In hoofdstuk \ref{ch:project} wordt het project volledig toegelicht, daarnaast is het onderzoeksplan opgesteld. In het onderzoeksplan worden vijf deelvragen behandeld die samen de volgende hoofdvraag beantwoorden, namelijk:
+In hoofdstuk \ref{ch:project} wordt het project volledig toegelicht. In het onderzoek worden vijf deelvragen behandeld die samen de volgende hoofdvraag beantwoorden, namelijk:
 
 \medskip
 {\large \textit{"Hoe verzorgt een nieuwe implementatie voor het up-to-date houden van statistieken in Adcurve zodat gegevens altijd te verklaren zijn?"}}
@@ -26,23 +25,22 @@ Om de hoofdvraag te beantwoorden zijn de volgende deelvragen geformuleerd
 \end{enumerate}
 
 
-In het onderzoek zijn veel beschikbare technologieën besproken zoals databases op basis van een moderne architectuur, distrbuted oplossingen zoals Hadoop en Spark. Daarnaast was er wens om ook programmeer talen te onderzoeken, die optimaal gebruik maken van hardware capaciteit. De resulteerde in drie alternatieve methodes om het probleem op te lossen.
+In het onderzoek zijn veel beschikbare technologieën besproken zoals databases op basis van een moderne architectuur, distributed oplossingen zoals Hadoop en Spark. Daarnaast was de wens om ook programmeer talen te onderzoeken, die optimaal gebruik maken van hardware capaciteit. Dit resulteerde in drie alternatieve methodes om het probleem op te lossen.
 
 \clearpage
 
 Tijdens de evaluatie hiervan is de keuze gevallen op Golang en Spark. Dit onderzoek is omschreven in hoofdstuk \ref{ch:onderzoek}
 
-Voordat er is overgegaan tot de implementatie fase is er ter validatie een analyse uitgevoerd. In \ref{sec:deelvraag3} zijn de probleem scenario 's geanalyseerd. Hieruit zijn criteria gevonden waar een nieuwe implementatie aan moet voldoen:
+Voordat is overgegaan tot de implementatie fase is er ter validatie een analyse uitgevoerd. In \ref{sec:deelvraag3} zijn de probleem scenario 's geanalyseerd. Hieruit zijn criteria gevonden waar een nieuwe implementatie aan moet voldoen:
 
 \begin{enumerate}[label=(\alph*)]
     \item In de nieuwe situatie moet op efficiënte wijze worden om gegaan met een kleine hoeveelheid aan data. Dit omdat voor 80\% van de webshops een kleine hoeveelheid data wordt verzameld. Tegelijkertijd is de input data set groot en zijn resultaten van aggregaties wellicht groter. Er moet in deze situatie op efficiënte wijze data worden weg geschreven naar een eindlocatie,  zoals het filesysteem. Hierbij moet het onderhouden van indexes worden voorkomen.
     
     \item In de nieuwe situatie moet worden voorkomen dat een technologie of systeem niet te upgraden is naar een nieuwere versie. Dit is te voorkomen door geen state te bewaren in het systeem zelf, maar dit alleen te gebruiken bij data processing.
     
-    \item In de nieuwe situatie wordt er gekozen om het data aggregatie systeem onafhankelijk te maken productie processen. Dit moet voorkomen dat productie processen van invloed zijn op de performance van het aggregatie proces. Dit is mogelijk door te werken met exports van databases die worden opgeslagen in Amazon S3
+    \item In de nieuwe situatie wordt er gekozen om het data aggregatie systeem onafhankelijk te maken van productie processen. Dit moet voorkomen dat productie processen van invloed zijn op de performance van het aggregatie proces. Dit is mogelijk door te werken met exports van databases die worden opgeslagen in Amazon S3
 \end{enumerate}
 
+Deze adviezen zijn meegenomen in de keuze voor Golang en Spark, en in \ref{subsec:deelvraag3_vergelijking} is verantwoord dat de problemen zijn op te lossen. Tijdens de Proof of Concept's geven beide oplossingen goede resultaten. De gebruikte methodes zijn omschreven in \ref{sec:deelvraag4} en de test resultaten worden besproken in \ref{sec:benchmarks}.
 
-Deze adviezen zijn meegenomen in de keuze voor Golang en Spark, en in \ref{subsec:deelvraag3_vergelijking} is verantwoord dat de problemen zijn op te lossen. Tijdens de Proof of Concept's zijn beide tools geven goede resultaten met een . De gebruikte methodes zijn omschreven in \ref{sec:deelvraag4} en de resultaten worden besproken in \ref{sec:deelvraag5}.
-
-Beide oplossingen bieden de benodigde performance om statestieken up-to-date te houden. Omdat Golang de beste resultaten geeft wordt aanbevolen om dit POC door te ontwikkelen naar productie.
+Beide oplossingen bieden de benodigde performance om statistieken up-to-date te houden. Omdat Golang de beste resultaten geeft wordt aanbevolen om dit POC door te ontwikkelen naar productie.
