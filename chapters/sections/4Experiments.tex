@@ -1,19 +1,19 @@
 Wat zijn de mogelijke oplossingen en hoe wordt dit gevalideerd?
 
-In dit hoofdstuk wordt omschreven hoe de Proof of Concept 's op basis van Golang en Spark zijn uitgevoerd. Hieruit moet blijken of de technologieën die geselecteerd zijn in het onderzoek ook werkelijk toepasbaar zijn in de context.
+In dit hoofdstuk wordt omschreven hoe de Proof of Concept 's op basis van Golang en Spark zijn uitgevoerd. Hieruit moet blijken of de geselecteerde technologieën uit het onderzoek ook werkelijk toepasbaar zijn.
 
 Zoals wordt omschreven in de originele doelstelling in 3.1 moet data op tijd worden verwerkt en moet het tijdig herstellen van fouten mogelijk zijn. Dit experiment valideert welke oplossing de beste prestatie levert in de huidige situatie.
 
-Het experiment bestaat uit twee fases. Eerst wordt er een Map fase uitgevoerd en vervolgens een Reduce, zoals bij MapReduce. De map fase is 
-ETL en de reduce fase is een aggregatie met Golang of Spark SQL.
+Het experiment bestaat uit twee fases. Eerst wordt er een mapfase uitgevoerd en vervolgens een Reduce, zoals bij MapReduce. De mapfase is 
+ETL en de reducefase is een aggregatie met Golang of Spark SQL.
 
 \subsection{Gebruikte methode}
 
-Voor ieder POC worden er twee metingen uitgevoerd: de totale proces tijd, gemeten door GNU time \parencite{gnu_time}. En de totale tijd zonder de tijd tussen het starten van het proces en het werkelijk uitvoeren van de implementatie (ook wel warmup-time genoemd). Dit wordt in één serie vijf keer herhaald. Over de metingen wordt een gemiddelde genomen en dit vormt het resultaat.
+Voor ieder POC worden er twee metingen uitgevoerd: de totale proces tijd, gemeten door GNU time \parencite{gnu_time}. En de totale tijd zonder de tijd tussen het starten van het proces en het werkelijk uitvoeren van de implementatie (ook wel warmup-time genoemd). Dit wordt in één serie vijf keer herhaald. Hierdoor wordt een gemiddelde gevonden en dit vormt het resultaat.
 
 Voor het evalueren van de twee POC 's is besloten om geen latency, IO, memory of CPU gerelateerde benchmarks te evalueren. Dit is wel gewoonlijk bij industrie benchmarks van verschillende data processing tools. Maar dit wordt gedaan vanuit een competitief perspectief  \parencite{ousterhout2015making}. Voor de doelstellingen van dit project is de totale proces tijd belangrijker.
 
-Tijdens de drie fases van het experiment wordt gebruik gemaakt van een dataset uit productie als data input. De data set bestaat uit visits en orders van 264 webwinkels.
+Tijdens het experiment wordt gebruik gemaakt van een dataset uit productie als data input. De data set bestaat uit visits en orders van 264 webwinkels.
 
 \begin{table}[h]
 \centering
@@ -27,7 +27,7 @@ visits.json & 1.064 GB               & 0.3986 GB      & 2.345.341          & 2.3
 \end{tabular}
 \end{table}
 
-Tijdens het ETL proces is er sprake van data verlies van minder dan 1\%, zie \ref{tab:datasets}. Omdat dit minder is dan 1\% wordt dit niet als probleem gezien, daarnaast is er geen ruimte ingepland voor data validatie tijdens dit project.
+Tijdens het ETL proces is er sprake van data verlies van minder dan 1\%, zie tabel \ref{tab:datasets}. Omdat dit minder is dan 1\% wordt dit niet als probleem gezien, daarnaast is er geen ruimte ingepland voor data validatie tijdens dit project.
 
 \clearpage
 
@@ -52,7 +52,7 @@ timestamp  & time\_id & publisher\_id & shop\_id & shop\_product\_id & shop\_cat
 \end{table}
 
 
-Het ETL proces is in de eerste iteratie van het project  geschreven in Golang. Hier is voor gekozen omdat er betere ondersteuning is voor data formaten zoals BSON, een binary formaat.
+Het ETL proces is in de eerste iteratie van het project geschreven in Golang. Hier is voor gekozen omdat er betere ondersteuning is voor data formaten zoals BSON, een binary formaat.
 
 Als laatste is er voor gekozen om data op te splitsen per webwinkel als een methode van data partitionering. Dit biedt de mogelijkheid om in latere fases gebruik te maken van concurrency of parallellisatie implementaties, omdat data kan worden verwerkt in een proces per partitie. Uit onderzoek blijkt dat MapReduce deze methode gebruikt om data te schalen naar een ``terabyte-scale".
 
@@ -75,7 +75,7 @@ Na het verwerken van de input data worden er 530 bestanden weg geschreven. Voor 
 \subsection{Golang}
 
 
-De implementatie in Golang maakt gebruik van het concurrency model dat de porgrammeer taal aanbied. De implementatie is deels te lezen in appendix \ref{app:golang_code}. Iedere databron  wordt ingelezen in een aparte thread. In een andere thread wordt gebruikt om de data te ontvangen en voert de aggregatie functie SUM uit op alle kolommen. Alle data wordt gegroepeerd op basis van de key ShopID, PublisherID, en ProductID. Er zijn geen bijzonderheden gevonden waaruit blijkt dat de implementatie niet schaalbaar is in te zetten.
+De implementatie in Golang maakt gebruik van het concurrency model dat de programmeertaal aanbied. De implementatie is deels te lezen in appendix \ref{app:golang_code}. Iedere databron  wordt ingelezen in een aparte thread (goroutine). In een andere thread wordt gebruikt om de data te ontvangen en voert de aggregatie functie SUM uit op alle kolommen. Alle data wordt gegroepeerd op basis van de key ShopID, PublisherID, en ProductID. Er zijn geen bijzonderheden gevonden waaruit blijkt dat de implementatie niet schaalbaar is in te zetten.
 
 Om het proces te starten wordt de bestandslocatie van een partities gegeven. Bijvoorbeeld: \newline\verb+./bin/go_aggregator ./exports/1001/+
 
@@ -90,6 +90,7 @@ Om het proces te starten voor Spark wordt het script gegevenaan het spark-submit
 In Spark is er wel sprake van warmup-time. Dit komt waarschijnlijk door de JVM (Java Virtual Machine) en de interpretatie van de DSL, namelijk Spark SQL.
 
 \subsection{Benchmarks}
+\label{sec:benchmarks}
 
 Voor de benchmars zijn uiteindelijk drie experimenten uitgevoerd per POC. Hierbij zijn product advertenties geaggregeerd over verschillende partitites, waarbij in test drie alle partities worden aggregeerde, met andere woorden de data voor alle 265 webwinkels.
 
@@ -132,13 +133,13 @@ Tijdens het onderzoek naar verschillende technologieën is bewezen dat dat er vo
 Merk:      & MacBook Pro (Retina, 13-inch, Mid 2014) \\
 Processor: & 2.6 GHz Intel Core i5                   \\
 Geheugen:  & 8 GB 1600 MHz DDR3                      \\
-Storage:   & Apple SSD                                  
+Hardeschijf:   & Apple SSD                                  
 \end{tabular}
 \end{table}
 
 \subsection{Conclusies}
 
-In sectie \ref{subsec:3.3.2} werd gesteld dat: \textit{``In de nieuwe situatie moet op efficiënte wijze worden om gegaan met een kleine hoeveelheid aan data."}. In het experiment met Golang worden kleine partities van 68KB in 200 milliseconden verwerkt. In vergelijking met Spark is dit 27 seconden. Met deze resultaten wordt voorzien in de eerder gestelde eisen.
+In sectie \ref{subsec:3.3.2} werd gesteld dat: \textit{``In de nieuwe situatie moet op efficiënte wijze worden omgegaan met een kleine hoeveelheid aan data."}. In het experiment met Golang worden kleine partities van 68KB in 200 milliseconden verwerkt. In vergelijking met Spark is dit 27 seconden. Met deze resultaten wordt voorzien in de eerder gestelde eisen.
 
-Opvallend is dat de warmup-time in Spark toeneemt op basis van de data input. In tabel \ref{tab:benchmarks} is af te lezen dat de implementatie in Golang altijd betere prestaties levert, ook wanneer alle webwinkels worden geaggregeerd. In het onderzoek werd al eerder geconstateerd dat mogelijke overhead een rol speelt in distributed systemen. De implementatie in Golang lijkt hier geen last van te hebben.
+Opvallend is dat de warmup-time in Spark toeneemt op basis van de data input. In tabel \ref{tab:benchmarks} is af te lezen dat de implementatie in Golang altijd betere prestaties levert, ook wanneer alle webwinkels worden geaggregeerd. In het onderzoek werd al eerder geconstateerd dat mogelijke overhead een rol speelt in distributed systemen. Bij een implementatie in Golang is hier geen sprake van.
 

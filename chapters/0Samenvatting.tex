@@ -1,5 +1,5 @@
 
-In deze thesis is wordt omschreven hoe onderzoek is gedaan naar een nieuwe implementatie voor data aggregatie processen binnen de organisatie Shop2market.
+In deze thesis wordt omschreven hoe onderzoek is gedaan naar een nieuwe implementatie voor data aggregatie processen binnen de organisatie Shop2market.
 
 Dit project werd gestart tijdens de ontwikkeling van Adcurve, een nieuwe dienst op basis van het bestaande Shop2market platform. Om de gewenste groei van Adcurve te ondersteunen en ruimte te bieden aan nieuwe functionaliteiten werd duidelijk dat de huidige oplossing wellicht moest worden verbeterd.
 
@@ -29,9 +29,9 @@ In het onderzoek zijn veel beschikbare technologieën besproken zoals databases 
 
 \clearpage
 
-Tijdens de evaluatie hiervan is de keuze gevallen op Golang en Spark. Dit onderzoek is omschreven in hoofdstuk \ref{ch:onderzoek}
+Tijdens de evaluatie hiervan is de keuze gevallen op Golang en Spark. Dit onderzoek is omschreven in hoofdstuk \ref{ch:onderzoek}.
 
-Voordat is overgegaan tot de implementatie fase is er ter validatie een analyse uitgevoerd. In \ref{sec:deelvraag3} zijn de probleem scenario 's geanalyseerd. Hieruit zijn criteria gevonden waar een nieuwe implementatie aan moet voldoen:
+Voordat is overgegaan tot de implementatie fase is er ter validatie een analyse uitgevoerd. In hoofdstuk \ref{sec:deelvraag3} zijn de probleem scenario 's geanalyseerd. Hieruit zijn criteria gevonden waar een nieuwe implementatie aan moet voldoen:
 
 \begin{enumerate}[label=(\alph*)]
     \item In de nieuwe situatie moet op efficiënte wijze worden om gegaan met een kleine hoeveelheid aan data. Dit omdat voor 80\% van de webshops een kleine hoeveelheid data wordt verzameld. Tegelijkertijd is de input data set groot en zijn resultaten van aggregaties wellicht groter. Er moet in deze situatie op efficiënte wijze data worden weg geschreven naar een eindlocatie,  zoals het filesysteem. Hierbij moet het onderhouden van indexes worden voorkomen.
@@ -41,6 +41,6 @@ Voordat is overgegaan tot de implementatie fase is er ter validatie een analyse 
     \item In de nieuwe situatie wordt er gekozen om het data aggregatie systeem onafhankelijk te maken van productie processen. Dit moet voorkomen dat productie processen van invloed zijn op de performance van het aggregatie proces. Dit is mogelijk door te werken met exports van databases die worden opgeslagen in Amazon S3
 \end{enumerate}
 
-Deze adviezen zijn meegenomen in de keuze voor Golang en Spark, en in \ref{subsec:deelvraag3_vergelijking} is verantwoord dat de problemen zijn op te lossen. Tijdens de Proof of Concept's geven beide oplossingen goede resultaten. De gebruikte methodes zijn omschreven in \ref{sec:deelvraag4} en de test resultaten worden besproken in \ref{sec:benchmarks}.
+Deze adviezen zijn meegenomen in de keuze voor Golang en Spark, en in \ref{subsec:deelvraag3_vergelijking} is verantwoord dat de problemen zijn op te lossen. Tijdens de Proof of Concept's geven beide oplossingen goede resultaten. De gebruikte methodes zijn omschreven in \ref{sec:deelvraag4} en de test resultaten worden besproken in hoofdstuk \ref{sec:benchmarks}.
 
-Beide oplossingen bieden de benodigde performance om statistieken up-to-date te houden. Omdat Golang de beste resultaten geeft wordt aanbevolen om dit POC door te ontwikkelen naar productie.
+Beide oplossingen bieden de benodigde performance om statistieken up-to-date te houden. Omdat Golang de beste resultaten geeft wordt aanbevolen om dit POC door te ontwikkelen naar productie. Alle aanbevelingen worden nogmaals omschreven in hoofdstuk \ref{ch:afsluitend}.
