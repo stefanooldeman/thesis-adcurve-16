@@ -106,19 +106,21 @@ Voor de benchmars zijn uiteindelijk drie experimenten uitgevoerd per POC. Hierbi
 
 In tabel \ref{tab:benchmarks} is af te lezen dat het verwerken van een partitie van 68KB gemiddeld 200 milliseconden duurt in Golang en 27 seconden met Spark. Voor iedere test omschreven in \ref{fig:test} is de totale tijd en de warmup-time vastgelegd. De totale tijd voor het ETL proces duurt gemiddeld 1 minuut en 40 seconden, en is niet opgenomen in de tabel.
 
-\begin{table}[h]
+% Please add the following required packages to your document preamble:
+% \usepackage{multirow}
+\begin{table}[]
 \centering
-\caption{Benchmark resultaten voor verschillende tests}
-\label{tab:benchmarks}
+\caption{My caption}
+\label{my-label}
 \begin{tabular}{|l|l|l|l|l|l|l|}
 \hline
 \multirow{2}{*}{} & \multicolumn{2}{l|}{1e test} & \multicolumn{2}{l|}{2e test} & \multicolumn{2}{l|}{3e test} \\ \cline{2-7} 
                   & totale tijd   & warmup-time  & totale tijd   & warmup-time  & totale tijd   & warmup-time  \\ \hline
 Golang            & 200ms         & N/A          & 1.4s          & N/A          & 1m en 22s     & N/A          \\ \hline
-Spark total       & 27s           & 18s          & 37s           & 23s          & 3m en 22s     & 1m en 20s    \\ \hline
+Spark          & 27s           & 18s          & 37s           & 23s          & 3m en 22s     & 1m en 20s    \\ \hline
+MongoDB           &               &              &               &              & 1.5 uur       & 3m en 30s    \\ \hline
 \end{tabular}
 \end{table}
-
 \clearpage
 
 \subsection{Gebruikte Hardware}
